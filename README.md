@@ -1,6 +1,35 @@
 # puppet-slurm
 
-Puppet module for SLURM client and server
+[![Puppet Forge](http://img.shields.io/puppetforge/v/treydock/slurm.svg)](https://forge.puppetlabs.com/treydock/slurm)
+[![Build Status](https://travis-ci.org/treydock/puppet-slurm.png)](https://travis-ci.org/treydock/puppet-slurm)
+
+#### Table of Contents
+
+1. [Overview](#overview)
+    * [Supported Versions of SLURM](#supported-versions-of-slurm)
+2. [Usage - Configuration options](#usage)
+3. [Reference - Parameter and detailed reference to all options](#reference)
+4. [Limitations - OS compatibility, etc.](#limitations)
+
+## Overview
+
+Manage SLURM.
+
+### Supported Versions of SLURM
+
+This module is designed to work with SLURM 19.05.3.
+
+## Usage
+
+## Reference
+
+[http://treydock.github.io/puppet-slurm/](http://treydock.github.io/puppet-slurm/)
+
+## Limitations
+
+This module has been tested on:
+
+* RedHat/CentOS 7 x86_64
 
 ## Development
 
@@ -17,27 +46,18 @@ Install gem dependencies
 
 Run unit tests
 
-    bundle exec rake test
-
-If you have Vagrant >= 1.2.0 installed you can run system tests
-
-    bundle exec rake beaker
+    bundle exec rake spec
 
 The following environment variables can be used to modify the behavior of the beaker tests:
 
-* *BEAKER_destroy* - Values are "yes" or "no" to prevent VMs from being destroyed after tests.  Defaults to **yes**.
-* *SLURM\_BEAKER\_yumrepo\_baseurl* - **Required** URL to Yum repository containing SLURM RPMs.
-* *SLURM\_BEAKER\_package\_version* - Version of SLURM to install.  Defaults to **14.03.6-1.el6**
-* *PUPPET\_BEAKER\_package\_version* - Version of Puppet to install.  Defaults to **3.6.2-1**
+* *SLURM\_BEAKER\_repo\_baseurl* - **Required** URL to Yum repository containing SLURM RPMs.
+* *SLURM\_BEAKER\_package\_version* - Version of SLURM to install.  Defaults to **19.05.3-2.el7**
 
 Example of running beaker tests using an internal repository, and leaving VMs running after the tests.
 
     export BEAKER_destroy=no
-    export SLURM_BEAKER_yumrepo_baseurl="http://yum.example.com/slurm/el/6/x86_64"
+    export BEAKER_PUPPET_COLLECTION=puppet5
+    export PUPPET_INSTALL_TYPE=agent
+    export BEAKER_set=centos-7
+    export SLURM_BEAKER_repo_baseurl="http://yum.example.com/slurm/el/6/x86_64"
     bundle exec rake beaker
-
-## TODO
-
-* Manage slurm.conf JobComp* config options
-* master - require NFS or somehow ensure NFS present before applying mount resource
-* Update documentation
