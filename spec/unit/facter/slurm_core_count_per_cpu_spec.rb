@@ -24,7 +24,7 @@ describe 'slurm_core_count_per_cpu Fact' do
   end
 
   it 'is nil if /proc/cpuinfo does not exist' do
-    allow(File).to receive(:exists?).with('/proc/cpuinfo').and_return(true)
+    allow(File).to receive(:exists?).with('/proc/cpuinfo').and_return(false)
     expect(Facter.fact(:slurm_core_count_per_cpu).value).to be_nil
   end
 end

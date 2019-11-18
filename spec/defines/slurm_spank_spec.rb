@@ -10,7 +10,7 @@ describe 'slurm::spank' do
     let(:facts) { os_facts }
     let(:title) { 'x11' }
     let(:params) { {} }
-    let(:pre_condition) { "class { 'slurm': node => true }" }
+    let(:pre_condition) { "class { 'slurm': slurmd => true }" }
 
     it { is_expected.to create_slurm__spank('x11') }
     it { is_expected.to contain_class('slurm') }
