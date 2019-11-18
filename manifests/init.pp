@@ -199,7 +199,7 @@ class slurm (
 
   # Cluster config
   $cluster_name       = 'linux',
-  $slurmctld_host     = 'slurm',
+  $slurmctld_host     = ['slurm'],
   $slurmdbd_host      = 'slurmdbd',
 
   # Managed directories
@@ -363,7 +363,7 @@ class slurm (
     'ResvEpilog' => undef, #TODO
     'ResvProlog' => undef, #TODO
     'SlurmUser' => $slurm_user,
-    'SlurmctldHost' => [$slurmctld_host],
+    'SlurmctldHost' => $slurmctld_host,
     'SlurmctldLogFile' => $_slurmctld_log_file,
     'SlurmctldPort' => $slurmctld_port,
     'SlurmdLogFile' => $_slurmd_log_file,

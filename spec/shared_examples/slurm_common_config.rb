@@ -246,10 +246,12 @@ shared_examples_for 'slurm::common::config' do
           'PreemptMode' => 'SUSPEND,GANG',
           'PreemptType'         => 'preempt/partition_prio',
           'ProctrackType'       => 'proctrack/linuxproc',
-          'SchedulerParameters' => [
-            'bf_continue',
-            'defer',
-          ],
+          'SchedulerParameters' => {
+            'bf_continue' => '',
+            'defer' => '',
+            'batch_sched_delay' => '3',
+          },
+          'TaskPlugin' => ['task/affinity', 'task/cgroup'],
         },
       }
     end
@@ -259,7 +261,26 @@ shared_examples_for 'slurm::common::config' do
                         'PreemptMode=SUSPEND,GANG',
                         'PreemptType=preempt/partition_prio',
                         'ProctrackType=proctrack/linuxproc',
-                        'SchedulerParameters=bf_continue,defer',
+                        'SchedulerParameters=bf_continue,defer,batch_sched_delay=3',
+                        'TaskPlugin=task/affinity,task/cgroup',
+                      ])
+    end
+  end
+
+  context 'when multiple slurmctld hosts' do
+    let :param_override do
+      {
+        slurmctld_host: [
+          'slurmctld1(10.0.0.1)',
+          'slurmctld2(10.0.0.2)',
+        ],
+      }
+    end
+
+    it 'overrides values' do
+      verify_contents(catalogue, 'slurm.conf', [
+                        'SlurmctldHost=slurmctld1(10.0.0.1)',
+                        'SlurmctldHost=slurmctld2(10.0.0.2)',
                       ])
     end
   end
