@@ -199,7 +199,7 @@ class slurm (
 
   # Cluster config
   $cluster_name       = 'linux',
-  $slurmctld_host     = ['slurm'],
+  Variant[Array, String] $slurmctld_host = 'slurm',
   $slurmdbd_host      = 'slurmdbd',
 
   # Managed directories
