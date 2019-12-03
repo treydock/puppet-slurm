@@ -16,6 +16,23 @@ class slurm::slurmdbd::service {
     }
   }
 
+  if $slurm::slurmdbd_restart_on_failure {
+    $slurmdbd_systemd_restart = 'present'
+  } else {
+    $slurmdbd_systemd_restart = 'absent'
+  }
+
+  systemd::dropin_file { 'slurmdbd-restart.conf':
+    ensure  => $slurmdbd_systemd_restart,
+    unit    => 'slurmdbd.service',
+    content => join([
+      '# File managed by Puppet',
+      '[Service]',
+      'Restart=on-failure',
+    ], "\n"),
+    notify  => Service['slurmdbd'],
+  }
+
   service { 'slurmdbd':
     ensure     => $slurm::slurmdbd_service_ensure,
     enable     => $slurm::slurmdbd_service_enable,

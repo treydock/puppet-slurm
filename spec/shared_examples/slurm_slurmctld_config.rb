@@ -18,75 +18,31 @@ shared_examples_for 'slurm::slurmctld::config' do
   it { is_expected.not_to contain_mount('StateSaveLocation') }
   it { is_expected.not_to contain_mount('JobCheckpointDir') }
 
-  context 'when manage_state_dir_nfs_mount => true' do
-    let(:param_override) { { manage_state_dir_nfs_mount: true } }
+  context 'when state_dir_nfs_device => "192.168.1.1:/slurm/state"' do
+    let(:param_override) { { state_dir_nfs_device: '192.168.1.1:/slurm/state' } }
 
     it do
       is_expected.to contain_mount('StateSaveLocation').with(ensure: 'mounted',
                                                              name: '/var/spool/slurmctld.state',
                                                              atboot: 'true',
-                                                             device: nil,
+                                                             device: '192.168.1.1:/slurm/state',
                                                              fstype: 'nfs',
                                                              options: 'rw,sync,noexec,nolock,auto',
                                                              require: 'File[StateSaveLocation]')
     end
-
-    context 'when state_dir_nfs_device => "192.168.1.1:/slurm/state"' do
-      let(:param_override) do
-        {
-          manage_state_dir_nfs_mount: true,
-          state_dir_nfs_device: '192.168.1.1:/slurm/state',
-        }
-      end
-
-      it { is_expected.to contain_mount('StateSaveLocation').with_device('192.168.1.1:/slurm/state') }
-    end
-
-    context 'when state_dir_nfs_options => "foo,bar"' do
-      let(:param_override) do
-        {
-          manage_state_dir_nfs_mount: true,
-          state_dir_nfs_options: 'foo,bar',
-        }
-      end
-
-      it { is_expected.to contain_mount('StateSaveLocation').with_options('foo,bar') }
-    end
   end
 
-  context 'when manage_job_checkpoint_dir_nfs_mount => true' do
-    let(:param_override) { { manage_job_checkpoint_dir_nfs_mount: true } }
+  context 'when job_checkpoint_dir_nfs_device => "192.168.1.1:/slurm/checkpoint"' do
+    let(:param_override) { { job_checkpoint_dir_nfs_device: '192.168.1.1:/slurm/checkpoint' } }
 
     it do
       is_expected.to contain_mount('JobCheckpointDir').with(ensure: 'mounted',
                                                             name: '/var/spool/slurmctld.checkpoint',
                                                             atboot: 'true',
-                                                            device: nil,
+                                                            device: '192.168.1.1:/slurm/checkpoint',
                                                             fstype: 'nfs',
                                                             options: 'rw,sync,noexec,nolock,auto',
                                                             require: 'File[JobCheckpointDir]')
-    end
-
-    context 'when job_checkpoint_dir_nfs_device => "192.168.1.1:/slurm/checkpoint"' do
-      let(:param_override) do
-        {
-          manage_job_checkpoint_dir_nfs_mount: true,
-          job_checkpoint_dir_nfs_device: '192.168.1.1:/slurm/checkpoint',
-        }
-      end
-
-      it { is_expected.to contain_mount('JobCheckpointDir').with_device('192.168.1.1:/slurm/checkpoint') }
-    end
-
-    context 'when job_checkpoint_dir_nfs_options => "foo,bar"' do
-      let(:param_override) do
-        {
-          manage_job_checkpoint_dir_nfs_mount: true,
-          job_checkpoint_dir_nfs_options: 'foo,bar',
-        }
-      end
-
-      it { is_expected.to contain_mount('JobCheckpointDir').with_options('foo,bar') }
     end
   end
 end

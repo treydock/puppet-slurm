@@ -16,7 +16,7 @@ class slurm::slurmctld::config {
     mode   => '0700',
   }
 
-  if $slurm::manage_state_dir_nfs_mount {
+  if $slurm::state_dir_nfs_device {
     mount { 'StateSaveLocation':
       ensure  => 'mounted',
       name    => $slurm::state_save_location,
@@ -28,7 +28,7 @@ class slurm::slurmctld::config {
     }
   }
 
-  if $slurm::manage_job_checkpoint_dir_nfs_mount {
+  if $slurm::job_checkpoint_dir_nfs_device {
     mount { 'JobCheckpointDir':
       ensure  => 'mounted',
       name    => $slurm::job_checkpoint_dir,

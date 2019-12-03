@@ -159,6 +159,8 @@ class slurm (
   Boolean $slurmdbd_service_enable                    = true,
   Hash $slurmdbd_service_limits                       = {},
   String $slurmdbd_options                            = '',
+  Boolean $slurmctld_restart_on_failure               = true,
+  Boolean $slurmdbd_restart_on_failure                = true,
 
   # User and group management
   $manage_slurm_user      = true,
@@ -182,10 +184,6 @@ class slurm (
   $use_syslog                    = false,
   $manage_logrotate              = true,
   $manage_rsyslog                = true,
-
-  # Behavior overrides - controller
-  $manage_state_dir_nfs_mount           = false,
-  $manage_job_checkpoint_dir_nfs_mount  = false,
 
   # Behavior overrides - slurmdbd
   $manage_database  = true,
@@ -429,6 +427,18 @@ class slurm (
     $slurmdbd_notify = undef
   }
   $service_notify = delete_undef_values([$slurmd_notify, $slurmctld_notify, $slurmdbd_notify])
+
+  if $state_dir_nfs_device {
+    $state_dir_systemd = "RequiresMountsFor=${slurm::state_save_location}"
+  } else {
+    $state_dir_systemd = undef
+  }
+
+  if $job_checkpoint_dir_nfs_device {
+    $checkpoint_dir_systemd = "RequiresMountsFor=${slurm::job_checkpoint_dir}"
+  } else {
+    $checkpoint_dir_systemd = undef
+  }
 
   if $slurmd {
     contain slurm::slurmd
