@@ -3,7 +3,8 @@ shared_examples_for 'slurm::common::user' do
     is_expected.to contain_group('slurm').with(ensure: 'present',
                                                name: 'slurm',
                                                gid: nil,
-                                               forcelocal: 'true')
+                                               forcelocal: 'true',
+                                               system: 'true')
   end
 
   it do
@@ -11,11 +12,12 @@ shared_examples_for 'slurm::common::user' do
                                               name: 'slurm',
                                               uid: nil,
                                               gid: 'slurm',
-                                              shell: '/bin/false',
-                                              home: '/home/slurm',
+                                              shell: '/sbin/nologin',
+                                              home: '/var/lib/slurm',
                                               managehome: 'true',
                                               comment: 'SLURM User',
-                                              forcelocal: 'true')
+                                              forcelocal: 'true',
+                                              system: 'true')
   end
 
   context 'when slurm_group_gid => 400' do

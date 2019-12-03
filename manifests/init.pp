@@ -167,9 +167,9 @@ class slurm (
   $slurm_user             = 'slurm',
   $slurm_user_uid         = undef,
   $slurm_user_comment     = 'SLURM User',
-  $slurm_user_home        = '/home/slurm',
+  $slurm_user_home        = '/var/lib/slurm',
   $slurm_user_managehome  = true,
-  $slurm_user_shell       = '/bin/false',
+  $slurm_user_shell       = '/sbin/nologin',
   $slurmd_user            = 'root',
   $slurmd_user_group      = 'root',
 

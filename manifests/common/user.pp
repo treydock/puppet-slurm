@@ -7,6 +7,7 @@ class slurm::common::user {
       name       => $slurm::slurm_user_group,
       gid        => $slurm::slurm_group_gid,
       forcelocal => true,
+      system     => true,
     }
 
     user { 'slurm':
@@ -19,6 +20,7 @@ class slurm::common::user {
       managehome => $slurm::slurm_user_managehome,
       comment    => $slurm::slurm_user_comment,
       forcelocal => true,
+      system     => true,
     }
   }
 
