@@ -186,8 +186,9 @@ class slurm (
   $manage_rsyslog                = true,
 
   # Behavior overrides - slurmdbd
-  $manage_database  = true,
-  $export_database  = false,
+  $manage_database     = true,
+  $export_database     = false,
+  $export_datadate_tag = $::domain,
 
   # Config - controller
   $state_dir_nfs_device           = undef,
