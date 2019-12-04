@@ -28,7 +28,7 @@ shared_examples_for 'slurm::slurmctld::config' do
                                                              device: '192.168.1.1:/slurm/state',
                                                              fstype: 'nfs',
                                                              options: 'rw,sync,noexec,nolock,auto',
-                                                             require: 'File[StateSaveLocation]')
+                                                             before: 'File[StateSaveLocation]')
     end
   end
 
@@ -42,7 +42,7 @@ shared_examples_for 'slurm::slurmctld::config' do
                                                             device: '192.168.1.1:/slurm/checkpoint',
                                                             fstype: 'nfs',
                                                             options: 'rw,sync,noexec,nolock,auto',
-                                                            require: 'File[JobCheckpointDir]')
+                                                            before: 'File[JobCheckpointDir]')
     end
   end
 end
