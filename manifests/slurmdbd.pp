@@ -1,15 +1,17 @@
 # @api private
 class slurm::slurmdbd {
 
-  contain ::munge
+  include ::munge
   contain slurm::common::user
   contain slurm::common::install
   contain slurm::common::setup
   contain slurm::slurmdbd::config
   contain slurm::slurmdbd::service
 
-  Class['::munge']
-  -> Class['slurm::common::user']
+  Class['::munge::service']
+  -> Class['slurm::slurmdbd::service']
+
+  Class['slurm::common::user']
   -> Class['slurm::common::install']
   -> Class['slurm::common::setup']
   -> Class['slurm::slurmdbd::config']

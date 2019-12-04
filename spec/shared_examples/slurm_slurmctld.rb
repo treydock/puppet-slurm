@@ -1,5 +1,6 @@
 shared_examples_for 'slurm::slurmctld' do
-  it { is_expected.to contain_class('munge').that_comes_before('Class[slurm::common::user]') }
+  it { is_expected.to contain_class('munge') }
+  it { is_expected.to contain_class('munge::service').that_comes_before('Class[slurm::slurmctld::service]') }
   it { is_expected.to contain_class('slurm::common::user').that_comes_before('Class[slurm::common::install]') }
   it { is_expected.to contain_class('slurm::common::install').that_comes_before('Class[slurm::common::setup]') }
   it { is_expected.to contain_class('slurm::common::setup').that_comes_before('Class[slurm::common::config]') }

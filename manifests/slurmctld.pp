@@ -1,7 +1,7 @@
 # @api private
 class slurm::slurmctld {
 
-  contain ::munge
+  include ::munge
   contain slurm::common::user
   contain slurm::common::install
   contain slurm::common::setup
@@ -9,8 +9,10 @@ class slurm::slurmctld {
   contain slurm::slurmctld::config
   contain slurm::slurmctld::service
 
-  Class['::munge']
-  -> Class['slurm::common::user']
+  Class['::munge::service']
+  -> Class['slurm::slurmctld::service']
+
+  Class['slurm::common::user']
   -> Class['slurm::common::install']
   -> Class['slurm::common::setup']
   -> Class['slurm::common::config']

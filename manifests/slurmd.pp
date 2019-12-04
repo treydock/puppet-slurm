@@ -1,7 +1,7 @@
 # @api private
 class slurm::slurmd {
 
-  contain ::munge
+  include ::munge
   contain slurm::common::user
   contain slurm::common::install
   contain slurm::common::setup
@@ -9,13 +9,15 @@ class slurm::slurmd {
   contain slurm::slurmd::config
   contain slurm::slurmd::service
 
-  Class['::munge']
-  -> Class['slurm::common::user']
+  Class['::munge::service']
+  -> Class['slurm::slurmd::service']
+
+  Class['slurm::common::user']
   -> Class['slurm::common::install']
   -> Class['slurm::common::setup']
   -> Class['slurm::common::config']
   -> Class['slurm::slurmd::config']
-  ~> Class['slurm::slurmd::service']
+  -> Class['slurm::slurmd::service']
 
   Class['slurm::common::install']
   ~> Class['slurm::slurmd::service']
@@ -24,6 +26,9 @@ class slurm::slurmd {
   ~> Class['slurm::slurmd::service']
 
   Class['slurm::common::config']
+  ~> Class['slurm::slurmd::service']
+
+  Class['slurm::slurmd::config']
   ~> Class['slurm::slurmd::service']
 
   if $slurm::use_nhc and $slurm::include_nhc {
