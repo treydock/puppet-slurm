@@ -25,6 +25,8 @@
 # @param slurmdbd_service_enable
 # @param slurmdbd_service_limits
 # @param slurmdbd_options
+# @param slurmctld_restart_on_failure
+# @param slurmdbd_restart_on_failure
 # @param manage_slurm_user
 # @param slurm_user_group
 # @param slurm_group_gid
@@ -46,6 +48,7 @@
 # @param manage_job_checkpoint_dir_nfs_mount
 # @param manage_database
 # @param export_database
+# @param export_datadate_tag
 # @param state_dir_nfs_device
 # @param state_dir_nfs_options
 # @param job_checkpoint_dir_nfs_device
