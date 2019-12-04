@@ -48,7 +48,7 @@
 # @param manage_job_checkpoint_dir_nfs_mount
 # @param manage_database
 # @param export_database
-# @param export_datadate_tag
+# @param export_database_tag
 # @param state_dir_nfs_device
 # @param state_dir_nfs_options
 # @param job_checkpoint_dir_nfs_device
@@ -191,7 +191,7 @@ class slurm (
   # Behavior overrides - slurmdbd
   $manage_database     = true,
   $export_database     = false,
-  $export_datadate_tag = $::domain,
+  $export_database_tag = $::domain,
 
   # Config - controller
   $state_dir_nfs_device           = undef,

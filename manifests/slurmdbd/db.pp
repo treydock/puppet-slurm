@@ -8,7 +8,7 @@ class slurm::slurmdbd::db {
         dbname   => $slurm::slurmdbd_storage_loc,
         host     => $::fqdn,
         grant    => ['ALL'],
-        tag      => $slurm::export_datadate_tag,
+        tag      => $slurm::export_database_tag,
       }
     } else {
       mysql::db { $slurm::slurmdbd_storage_loc:
