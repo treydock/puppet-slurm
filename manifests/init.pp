@@ -83,6 +83,7 @@
 # @param job_checkpoint_dir
 # @param slurmctld_log_file
 # @param state_save_location
+# @param slurmdbd_archive_dir
 # @param slurmdbd_log_file
 # @param slurmdbd_storage_host
 # @param slurmdbd_storage_loc
@@ -91,6 +92,8 @@
 # @param slurmdbd_storage_type
 # @param slurmdbd_storage_user
 # @param slurmdbd_conf_override
+# @param slurmdbd_archive_dir_nfs_device
+# @param slurmdbd_archive_dir_nfs_options
 # @param use_nhc
 # @param include_nhc
 # @param health_check_program
@@ -241,6 +244,7 @@ class slurm (
   $state_save_location    = '/var/spool/slurmctld.state',
 
   # slurmdbd.conf
+  Stdlib::Absolutepath $slurmdbd_archive_dir = '/var/lib/slurmdbd.archive',
   Optional[Stdlib::Absolutepath] $slurmdbd_log_file      = undef,
   $slurmdbd_storage_host  = 'localhost',
   $slurmdbd_storage_loc   = 'slurm_acct_db',
@@ -249,6 +253,10 @@ class slurm (
   $slurmdbd_storage_type  = 'accounting_storage/mysql',
   $slurmdbd_storage_user  = 'slurmdbd',
   $slurmdbd_conf_override = {},
+
+  # Config - slurmdbd
+  $slurmdbd_archive_dir_nfs_device = undef,
+  $slurmdbd_archive_dir_nfs_options = 'rw,sync,noexec,nolock,auto',
 
   # slurm.conf health check
   $use_nhc                      = false,
@@ -388,6 +396,7 @@ class slurm (
   $slurm_conf           = merge($slurm_conf_defaults, $slurm_conf_override)
 
   $slurmdbd_conf_local_defaults = {
+    'ArchiveDir' => $slurmdbd_archive_dir,
     'DbdHost' => $slurmdbd_host,
     'DbdPort' => $slurmdbd_port,
     'LogFile' => $_slurmdbd_log_file,
@@ -442,6 +451,12 @@ class slurm (
     $checkpoint_dir_systemd = "RequiresMountsFor=${slurm::job_checkpoint_dir}"
   } else {
     $checkpoint_dir_systemd = undef
+  }
+
+  if $slurmdbd_archive_dir_nfs_device {
+    $slurmdbd_archive_dir_systemd = "RequiresMountsFor=${slurm::slurmdbd_archive_dir}"
+  } else {
+    $slurmdbd_archive_dir_systemd = undef
   }
 
   if $slurmd {

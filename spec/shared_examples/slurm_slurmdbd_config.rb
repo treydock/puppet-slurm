@@ -10,7 +10,7 @@ shared_examples_for 'slurm::slurmdbd::config' do
 
   it do
     verify_exact_file_contents(catalogue, 'slurmdbd.conf', [
-                                 'ArchiveDir=/tmp',
+                                 'ArchiveDir=/var/lib/slurmdbd.archive',
                                  'ArchiveEvents=no',
                                  'ArchiveJobs=no',
                                  'ArchiveResvs=no',

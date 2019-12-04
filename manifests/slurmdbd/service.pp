@@ -16,6 +16,22 @@ class slurm::slurmdbd::service {
     }
   }
 
+  if $slurm::slurmdbd_archive_dir_systemd {
+    $systemd_mounts = 'present'
+  } else {
+    $systemd_mounts = 'absent'
+  }
+  systemd::dropin_file { 'slurmdbd-mounts.conf':
+    ensure  => $systemd_mounts,
+    unit    => 'slurmctld.service',
+    content => join(delete_undef_values([
+      '# File managed by Puppet',
+      '[Unit]',
+      $slurm::slurmdbd_archive_dir_systemd,
+    ]), "\n"),
+    notify  => Service['slurmdbd'],
+  }
+
   if $slurm::slurmdbd_restart_on_failure {
     $slurmdbd_systemd_restart = 'present'
   } else {

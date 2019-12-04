@@ -168,7 +168,6 @@ class slurm::params {
   }
 
   $slurmdbd_conf_defaults = {
-    'ArchiveDir' => '/tmp',
     'ArchiveEvents' => 'no',
     'ArchiveJobs' => 'no',
     'ArchiveResvs' => 'no',
