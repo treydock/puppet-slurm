@@ -424,22 +424,22 @@ class slurm (
     $cgroup_conf_content = template($cgroup_conf_template)
   }
 
-  if $slurmd {
-    $slurmd_notify = Service['slurmd']
+  if $slurmd and $slurmd_service_ensure == 'running' {
+    $slurmd_notify = Exec['slurmd reload']
   } else {
     $slurmd_notify = undef
   }
-  if $slurmctld {
-    $slurmctld_notify = Service['slurmctld']
+  if $slurmctld and $slurmctld_service_ensure == 'running' {
+    $slurmctld_notify = [Exec['scontrol reconfig'], Exec['slurmctld reload']]
   } else {
     $slurmctld_notify = undef
   }
-  if $slurmdbd {
-    $slurmdbd_notify = Service['slurmdbd']
+  if $slurmdbd and $slurmdbd_service_ensure == 'running' {
+    $slurmdbd_notify = Exec['slurmdbd reload']
   } else {
     $slurmdbd_notify = undef
   }
-  $service_notify = delete_undef_values([$slurmd_notify, $slurmctld_notify, $slurmdbd_notify])
+  $service_notify = delete_undef_values(flatten([$slurmd_notify, $slurmctld_notify, $slurmdbd_notify]))
 
   if $state_dir_nfs_device {
     $state_dir_systemd = "RequiresMountsFor=${slurm::state_save_location}"

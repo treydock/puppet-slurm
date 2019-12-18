@@ -7,12 +7,14 @@ class slurm::slurmctld::service {
     group   => 'root',
     mode    => '0644',
     content => template('slurm/sysconfig/slurmctld.erb'),
+    notify  => Service['slurmctld'],
   }
 
   if ! empty($slurm::slurmctld_service_limits) {
     systemd::service_limits { 'slurmctld.service':
       limits          => $slurm::sslurmctld_service_limits,
       restart_service => false,
+      notify          => Service['slurmctld'],
     }
   }
 
@@ -59,4 +61,17 @@ class slurm::slurmctld::service {
 
   include ::systemd::systemctl::daemon_reload
   Class['systemd::systemctl::daemon_reload'] -> Service['slurmctld']
+
+  exec { 'scontrol reconfig':
+    path        => '/usr/bin:/bin:/usr/sbin:/sbin',
+    refreshonly => true,
+    require     => Service['slurmctld'],
+  }
+
+  exec { 'slurmctld reload':
+    path        => '/usr/bin:/bin:/usr/sbin:/sbin',
+    command     => 'systemctl reload slurmctld',
+    refreshonly => true,
+    require     => Service['slurmctld'],
+  }
 }

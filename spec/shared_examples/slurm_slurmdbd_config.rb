@@ -5,7 +5,7 @@ shared_examples_for 'slurm::slurmdbd::config' do
                                                       owner: 'slurm',
                                                       group: 'slurm',
                                                       mode: '0600',
-                                                      notify: 'Service[slurmdbd]')
+                                                      notify: 'Exec[slurmdbd reload]')
   end
 
   it do
