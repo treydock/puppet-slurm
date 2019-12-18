@@ -67,11 +67,4 @@ class slurm::slurmctld::service {
     refreshonly => true,
     require     => Service['slurmctld'],
   }
-
-  exec { 'slurmctld reload':
-    path        => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command     => 'systemctl reload slurmctld',
-    refreshonly => true,
-    require     => Service['slurmctld'],
-  }
 }

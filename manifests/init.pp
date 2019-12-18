@@ -431,7 +431,7 @@ class slurm (
     $slurmd_notify = undef
   }
   if $slurmctld and $slurmctld_service_ensure == 'running' and $reload_services {
-    $slurmctld_notify = [Exec['scontrol reconfig'], Exec['slurmctld reload']]
+    $slurmctld_notify = Exec['scontrol reconfig']
   } else {
     $slurmctld_notify = undef
   }
