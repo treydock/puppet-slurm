@@ -6,10 +6,16 @@ RSpec.configure do |c|
   c.formatter = :documentation
 
   c.add_setting :slurm_repo_baseurl
-  c.slurm_repo_baseurl = ENV['SLURM_BEAKER_repo_baseurl']
+  c.slurm_repo_baseurl = ENV['SLURM_BEAKER_repo_baseurl'] || nil
 
-  c.add_setting :slurm_package_version
-  c.slurm_package_version = ENV['SLURM_BEAKER_package_version'] || '19.05.3-2.el7'
+  c.add_setting :slurm_version
+  c.slurm_version = ENV['SLURM_BEAKER_version'] || '19.05.4'
+
+  install_method_hiera = if RSpec.configuration.slurm_repo_baseurl.nil?
+                           'slurm::install_method: source'
+                         else
+                           "slurm::repo_baseurl: '#{RSpec.configuration.slurm_repo_baseurl}'"
+                         end
 
   # Configure all nodes in nodeset
   c.before :suite do
@@ -36,8 +42,8 @@ hierarchy:
 EOS
     common_yaml = <<-EOS
 munge::munge_key_source: 'puppet:///modules/site_slurm/munge.key'
-slurm::repo_baseurl: '#{RSpec.configuration.slurm_repo_baseurl}'
-slurm::version: '#{RSpec.configuration.slurm_package_version}'
+#{install_method_hiera}
+slurm::version: '#{RSpec.configuration.slurm_version}'
 slurm::slurmctld_host: 'slurmctld'
 slurm::slurmdbd_host: 'slurmdbd'
 slurm::partitions:

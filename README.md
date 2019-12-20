@@ -50,8 +50,8 @@ Run unit tests
 
 The following environment variables can be used to modify the behavior of the beaker tests:
 
-* *SLURM\_BEAKER\_repo\_baseurl* - **Required** URL to Yum repository containing SLURM RPMs.
-* *SLURM\_BEAKER\_package\_version* - Version of SLURM to install.  Defaults to **19.05.3-2.el7**
+* *SLURM\_BEAKER\_repo\_baseurl* - URL to Yum repository containing SLURM RPMs. If not present will install from source
+* *SLURM\_BEAKER\\_version* - Version of SLURM to install.  Defaults to **19.05.4**
 
 Example of running beaker tests using an internal repository, and leaving VMs running after the tests.
 

@@ -15,9 +15,20 @@ shared_examples_for 'slurm::common::install::source' do
   end
 
   it do
+    is_expected.to contain_file("/usr/local/src/slurm-#{params[:version]}/configure.cmd").with(
+      ensure: 'file',
+      owner: 'root',
+      group: 'root',
+      mode: '0600',
+      content: 'configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc/slurm ',
+      notify: 'Exec[configure-slurm]',
+    )
+  end
+
+  it do
     is_expected.to contain_exec('configure-slurm').with(
-      path: '/usr/bin:/bin:/usr/sbin:/sbin',
-      command: './configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc/slurm ',
+      path: "/usr/local/src/slurm-#{params[:version]}:/usr/bin:/bin:/usr/sbin:/sbin",
+      command: 'configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc/slurm  || rm -f configure.cmd',
       cwd: "/usr/local/src/slurm-#{params[:version]}",
       refreshonly: 'true',
       notify: ['Exec[make-slurm]'],
@@ -37,6 +48,14 @@ shared_examples_for 'slurm::common::install::source' do
       path: '/usr/bin:/bin:/usr/sbin:/sbin',
       command: 'make install',
       cwd: "/usr/local/src/slurm-#{params[:version]}",
+      refreshonly: 'true',
+      notify: ['Exec[ldconfig-slurm]'],
+    )
+  end
+  it do
+    is_expected.to contain_exec('ldconfig-slurm').with(
+      path: '/usr/bin:/bin:/usr/sbin:/sbin',
+      command: 'ldconfig',
       refreshonly: 'true',
     )
   end

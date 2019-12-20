@@ -1,5 +1,6 @@
 ---
 slurm::source_dependencies:
+  - bzip2
   - gcc
   - make
   - perl-devel
@@ -15,3 +16,4 @@ slurm::source_dependencies:
   - lz4-devel
   - freeipmi-devel
   - man2html
+  - mariadb-devel

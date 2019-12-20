@@ -27,8 +27,10 @@ describe 'slurmd' do
 
     nodes.each do |node|
       it_behaves_like 'common::user', node
-      it_behaves_like 'common::install', node
-      it_behaves_like 'common::install-slurmd', node
+      unless RSpec.configuration.slurm_repo_baseurl.nil?
+        it_behaves_like 'common::install', node
+        it_behaves_like 'common::install-slurmd', node
+      end
       it_behaves_like 'common::setup', node
       it_behaves_like 'common::config', node
       it_behaves_like 'slurmd::config', node

@@ -14,6 +14,7 @@
 # @param version
 # @param install_torque_wrapper
 # @param install_pam
+# @param source_install_prefix
 # @param source_dependencies
 # @param configure_flags
 # @param slurmd_service_ensure
@@ -159,6 +160,7 @@ class slurm (
   Boolean $install_pam            = true,
 
   # Source install
+  Stdlib::Absolutepath $source_install_prefix = '/usr',
   Array $source_dependencies = [],
   Array $configure_flags = [],
 
