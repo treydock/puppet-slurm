@@ -14,16 +14,17 @@ describe 'slurm' do
     let(:slurmctld) { false }
     let(:slurmdbd) { false }
     let(:database) { false }
-    let(:role_params) do
+    let(:default_params) do
       {
         client: client,
         slurmd: slurmd,
         slurmctld: slurmctld,
         slurmdbd: slurmdbd,
         database: database,
+        install_method: 'package',
       }
     end
-    let(:params) { param_override.merge(role_params) }
+    let(:params) { default_params.merge(param_override) }
 
     it { is_expected.to compile.with_all_deps }
     it { is_expected.to contain_class('slurm::client') }
@@ -33,6 +34,13 @@ describe 'slurm' do
     it { is_expected.not_to contain_class('slurm::slurmdbd::db') }
 
     it_behaves_like 'slurm::client'
+
+    context 'install from source' do
+      let(:param_override) { { version: '19.05.4', install_method: 'source' } }
+
+      it { is_expected.to compile.with_all_deps }
+      it_behaves_like 'slurm::common::install::source'
+    end
 
     context 'slurmd' do
       let(:client) { false }

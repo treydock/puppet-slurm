@@ -2,6 +2,19 @@
 class slurm::common::install {
 
   if $slurm::osfamily == 'RedHat' {
-    contain slurm::common::install::rpm
+    $package_class = 'slurm::common::install::rpm'
   }
+
+  if $slurm::repo_baseurl {
+    $install_method = pick($slurm::install_method, 'package')
+  } else {
+    $install_method = pick($slurm::install_method, 'source')
+  }
+  if $install_method == 'package' {
+    $install_class = $package_class
+  } else {
+    $install_class = 'slurm::common::install::source'
+  }
+
+  contain $install_class
 }

@@ -10,9 +10,12 @@
 # @param database
 # @param client
 # @param repo_baseurl
+# @param install_method
 # @param version
 # @param install_torque_wrapper
 # @param install_pam
+# @param source_dependencies
+# @param configure_flags
 # @param slurmd_service_ensure
 # @param slurmd_service_enable
 # @param slurmd_service_limits
@@ -27,6 +30,7 @@
 # @param slurmdbd_options
 # @param slurmctld_restart_on_failure
 # @param slurmdbd_restart_on_failure
+# @param reload_services
 # @param manage_slurm_user
 # @param slurm_user_group
 # @param slurm_group_gid
@@ -147,10 +151,16 @@ class slurm (
   # Repo (optional)
   Optional[Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl, Pattern[/^file:\/\//]]] $repo_baseurl = undef,
 
+  Optional[Enum['package','source']] $install_method = undef,
+
   # Packages
   String $version                 = 'present',
   Boolean $install_torque_wrapper = false,
   Boolean $install_pam            = true,
+
+  # Source install
+  Array $source_dependencies = [],
+  Array $configure_flags = [],
 
   # Services
   Enum['running','stopped'] $slurmd_service_ensure    = 'running',
@@ -195,7 +205,7 @@ class slurm (
   # Behavior overrides - slurmdbd
   $manage_database     = true,
   $export_database     = false,
-  $export_database_tag = $::domain,
+  $export_database_tag = $facts['domain'],
 
   # Config - controller
   $state_dir_nfs_device           = undef,

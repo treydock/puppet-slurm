@@ -1,7 +1,7 @@
 # puppet-slurm
 
 [![Puppet Forge](http://img.shields.io/puppetforge/v/treydock/slurm.svg)](https://forge.puppetlabs.com/treydock/slurm)
-[![Build Status](https://travis-ci.org/treydock/puppet-slurm.png)](https://travis-ci.org/treydock/puppet-slurm)
+[![Build Status](https://travis-ci.org/treydock/puppet-slurm.svg?branch=master)](https://travis-ci.org/treydock/puppet-slurm)
 
 #### Table of Contents
 
@@ -59,5 +59,5 @@ Example of running beaker tests using an internal repository, and leaving VMs ru
     export BEAKER_PUPPET_COLLECTION=puppet5
     export PUPPET_INSTALL_TYPE=agent
     export BEAKER_set=centos-7
-    export SLURM_BEAKER_repo_baseurl="http://yum.example.com/slurm/el/6/x86_64"
+    export SLURM_BEAKER_repo_baseurl="http://yum.example.com/slurm/el/7/x86_64"
     bundle exec rake beaker
