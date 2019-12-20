@@ -460,20 +460,20 @@ class slurm (
     $slurmdbd_archive_dir_systemd = undef
   }
 
-  if $slurmd {
-    contain slurm::slurmd
-  }
-
-  if $slurmctld {
-    contain slurm::slurmctld
+  if $database {
+    contain slurm::slurmdbd::db
   }
 
   if $slurmdbd {
     contain slurm::slurmdbd
   }
 
-  if $database {
-    contain slurm::slurmdbd::db
+  if $slurmctld {
+    contain slurm::slurmctld
+  }
+
+  if $slurmd {
+    contain slurm::slurmd
   }
 
   if $client {
