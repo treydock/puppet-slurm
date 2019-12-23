@@ -30,8 +30,7 @@ describe 'slurm::client class:' do
     end
 
     describe command('sinfo -N'), node: nodes[0] do
-      its(:stdout) { is_expected.to match %r{^slurmd1} }
-      its(:stdout) { is_expected.to match %r{^slurmd2} }
+      its(:stdout) { is_expected.to match %r{^slurmd} }
     end
   end
 end

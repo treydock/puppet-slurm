@@ -4,7 +4,7 @@ HOSTS:
       - default
       - agent
       - slurmctld
-      - slurdbd
+      - slurmdbd
       - slurmd
       - slurm-client
     platform: el-7-x86_64
