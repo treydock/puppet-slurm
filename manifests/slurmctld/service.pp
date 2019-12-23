@@ -62,13 +62,6 @@ class slurm::slurmctld::service {
   include ::systemd::systemctl::daemon_reload
   Class['systemd::systemctl::daemon_reload'] -> Service['slurmctld']
 
-  exec { 'slurmdbd reload':
-    path        => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command     => 'systemctl reload slurmdbd',
-    refreshonly => true,
-    require     => Service['slurmdbd'],
-  }
-
   exec { 'scontrol reconfig':
     path        => '/usr/bin:/bin:/usr/sbin:/sbin',
     refreshonly => true,
