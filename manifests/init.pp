@@ -447,17 +447,17 @@ class slurm (
     $cgroup_conf_content = template($cgroup_conf_template)
   }
 
-  if $slurmd and $slurmd_service_ensure == 'running' and $reload_services and $facts['slurm_version'] {
+  if $slurmd and $slurmd_service_ensure == 'running' and $reload_services and $facts['slurmd_version'] {
     $slurmd_notify = Exec['slurmd reload']
   } else {
     $slurmd_notify = undef
   }
-  if $slurmctld and $slurmctld_service_ensure == 'running' and $reload_services and $facts['slurm_version'] {
+  if $slurmctld and $slurmctld_service_ensure == 'running' and $reload_services and $facts['slurmctld_version'] {
     $slurmctld_notify = Exec['scontrol reconfig']
   } else {
     $slurmctld_notify = undef
   }
-  if $slurmdbd and $slurmdbd_service_ensure == 'running' and $reload_services and $facts['slurm_version'] {
+  if $slurmdbd and $slurmdbd_service_ensure == 'running' and $reload_services and $facts['slurmdbd_version'] {
     $slurmdbd_notify = Exec['slurmdbd reload']
   } else {
     $slurmdbd_notify = undef
