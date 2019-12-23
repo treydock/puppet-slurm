@@ -1,64 +1,11 @@
 HOSTS:
-  slurmctld:
+  slurm:
     roles:
       - default
       - agent
       - slurmctld
-    platform: el-8-x86_64
-    hypervisor: docker
-    image: centos:8
-    docker_preserve_image: true
-    docker_cmd:
-      - '/usr/sbin/init'
-    docker_image_commands:
-      - 'yum install -y tar wget iproute'
-    ip: 192.168.2.2
-    docker_container_name: 'slurmctld-el8'
-  slurmdbd:
-    roles:
-      - agent
       - slurmdbd
-    platform: el-8-x86_64
-    hypervisor: docker
-    image: centos:8
-    docker_preserve_image: true
-    docker_cmd:
-      - '/usr/sbin/init'
-    docker_image_commands:
-      - 'yum install -y tar wget iproute'
-    ip: 192.168.2.3
-    docker_container_name: 'slurmdbd-el8'
-  slurmd1:
-    roles:
-      - agent
       - slurmd
-    platform: el-8-x86_64
-    hypervisor: docker
-    image: centos:8
-    docker_preserve_image: true
-    docker_cmd:
-      - '/usr/sbin/init'
-    docker_image_commands:
-      - 'yum install -y tar wget iproute'
-    ip: 192.168.2.4
-    docker_container_name: 'slurmd1-el8'
-  slurmd2:
-    roles:
-      - agent
-      - slurmd
-    platform: el-8-x86_64
-    hypervisor: docker
-    image: centos:8
-    docker_preserve_image: true
-    docker_cmd:
-      - '/usr/sbin/init'
-    docker_image_commands:
-      - 'yum install -y tar wget iproute'
-    ip: 192.168.2.5
-    docker_container_name: 'slurmd2-el8'
-  slurm-client:
-    roles:
-      - agent
       - slurm-client
     platform: el-8-x86_64
     hypervisor: docker
@@ -68,8 +15,8 @@ HOSTS:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y tar wget iproute'
-    ip: 192.168.2.6
-    docker_container_name: 'slurm-client-el8'
+    ip: 192.168.2.2
+    docker_container_name: 'slurm-el8'
 CONFIG:
   log_level: debug
   type: foss

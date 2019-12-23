@@ -11,6 +11,16 @@ RSpec.configure do |c|
   c.add_setting :slurm_version
   c.slurm_version = ENV['SLURM_BEAKER_version'] || '19.05.4'
 
+  if ENV['BEAKER_set'] =~ /cluster/
+    slurmctld_host = 'slurmctld'
+    slurmdbd_host = 'slurmdbd'
+    slurmd_host = 'slurmd'
+  else
+    slurmctld_host = 'slurm'
+    slurmdbd_host = 'slurm'
+    slurmd_host = 'slurm'
+  end
+
   install_method_hiera = if RSpec.configuration.slurm_repo_baseurl.nil?
                            'slurm::install_method: source'
                          else
@@ -44,16 +54,14 @@ EOS
 munge::munge_key_source: 'puppet:///modules/site_slurm/munge.key'
 #{install_method_hiera}
 slurm::version: '#{RSpec.configuration.slurm_version}'
-slurm::slurmctld_host: 'slurmctld'
-slurm::slurmdbd_host: 'slurmdbd'
+slurm::slurmctld_host: '#{slurmctld_host}'
+slurm::slurmdbd_host: '#{slurmdbd_host}'
 slurm::partitions:
   general:
     default: 'YES'
-    nodes: 'slurmd[1-2]'
+    nodes: '#{slurmd_host}'
 slurm::nodes:
-  slurmd1:
-    cpus: 1
-  slurmd2:
+  #{slurmd_host}:
     cpus: 1
 EOS
     docker_yaml = <<-EOS
