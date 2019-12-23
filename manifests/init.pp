@@ -140,6 +140,10 @@
 # @param slurmctld_port
 # @param slurmdbd_port
 # @param tuning_net_core_somaxconn
+# @param sacctmgr_path
+# @param clusters
+# @param qoses
+# @param purge_qos
 #
 class slurm (
   # Roles
@@ -323,6 +327,12 @@ class slurm (
 
   # tuning
   Variant[Boolean, Integer] $tuning_net_core_somaxconn = 1024,
+
+  # resource management
+  Optional[Stdlib::Absolutepath] $sacctmgr_path = undef,
+  Hash $clusters = {},
+  Hash $qoses = {},
+  Boolean $purge_qos = false,
 ) inherits slurm::params {
 
   $osfamily = $facts.dig('os', 'family')
@@ -492,4 +502,18 @@ class slurm (
     contain slurm::client
   }
 
+  slurm_config { 'puppet':
+    sacctmgr_path => $sacctmgr_path,
+  }
+
+  $clusters.each |$name, $cluster| {
+    slurm_cluster { $name: * => $cluster }
+  }
+  $qoses.each |$name, $qos| {
+    slurm_qos { $name: * => $qos }
+  }
+
+  if $purge_qos {
+    resources { 'slurm_qos': purge => true }
+  }
 }
