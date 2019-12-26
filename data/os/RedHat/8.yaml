@@ -15,5 +15,5 @@ slurm::source_dependencies:
   - libcgroup
   - lz4-devel
   - freeipmi-devel
-  - man2html
+  - python2
   - mariadb-devel

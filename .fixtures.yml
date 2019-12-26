@@ -39,6 +39,9 @@ fixtures:
     archive:
       repo: https://github.com/voxpupuli/puppet-archive.git
       ref: v1.0.0
+    alternatives:
+      repo: https://github.com/voxpupuli/puppet-alternatives.git
+      ref: v2.1.0
     slurm_providers:
       repo: https://github.com/treydock/puppet-slurm_providers.git
   symlinks:

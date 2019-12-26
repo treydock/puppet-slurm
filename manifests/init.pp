@@ -17,6 +17,7 @@
 # @param source_install_prefix
 # @param source_dependencies
 # @param configure_flags
+# @param source_install_manage_alternatives
 # @param slurmd_service_ensure
 # @param slurmd_service_enable
 # @param slurmd_service_limits
@@ -167,6 +168,7 @@ class slurm (
   Stdlib::Absolutepath $source_install_prefix = '/usr',
   Array $source_dependencies = [],
   Array $configure_flags = [],
+  Boolean $source_install_manage_alternatives = true,
 
   # Services
   Enum['running','stopped'] $slurmd_service_ensure    = 'running',

@@ -4,6 +4,14 @@ class slurm::common::install::source {
   $src_dir = "/usr/local/src/slurm-${slurm::version}"
 
   ensure_packages($slurm::source_dependencies)
+  if versioncmp($facts['os']['release']['major'], '8') >= 0 {
+    if $slurm::source_install_manage_alternatives {
+      alternatives { 'python':
+        path   => '/usr/bin/python2',
+        before => Exec['configure-slurm'],
+      }
+    }
+  }
 
   archive { $src_file:
     source       => "https://download.schedmd.com/slurm/slurm-${slurm::version}.tar.bz2",
