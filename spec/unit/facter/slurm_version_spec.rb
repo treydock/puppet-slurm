@@ -8,13 +8,13 @@ describe 'slurm_version fact' do
 
   it 'returns 19.05.3' do
     allow(Facter::Util::Resolution).to receive(:which).with('sinfo').and_return('/usr/bin/sinfo')
-    allow(Facter::Util::Resolution).to receive(:exec).with('/usr/bin/sinfo -V 2>/dev/null').and_return('slurm 19.05.3')
+    allow(Facter::Util::Resolution).to receive(:exec).with('timeout 2 /usr/bin/sinfo -V 2>/dev/null').and_return('slurm 19.05.3')
     expect(Facter.fact(:slurm_version).value).to eq('19.05.3')
   end
 
   it 'is nil if sinfo -V returns unexpected output' do
     allow(Facter::Util::Resolution).to receive(:which).with('sinfo').and_return('/usr/bin/sinfo')
-    allow(Facter::Util::Resolution).to receive(:exec).with('/usr/bin/sinfo -V 2>/dev/null').and_return('')
+    allow(Facter::Util::Resolution).to receive(:exec).with('timeout 2 /usr/bin/sinfo -V 2>/dev/null').and_return('')
     expect(Facter.fact(:slurm_version).value).to be_nil
   end
 
