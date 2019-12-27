@@ -82,12 +82,4 @@ class slurm::slurmd::config {
     group  => $slurm::slurmd_user_group,
     mode   => '0755',
   }
-
-  limits::limits { 'unlimited_memlock':
-    ensure     => 'present',
-    user       => '*',
-    limit_type => 'memlock',
-    hard       => 'unlimited',
-    soft       => 'unlimited',
-  }
 }

@@ -145,12 +145,4 @@ shared_examples_for 'slurm::slurmd::config' do
                                                        group: 'root',
                                                        mode: '0755')
   end
-
-  it do
-    is_expected.to contain_limits__limits('unlimited_memlock').with(ensure: 'present',
-                                                                    user: '*',
-                                                                    limit_type: 'memlock',
-                                                                    hard: 'unlimited',
-                                                                    soft: 'unlimited')
-  end
 end

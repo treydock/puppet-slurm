@@ -33,10 +33,6 @@
       "version_requirement": ">= 2.0.0 <3.0.0"
     },
     {
-      "name": "saz/limits",
-      "version_requirement": ">= 2.3.0 <4.0.0"
-    },
-    {
       "name": "puppet/logrotate",
       "version_requirement": ">= 3.4.0 <5.0.0"
     },
