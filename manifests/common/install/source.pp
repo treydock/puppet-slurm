@@ -25,8 +25,8 @@ class slurm::common::install::source {
   }
 
   $base_configure_flags = join([
-    "--prefix=${slurm::source_install_prefix}",
-    "--libdir=${slurm::source_install_prefix}/lib64",
+    "--prefix=${slurm::install_prefix}",
+    "--libdir=${slurm::install_prefix}/lib64",
     "--sysconfdir=${slurm::conf_dir}",
   ], ' ')
   $configure_flags = join($slurm::configure_flags, ' ')
@@ -42,13 +42,13 @@ class slurm::common::install::source {
     require => Archive[$src_file],
   }
 
-  if $slurm::source_install_prefix != '/usr' {
+  if $slurm::install_prefix != '/usr' {
     file { '/etc/ld.so.conf.d/slurm.conf':
       ensure  => 'file',
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      content => "${slurm::source_install_prefix}/lib64\n",
+      content => "${slurm::install_prefix}/lib64\n",
       require => Exec['make-install-slurm'],
       notify  => Exec['ldconfig-slurm'],
     }

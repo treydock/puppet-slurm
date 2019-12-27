@@ -11,10 +11,10 @@
 # @param client
 # @param repo_baseurl
 # @param install_method
+# @param install_prefix
 # @param version
 # @param install_torque_wrapper
 # @param install_pam
-# @param source_install_prefix
 # @param source_dependencies
 # @param configure_flags
 # @param source_install_manage_alternatives
@@ -141,9 +141,9 @@
 # @param slurmctld_port
 # @param slurmdbd_port
 # @param tuning_net_core_somaxconn
-# @param sacctmgr_path
 # @param clusters
 # @param qoses
+# @param reservations
 # @param purge_qos
 #
 class slurm (
@@ -158,6 +158,7 @@ class slurm (
   Optional[Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl, Pattern[/^file:\/\//]]] $repo_baseurl = undef,
 
   Optional[Enum['package','source']] $install_method = undef,
+  Stdlib::Absolutepath $install_prefix = '/usr',
 
   # Packages
   String $version                 = 'present',
@@ -165,7 +166,6 @@ class slurm (
   Boolean $install_pam            = true,
 
   # Source install
-  Stdlib::Absolutepath $source_install_prefix = '/usr',
   Array $source_dependencies = [],
   Array $configure_flags = [],
   Boolean $source_install_manage_alternatives = true,
@@ -331,9 +331,9 @@ class slurm (
   Variant[Boolean, Integer] $tuning_net_core_somaxconn = 1024,
 
   # resource management
-  Optional[Stdlib::Absolutepath] $sacctmgr_path = undef,
   Hash $clusters = {},
   Hash $qoses = {},
+  Hash $reservations = {},
   Boolean $purge_qos = false,
 ) inherits slurm::params {
 
@@ -359,7 +359,7 @@ class slurm (
   $plugstack_conf_d_path              = pick($plugstack_conf_d, "${conf_dir}/plugstack.conf.d")
   $cgroup_conf_path                   = "${conf_dir}/cgroup.conf"
 
-  if $source_install_prefix in ['/usr','/usr/local'] {
+  if $install_prefix in ['/usr','/usr/local'] {
     $profiled_add_path = false
   } else {
     $profiled_add_path = true
@@ -510,18 +510,5 @@ class slurm (
     contain slurm::client
   }
 
-  slurm_config { 'puppet':
-    sacctmgr_path => $sacctmgr_path,
-  }
-
-  $clusters.each |$name, $cluster| {
-    slurm_cluster { $name: * => $cluster }
-  }
-  $qoses.each |$name, $qos| {
-    slurm_qos { $name: * => $qos }
-  }
-
-  if $purge_qos {
-    resources { 'slurm_qos': purge => true }
-  }
+  contain slurm::resources
 }
