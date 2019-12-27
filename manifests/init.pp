@@ -359,6 +359,12 @@ class slurm (
   $plugstack_conf_d_path              = pick($plugstack_conf_d, "${conf_dir}/plugstack.conf.d")
   $cgroup_conf_path                   = "${conf_dir}/cgroup.conf"
 
+  if $source_install_prefix in ['/usr','/usr/local'] {
+    $profiled_add_path = false
+  } else {
+    $profiled_add_path = true
+  }
+
   if $use_syslog {
     $_slurmctld_log_file = 'UNSET'
     $_slurmdbd_log_file = 'UNSET'
