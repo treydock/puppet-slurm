@@ -9,7 +9,7 @@ RSpec.configure do |c|
   c.slurm_repo_baseurl = ENV['SLURM_BEAKER_repo_baseurl'] || nil
 
   c.add_setting :slurm_version
-  c.slurm_version = ENV['SLURM_BEAKER_version'] || '19.05.4'
+  c.slurm_version = ENV['SLURM_BEAKER_version'] || '20.02.0'
 
   if ENV['BEAKER_set'] =~ %r{cluster}
     slurmctld_host = 'slurmctld'

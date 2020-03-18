@@ -3,7 +3,7 @@ class slurm::common::config {
 
   create_resources('slurm::spank', $slurm::spank_plugins)
 
-  if $slurm::manage_slurm_conf {
+  if $slurm::manage_slurm_conf and ! $slurm::configless {
     file { 'slurm.conf':
       ensure  => 'present',
       path    => $slurm::slurm_conf_path,
@@ -89,7 +89,7 @@ class slurm::common::config {
       }
     }
 
-    if $slurm::slurmd {
+    if $slurm::slurmd or $slurm::slurmctld {
       concat { 'slurm-gres.conf':
         ensure => 'present',
         path   => $slurm::gres_conf_path,
@@ -115,16 +115,6 @@ class slurm::common::config {
       }
     }
 
-    file { 'plugstack.conf.d':
-      ensure  => 'directory',
-      path    => $slurm::plugstack_conf_d_path,
-      recurse => true,
-      purge   => $slurm::purge_plugstack_conf_d,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-    }
-
     file { 'plugstack.conf':
       ensure  => 'file',
       path    => $slurm::plugstack_conf_path,
@@ -144,6 +134,18 @@ class slurm::common::config {
       content => $slurm::cgroup_conf_content,
       source  => $slurm::cgroup_conf_source,
       notify  => $slurm::service_notify,
+    }
+  }
+
+  if $slurm::manage_slurm_conf {
+    file { 'plugstack.conf.d':
+      ensure  => 'directory',
+      path    => $slurm::plugstack_conf_d_path,
+      recurse => true,
+      purge   => $slurm::purge_plugstack_conf_d,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
     }
   }
 

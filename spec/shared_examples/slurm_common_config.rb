@@ -23,7 +23,7 @@ shared_examples_for 'slurm::common::config' do
                                  'AccountingStorageType=accounting_storage/slurmdbd',
                                  'AccountingStoreJobComment=YES',
                                  'AcctGatherNodeFreq=0',
-                                 'AllowSpecResourcesUsage=0',
+                                 'AllowSpecResourcesUsage=YES',
                                  'AuthType=auth/munge',
                                  'BatchStartTimeout=10',
                                  'CheckpointType=checkpoint/none',
@@ -58,12 +58,12 @@ shared_examples_for 'slurm::common::config' do
                                  'LogTimeFormat=iso8601_ms',
                                  'MailProg=/bin/mail',
                                  'MaxArraySize=1001',
+                                 'MaxDBDMsgs=10000',
                                  'MaxJobCount=10000',
                                  'MaxJobId=67043328',
                                  'MaxStepCount=40000',
                                  'MaxTasksPerNode=512',
                                  'MCSPlugin=mcs/none',
-                                 'MemLimitEnforce=no',
                                  'MessageTimeout=10',
                                  'MinJobAge=300',
                                  'MpiDefault=none',
@@ -161,7 +161,7 @@ shared_examples_for 'slurm::common::config' do
   end
 
   it do
-    if slurmd
+    if slurmd || slurmctld
       is_expected.to contain_concat('slurm-gres.conf').with(ensure: 'present',
                                                             path: '/etc/slurm/gres.conf',
                                                             owner: 'root',

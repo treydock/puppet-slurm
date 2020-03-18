@@ -67,11 +67,13 @@ define slurm::node (
     'MemSpecLimit'  => $mem_spec_limit,
     'Port'  => $port,
     'RealMemory'  => $real_memory,
+    'Sockets' => $sockets,
     'SocketsPerBoard' => $sockets_per_board,
     'State' => $state,
     'ThreadsPerCore'  => $threads_per_core,
     'TmpDisk' => $tmp_disk,
     'TRESWeights' => $tres_weights,
+    'Weight' => $weight,
   }
 
   concat::fragment { "slurm-nodes.conf-${name}":

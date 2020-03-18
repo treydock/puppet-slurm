@@ -69,6 +69,8 @@
 # @param plugstack_conf_d
 # @param purge_plugstack_conf_d
 # @param spank_plugins
+# @param configless
+# @param conf_server
 # @param slurm_conf_override
 # @param slurm_conf_template
 # @param slurm_conf_source
@@ -235,6 +237,10 @@ class slurm (
   $plugstack_conf_d       = undef,
   $purge_plugstack_conf_d = true,
   $spank_plugins          = {},
+
+  # configless
+  Boolean $configless            = false,
+  Optional[String] $conf_server  = undef,
 
   # slurm.conf - overrides
   $slurm_conf_override    = {},
