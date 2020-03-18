@@ -1,60 +1,219 @@
-# == Class: slurm
+# @summary Manage SLURM
+#
+#
+#
+#
+# Roles
+# @param slurmd
+# @param slurmctld
+# @param slurmdbd
+# @param database
+# @param client
+# @param repo_baseurl
+# @param install_method
+# @param install_prefix
+# @param version
+# @param install_torque_wrapper
+# @param install_pam
+# @param source_dependencies
+# @param configure_flags
+# @param source_install_manage_alternatives
+# @param slurmd_service_ensure
+# @param slurmd_service_enable
+# @param slurmd_service_limits
+# @param slurmd_options
+# @param slurmctld_service_ensure
+# @param slurmctld_service_enable
+# @param slurmctld_service_limits
+# @param slurmctld_options
+# @param slurmdbd_service_ensure
+# @param slurmdbd_service_enable
+# @param slurmdbd_service_limits
+# @param slurmdbd_options
+# @param slurmctld_restart_on_failure
+# @param slurmdbd_restart_on_failure
+# @param reload_services
+# @param manage_slurm_user
+# @param slurm_user_group
+# @param slurm_group_gid
+# @param slurm_user
+# @param slurm_user_uid
+# @param slurm_user_comment
+# @param slurm_user_home
+# @param slurm_user_managehome
+# @param slurm_user_shell
+# @param slurmd_user
+# @param slurmd_user_group
+# @param manage_slurm_conf
+# @param manage_scripts
+# @param manage_firewall
+# @param use_syslog
+# @param manage_logrotate
+# @param manage_rsyslog
+# @param manage_state_dir_nfs_mount
+# @param manage_job_checkpoint_dir_nfs_mount
+# @param manage_database
+# @param export_database
+# @param export_database_tag
+# @param state_dir_nfs_device
+# @param state_dir_nfs_options
+# @param job_checkpoint_dir_nfs_device
+# @param job_checkpoint_dir_nfs_options
+# @param cluster_name
+# @param slurmctld_host
+# @param slurmdbd_host
+# @param conf_dir
+# @param log_dir
+# @param log_dir# @param 
+# @param plugstack_conf
+# @param plugstack_conf_d
+# @param purge_plugstack_conf_d
+# @param spank_plugins
+# @param slurm_conf_override
+# @param slurm_conf_template
+# @param slurm_conf_source
+# @param partition_template
+# @param partition_source
+# @param node_template
+# @param node_source
+# @param switch_template
+# @param topology_source
+# @param gres_template
+# @param gres_source
+# @param partitions
+# @param nodes
+# @param switches
+# @param greses
+# @param slurmd_log_file
+# @param slurmd_spool_dir
+# @param job_checkpoint_dir
+# @param slurmctld_log_file
+# @param state_save_location
+# @param slurmdbd_archive_dir
+# @param slurmdbd_log_file
+# @param slurmdbd_storage_host
+# @param slurmdbd_storage_loc
+# @param slurmdbd_storage_pass
+# @param slurmdbd_storage_port
+# @param slurmdbd_storage_type
+# @param slurmdbd_storage_user
+# @param slurmdbd_conf_override
+# @param slurmdbd_archive_dir_nfs_device
+# @param slurmdbd_archive_dir_nfs_options
+# @param use_nhc
+# @param include_nhc
+# @param health_check_program
+# @param health_check_program_source
+# @param manage_epilog
+# @param epilog
+# @param epilog_source
+# @param manage_prolog
+# @param prolog
+# @param prolog_source
+# @param manage_task_epilog
+# @param task_epilog
+# @param task_epilog_source
+# @param manage_task_prolog
+# @param task_prolog
+# @param task_prolog_source
+# @param cgroup_conf_template
+# @param cgroup_conf_source
+# @param cgroup_automount
+# @param cgroup_mountpoint
+# @param cgroup_allowed_kmem_space
+# @param cgroup_allowed_ram_space
+# @param cgroup_allowed_swap_space
+# @param cgroup_constrain_cores
+# @param cgroup_constrain_devices
+# @param cgroup_constrain_kmem_space
+# @param cgroup_constrain_ram_space
+# @param cgroup_constrain_swap_space
+# @param cgroup_max_ram_percent
+# @param cgroup_max_swap_percent
+# @param cgroup_max_kmem_percent
+# @param cgroup_memory_swappiness
+# @param cgroup_min_kmem_space
+# @param cgroup_min_ram_space
+# @param cgroup_task_affinity
+# @param slurm_sh_template
+# @param slurm_csh_template
+# @param slurmd_port
+# @param slurmctld_port
+# @param slurmdbd_port
+# @param tuning_net_core_somaxconn
+# @param clusters
+# @param qoses
+# @param reservations
+# @param purge_qos
 #
 class slurm (
   # Roles
-  $node       = true,
-  $controller = false,
-  $slurmdbd   = false,
-  $client     = false,
+  Boolean $slurmd     = false,
+  Boolean $slurmctld  = false,
+  Boolean $slurmdbd   = false,
+  Boolean $database   = false,
+  Boolean $client     = true,
+
+  # Repo (optional)
+  Optional[Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl, Pattern[/^file:\/\//]]] $repo_baseurl = undef,
+
+  Optional[Enum['package','source']] $install_method = undef,
+  Stdlib::Absolutepath $install_prefix = '/usr',
 
   # Packages
-  $package_require        = undef,
-  $release                = '14.03',
-  $version                = 'present',
-  $install_torque_wrapper = true,
-  $install_lua            = false,
-  $install_blcr           = false,
-  $install_pam            = false,
+  String $version                 = 'present',
+  Boolean $install_torque_wrapper = false,
+  Boolean $install_pam            = true,
+
+  # Source install
+  Array $source_dependencies = [],
+  Array $configure_flags = [],
+  Boolean $source_install_manage_alternatives = true,
 
   # Services
-  $slurm_service_ensure     = 'running',
-  $slurm_service_enable     = true,
-  $slurmdbd_service_ensure  = 'running',
-  $slurmdbd_service_enable  = true,
-  $service_ulimits          = $slurm::params::service_ulimits,
+  Enum['running','stopped'] $slurmd_service_ensure    = 'running',
+  Boolean $slurmd_service_enable                      = true,
+  Hash $slurmd_service_limits                         = {},
+  String $slurmd_options                              = '',
+  Enum['running','stopped'] $slurmctld_service_ensure = 'running',
+  Boolean $slurmctld_service_enable                   = true,
+  Hash $slurmctld_service_limits                      = {},
+  String $slurmctld_options                           = '',
+  Enum['running','stopped'] $slurmdbd_service_ensure  = 'running',
+  Boolean $slurmdbd_service_enable                    = true,
+  Hash $slurmdbd_service_limits                       = {},
+  String $slurmdbd_options                            = '',
+  Boolean $slurmctld_restart_on_failure               = true,
+  Boolean $slurmdbd_restart_on_failure                = true,
+  Boolean $reload_services                            = true,
 
-  # User/group management - controller/slurmdbd
+  # User and group management
   $manage_slurm_user      = true,
   $slurm_user_group       = 'slurm',
   $slurm_group_gid        = undef,
   $slurm_user             = 'slurm',
   $slurm_user_uid         = undef,
   $slurm_user_comment     = 'SLURM User',
-  $slurm_user_home        = '/home/slurm',
+  $slurm_user_home        = '/var/lib/slurm',
   $slurm_user_managehome  = true,
-  $slurm_user_shell       = '/bin/false',
+  $slurm_user_shell       = '/sbin/nologin',
   $slurmd_user            = 'root',
   $slurmd_user_group      = 'root',
-
-  # External modules
-  $include_blcr = false,
 
   # Behavior overrides
   $manage_slurm_conf             = true,
   $manage_scripts                = true,
   $manage_firewall               = true,
-  $manage_logrotate              = true,
-  $logrotate_slurm_postrotate    = undef,
-  $logrotate_slurmdbd_postrotate = undef,
-  $use_syslog                    = false,
 
-  # Behavior overrides - controller
-  $manage_state_dir_nfs_mount           = false,
-  $manage_job_checkpoint_dir_nfs_mount  = false,
+  # Logging
+  $use_syslog                    = false,
+  $manage_logrotate              = true,
+  $manage_rsyslog                = true,
 
   # Behavior overrides - slurmdbd
-  $manage_database      = true,
-  $use_remote_database  = false,
+  $manage_database     = true,
+  $export_database     = false,
+  $export_database_tag = $facts['domain'],
 
   # Config - controller
   $state_dir_nfs_device           = undef,
@@ -64,67 +223,70 @@ class slurm (
 
   # Cluster config
   $cluster_name       = 'linux',
-  $control_machine    = 'slurm',
+  Variant[Array, String] $slurmctld_host = 'slurm',
+  $slurmdbd_host      = 'slurmdbd',
 
   # Managed directories
-  $conf_dir               = '/etc/slurm',
-  $log_dir                = '/var/log/slurm',
-  $pid_dir                = '/var/run/slurm',
-  $shared_state_dir       = '/var/lib/slurm',
+  Stdlib::Absolutepath $conf_dir = '/etc/slurm',
+  Stdlib::Absolutepath $log_dir  = '/var/log/slurm',
 
   # SPANK
   $plugstack_conf         = undef,
   $plugstack_conf_d       = undef,
   $purge_plugstack_conf_d = true,
-  $spank_plugins          = $slurm::params::spank_plugins,
+  $spank_plugins          = {},
 
   # slurm.conf - overrides
-  $slurm_conf_override    = $slurm::params::slurm_conf_override,
-  $partitionlist          = $slurm::params::partitionlist,
+  $slurm_conf_override    = {},
   $slurm_conf_template    = 'slurm/slurm.conf/slurm.conf.erb',
   $slurm_conf_source      = undef,
-  $partitionlist_template = 'slurm/slurm.conf/slurm-partitions.conf.erb',
-  $partitionlist_source   = undef,
+  $partition_template     = 'slurm/slurm.conf/partition.conf.erb',
+  $partition_source       = undef,
   $node_template          = 'slurm/slurm.conf/node.conf.erb',
   $node_source            = undef,
-  $slurm_nodelist_tag     = 'slurm_nodelist',
+  $switch_template        = 'slurm/switch.conf.erb',
+  $topology_source        = undef,
+  $gres_template          = 'slurm/gres.conf.erb',
+  $gres_source            = undef,
+  $partitions             = {},
+  $nodes                  = {},
+  $switches               = {},
+  $greses                 = {},
 
   # slurm.conf - node
-  $node_name        = $::hostname,
-  $node_addr        = $::ipaddress,
-  $cpus             = $::processorcount,
-  $sockets          = 'UNSET',
-  $cores_per_socket = 'UNSET',
-  $threads_per_core = 'UNSET',
-  $real_memory      = $::real_memory,
-  $tmp_disk         = '16000',
-  $node_weight      = 'UNSET',
-  $feature          = 'UNSET',
-  $state            = 'UNKNOWN',
-  $slurmd_log_file  = '/var/log/slurm/slurmd.log',
+  Optional[Stdlib::Absolutepath] $slurmd_log_file  = undef,
   $slurmd_spool_dir = '/var/spool/slurmd',
 
   # slurm.conf - controller
-  $job_checkpoint_dir     = '/var/lib/slurm/checkpoint',
-  $slurmctld_log_file     = '/var/log/slurm/slurmctld.log',
-  $state_save_location    = '/var/lib/slurm/state',
+  $job_checkpoint_dir     = '/var/spool/slurmctld.checkpoint',
+  Optional[Stdlib::Absolutepath] $slurmctld_log_file     = undef,
+  $state_save_location    = '/var/spool/slurmctld.state',
 
   # slurmdbd.conf
-  $slurmdbd_log_file      = '/var/log/slurm/slurmdbd.log',
+  Stdlib::Absolutepath $slurmdbd_archive_dir = '/var/lib/slurmdbd.archive',
+  Optional[Stdlib::Absolutepath] $slurmdbd_log_file      = undef,
   $slurmdbd_storage_host  = 'localhost',
-  $slurmdbd_storage_loc   = 'slurmdbd',
+  $slurmdbd_storage_loc   = 'slurm_acct_db',
   $slurmdbd_storage_pass  = 'slurmdbd',
   $slurmdbd_storage_port  = '3306',
   $slurmdbd_storage_type  = 'accounting_storage/mysql',
   $slurmdbd_storage_user  = 'slurmdbd',
-  $slurmdbd_conf_override = $slurm::params::slurmdbd_conf_override,
+  $slurmdbd_conf_override = {},
+
+  # Config - slurmdbd
+  $slurmdbd_archive_dir_nfs_device = undef,
+  $slurmdbd_archive_dir_nfs_options = 'rw,sync,noexec,nolock,auto',
+
+  # slurm.conf health check
+  $use_nhc                      = false,
+  $include_nhc                  = false,
+  $health_check_program         = undef,
+  $health_check_program_source  = undef,
 
   # slurm.conf - epilog/prolog
   $manage_epilog                = true,
   $epilog                       = undef,
   $epilog_source                = undef,
-  $health_check_program         = undef,
-  $health_check_program_source  = undef,
   $manage_prolog                = true,
   $prolog                       = undef,
   $prolog_source                = undef,
@@ -136,158 +298,139 @@ class slurm (
   $task_prolog_source           = undef,
 
   # cgroups
-  $cgroup_conf_template             = 'slurm/cgroup/cgroup.conf.erb',
-  $cgroup_conf_source               = undef,
-  $cgroup_mountpoint                = '/cgroup',
-  $cgroup_automount                 = true,
-  $cgroup_release_agent_dir         = undef,
-  $cgroup_constrain_cores           = false,
-  $cgroup_task_affinity             = false,
-  $cgroup_allowed_ram_space         = '100',
-  $cgroup_allowed_swap_space        = '0',
-  $cgroup_constrain_ram_space       = false,
-  $cgroup_constrain_swap_space      = false,
-  $cgroup_max_ram_percent           = '100',
-  $cgroup_max_swap_percent          = '100',
-  $cgroup_min_ram_space             = '30',
-  $cgroup_constrain_devices         = false,
-  $cgroup_allowed_devices           = $slurm::params::cgroup_allowed_devices,
-  $cgroup_allowed_devices_template  = 'slurm/cgroup/cgroup_allowed_devices_file.conf.erb',
-  $cgroup_allowed_devices_file      = undef,
-  $manage_cgroup_release_agents     = true,
-  $cgroup_release_common_source     = undef,
+  String $cgroup_conf_template             = 'slurm/cgroup/cgroup.conf.erb',
+  Optional[String] $cgroup_conf_source               = undef,
+  Boolean $cgroup_automount                 = true,
+  Stdlib::Absolutepath $cgroup_mountpoint                = '/sys/fs/cgroup',
+  Optional[Integer] $cgroup_allowed_kmem_space = undef,
+  Integer $cgroup_allowed_ram_space         = 100,
+  Integer $cgroup_allowed_swap_space        = 0,
+  Boolean $cgroup_constrain_cores           = false,
+  Boolean $cgroup_constrain_devices         = false,
+  Boolean $cgroup_constrain_kmem_space       = false,
+  Boolean $cgroup_constrain_ram_space       = false,
+  Boolean $cgroup_constrain_swap_space      = false,
+  Integer $cgroup_max_ram_percent           = 100,
+  Integer $cgroup_max_swap_percent          = 100,
+  Integer $cgroup_max_kmem_percent          = 100,
+  Optional[Integer[0,100]] $cgroup_memory_swappiness = undef,
+  Integer $cgroup_min_kmem_space             = 30,
+  Integer $cgroup_min_ram_space             = 30,
+  Boolean $cgroup_task_affinity             = false,
 
   # profile.d
   $slurm_sh_template  = 'slurm/profile.d/slurm.sh.erb',
   $slurm_csh_template = 'slurm/profile.d/slurm.csh.erb',
 
   # ports
-  $slurmd_port    = '6818',
-  $slurmctld_port = '6817',
-  $slurmdbd_port  = '6819',
+  Stdlib::Port $slurmd_port    = 6818,
+  Stdlib::Port $slurmctld_port = 6817,
+  Stdlib::Port $slurmdbd_port  = 6819,
+
+  # tuning
+  Variant[Boolean, Integer] $tuning_net_core_somaxconn = 1024,
+
+  # resource management
+  Hash $clusters = {},
+  Hash $qoses = {},
+  Hash $reservations = {},
+  Boolean $purge_qos = false,
 ) inherits slurm::params {
 
-  # Parameter validations
-  validate_bool($node, $controller, $slurmdbd, $client)
-  validate_bool($manage_slurm_user, $manage_slurm_conf, $manage_scripts, $manage_firewall, $manage_logrotate, $use_syslog)
-  validate_bool($install_pam, $install_torque_wrapper, $install_lua, $install_blcr)
-  validate_bool($manage_state_dir_nfs_mount, $manage_job_checkpoint_dir_nfs_mount)
-  validate_bool($manage_database, $use_remote_database)
-  validate_bool(
-    $manage_epilog,
-    $manage_prolog,
-    $manage_task_epilog,
-    $manage_task_prolog
-  )
-  validate_bool($cgroup_automount, $cgroup_constrain_cores, $cgroup_task_affinity, $cgroup_constrain_ram_space)
-  validate_bool($cgroup_constrain_swap_space, $cgroup_constrain_devices, $manage_cgroup_release_agents)
-  validate_bool($purge_plugstack_conf_d)
-
-  validate_array($service_ulimits, $partitionlist, $cgroup_allowed_devices)
-
-  validate_hash($slurm_conf_override, $slurmdbd_conf_override, $spank_plugins)
-
-  if $node and $controller {
-    fail("Module ${module_name}: Does not support both node and controller being enabled on the same host.")
+  $osfamily = $facts.dig('os', 'family')
+  $osmajor = $facts.dig('os', 'release', 'major')
+  $os = "${osfamily}-${osmajor}"
+  $supported = ['RedHat-7','RedHat-8']
+  if ! ($os in $supported) {
+    fail("Unsupported OS: ${os}, module ${module_name} only supports RedHat 7 and 8")
   }
 
-  if $node and $slurmdbd {
-    fail("Module ${module_name}: Does not support both node and slurmdbd being enabled on the same host.")
-  }
-
-  if $node and $client {
-    fail("Module ${module_name}: Does not support both node and client being enabled on the same host.")
-  }
-
-  if $controller and $client {
-    fail("Module ${module_name}: Does not support both controller and client being enabled on the same host.")
-  }
-
-  if $slurmdbd and $client {
-    fail("Module ${module_name}: Does not support both slurmdbd and client being enabled on the same host.")
+  if ! ($slurmd or $slurmctld or $slurmdbd or $database or $client) {
+    fail("Module ${module_name}: Must select a mode of either slurmd, slurmctld, slurmdbd database, or client.")
   }
 
   $slurm_conf_path                    = "${conf_dir}/slurm.conf"
   $node_conf_path                     = "${conf_dir}/nodes.conf"
   $partition_conf_path                = "${conf_dir}/partitions.conf"
+  $topology_conf_path                 = "${conf_dir}/topology.conf"
+  $gres_conf_path                     = "${conf_dir}/gres.conf"
   $slurmdbd_conf_path                 = "${conf_dir}/slurmdbd.conf"
   $plugstack_conf_path                = pick($plugstack_conf, "${conf_dir}/plugstack.conf")
   $plugstack_conf_d_path              = pick($plugstack_conf_d, "${conf_dir}/plugstack.conf.d")
   $cgroup_conf_path                   = "${conf_dir}/cgroup.conf"
-  $cgroup_release_agent_dir_real      = pick($cgroup_release_agent_dir, "${conf_dir}/cgroup")
-  $cgroup_allowed_devices_file_real   = pick($cgroup_allowed_devices_file, "${conf_dir}/cgroup_allowed_devices_file.conf")
-  $cgroup_release_common_source_real  = pick($cgroup_release_common_source, "file://${conf_dir}/cgroup.release_common.example")
 
-  case $release {
-    '14.03': {
-      $slurm_conf_release_defaults    = $slurm::params::slurm_conf_defaults['14.03']
-      $slurmdbd_conf_release_defaults = $slurm::params::slurmdbd_conf_defaults['14.03']
-      $partition_keys                 = $slurm::params::partition_keys['14.03']
-    }
-    '14.11': {
-      $slurm_conf_release_defaults    = $slurm::params::slurm_conf_defaults['14.11']
-      $slurmdbd_conf_release_defaults = $slurm::params::slurmdbd_conf_defaults['14.11']
-      $partition_keys                 = $slurm::params::partition_keys['14.11']
-    }
-    '15.08': {
-      $slurm_conf_release_defaults    = $slurm::params::slurm_conf_defaults['15.08']
-      $slurmdbd_conf_release_defaults = $slurm::params::slurmdbd_conf_defaults['15.08']
-      $partition_keys                 = $slurm::params::partition_keys['15.08']
-    }
-    default: {
-      fail("Module ${module_name} only supports release 14.03, 14.11 and 15.08, ${release} given.")
-    }
+  if $install_prefix in ['/usr','/usr/local'] {
+    $profiled_add_path = false
+  } else {
+    $profiled_add_path = true
   }
 
   if $use_syslog {
     $_slurmctld_log_file = 'UNSET'
     $_slurmdbd_log_file = 'UNSET'
     $_slurmd_log_file = 'UNSET'
-    $_logrotate_slurm_postrotate = pick($logrotate_slurm_postrotate, $slurm::params::logrotate_syslog_postrotate)
-    $_logrotate_slurmdbd_postrotate = pick($logrotate_slurmdbd_postrotate, $slurm::params::logrotate_syslog_postrotate)
+    $_logrotate_postrotate = '/bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true'
   } else {
-    $_slurmctld_log_file = $slurmctld_log_file
-    $_slurmdbd_log_file = $slurmdbd_log_file
-    $_slurmd_log_file = $slurmd_log_file
-    $_logrotate_slurm_postrotate = pick($logrotate_slurm_postrotate, $slurm::params::logrotate_slurm_postrotate)
-    $_logrotate_slurmdbd_postrotate = pick($logrotate_slurmdbd_postrotate, $slurm::params::logrotate_slurmdbd_postrotate)
+    $_slurmctld_log_file = pick($slurmctld_log_file, "${log_dir}/slurmctld.log")
+    $_slurmdbd_log_file = pick($slurmdbd_log_file, "${log_dir}/slurmdbd.log")
+    $_slurmd_log_file = pick($slurmd_log_file, "${log_dir}/slurmd.log")
+    $_logrotate_postrotate = [
+      'pkill -x --signal SIGUSR2 slurmctld',
+      'pkill -x --signal SIGUSR2 slurmd',
+      'pkill -x --signal SIGUSR2 slurmdbd',
+      'exit 0',
+    ]
+  }
+
+  if $use_nhc {
+    $_health_check_program = pick($health_check_program, '/usr/sbin/nhc')
+  } else {
+    $_health_check_program = $health_check_program
   }
 
   $slurm_conf_local_defaults = {
-    'AccountingStorageHost' => $control_machine,
+    'AccountingStorageHost' => $slurmdbd_host,
     'AccountingStoragePort' => $slurmdbd_port,
     'ClusterName' => $cluster_name,
-    'ControlMachine' => $control_machine,
-    'DefaultStorageHost' => $control_machine,
+    'DefaultStorageHost' => $slurmdbd_host,
     'DefaultStoragePort' => $slurmdbd_port,
     'Epilog' => $epilog,
-    'HealthCheckProgram' => $health_check_program,
+    'EpilogSlurmctld' => undef, #TODO
+    'HealthCheckProgram' => $_health_check_program,
     'JobCheckpointDir' => $job_checkpoint_dir,
     'PlugStackConfig' => $plugstack_conf_path,
     'Prolog' => $prolog,
+    'PrologSlurmctld' => undef, #TODO
+    'ResvEpilog' => undef, #TODO
+    'ResvProlog' => undef, #TODO
     'SlurmUser' => $slurm_user,
+    'SlurmctldHost' => $slurmctld_host,
     'SlurmctldLogFile' => $_slurmctld_log_file,
-    'SlurmctldPidFile' => "${pid_dir}/slurmctld.pid",
     'SlurmctldPort' => $slurmctld_port,
     'SlurmdLogFile' => $_slurmd_log_file,
-    'SlurmdPidFile' => "${pid_dir}/slurmd.pid",
     'SlurmdPort' => $slurmd_port,
     'SlurmdSpoolDir' => $slurmd_spool_dir,
     'SlurmSchedLogFile' => "${log_dir}/slurmsched.log",
     'SlurmdUser' => $slurmd_user,
+    'SrunEpilog' => undef, #TODO
+    'SrunProlog' => undef, #TODO
     'StateSaveLocation' => $state_save_location,
     'TaskEpilog' => $task_epilog,
     'TaskProlog' => $task_prolog,
+    'UsePAM' => $install_pam ? {
+      true    => '1',
+      default => '0',
+    },
   }
 
-  $slurm_conf_defaults  = merge($slurm_conf_release_defaults, $slurm_conf_local_defaults)
+  $slurm_conf_defaults  = merge($::slurm::params::slurm_conf_defaults, $slurm_conf_local_defaults)
   $slurm_conf           = merge($slurm_conf_defaults, $slurm_conf_override)
 
   $slurmdbd_conf_local_defaults = {
-    'DbdHost' => $::hostname,
+    'ArchiveDir' => $slurmdbd_archive_dir,
+    'DbdHost' => $slurmdbd_host,
     'DbdPort' => $slurmdbd_port,
     'LogFile' => $_slurmdbd_log_file,
-    'PidFile' => "${pid_dir}/slurmdbd.pid",
     'SlurmUser' => $slurm_user,
     'StorageHost' => $slurmdbd_storage_host,
     'StorageLoc' => $slurmdbd_storage_loc,
@@ -297,84 +440,75 @@ class slurm (
     'StorageUser' => $slurmdbd_storage_user,
   }
 
-  $slurmdbd_conf_defaults = merge($slurmdbd_conf_release_defaults, $slurmdbd_conf_local_defaults)
+  $slurmdbd_conf_defaults = merge($::slurm::params::slurmdbd_conf_defaults, $slurmdbd_conf_local_defaults)
   $slurmdbd_conf          = merge($slurmdbd_conf_defaults, $slurmdbd_conf_override)
 
-  if $slurm_conf_source == 'UNSET' {
-    $_slurm_conf_source = undef
-  } else {
-    $_slurm_conf_source = $slurm_conf_source
-  }
-
-  if $partitionlist_source == 'UNSET' {
-    $_partitionlist_source = undef
-  } else {
-    $_partitionlist_source = $partitionlist_source
-  }
-
-  if $node_source == 'UNSET' {
-    $_node_source = undef
-  } else {
-    $_node_source = $node_source
-  }
-
-  if $cgroup_conf_source == 'UNSET' {
-    $_cgroup_conf_source = undef
-  } else {
-    $_cgroup_conf_source = $cgroup_conf_source
-  }
-
-  if $_slurm_conf_source {
+  if $slurm_conf_source {
     $slurm_conf_content = undef
   } else {
     $slurm_conf_content = template($slurm_conf_template)
   }
 
-  if $_partitionlist_source {
-    $partitionlist_content = undef
-  } else {
-    $partitionlist_content = template($partitionlist_template)
-  }
-
-  if $_cgroup_conf_source {
+  if $cgroup_conf_source {
     $cgroup_conf_content = undef
   } else {
     $cgroup_conf_content = template($cgroup_conf_template)
   }
 
-  anchor { 'slurm::start': }
-  anchor { 'slurm::end': }
+  if $slurmd and $slurmd_service_ensure == 'running' and $reload_services and $facts['slurmd_version'] {
+    $slurmd_notify = Exec['slurmd reload']
+  } else {
+    $slurmd_notify = undef
+  }
+  if $slurmctld and $slurmctld_service_ensure == 'running' and $reload_services and $facts['slurmctld_version'] {
+    $slurmctld_notify = Exec['scontrol reconfig']
+  } else {
+    $slurmctld_notify = undef
+  }
+  if $slurmdbd and $slurmdbd_service_ensure == 'running' and $reload_services and $facts['slurmdbd_version'] {
+    $slurmdbd_notify = Exec['slurmdbd reload']
+  } else {
+    $slurmdbd_notify = undef
+  }
+  $service_notify = delete_undef_values(flatten([$slurmd_notify, $slurmctld_notify, $slurmdbd_notify]))
 
-  if $node {
-    include slurm::node
-
-    Anchor['slurm::start']->
-    Class['slurm::node']->
-    Anchor['slurm::end']
+  if $state_dir_nfs_device {
+    $state_dir_systemd = "RequiresMountsFor=${slurm::state_save_location}"
+  } else {
+    $state_dir_systemd = undef
   }
 
-  if $controller {
-    include slurm::controller
+  if $job_checkpoint_dir_nfs_device {
+    $checkpoint_dir_systemd = "RequiresMountsFor=${slurm::job_checkpoint_dir}"
+  } else {
+    $checkpoint_dir_systemd = undef
+  }
 
-    Anchor['slurm::start']->
-    Class['slurm::controller']->
-    Anchor['slurm::end']
+  if $slurmdbd_archive_dir_nfs_device {
+    $slurmdbd_archive_dir_systemd = "RequiresMountsFor=${slurm::slurmdbd_archive_dir}"
+  } else {
+    $slurmdbd_archive_dir_systemd = undef
+  }
+
+  if $database {
+    contain slurm::slurmdbd::db
   }
 
   if $slurmdbd {
-    include slurm::slurmdbd
+    contain slurm::slurmdbd
+  }
 
-    Anchor['slurm::start']->
-    Class['slurm::slurmdbd']->
-    Anchor['slurm::end']
+  if $slurmctld {
+    contain slurm::slurmctld
+  }
+
+  if $slurmd {
+    contain slurm::slurmd
   }
 
   if $client {
-    include slurm::client
-
-    Anchor['slurm::start']->
-    Class['slurm::client']->
-    Anchor['slurm::end']
+    contain slurm::client
   }
 
+  contain slurm::resources
 }

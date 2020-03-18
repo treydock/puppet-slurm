@@ -1,4 +1,4 @@
-# Private class
+# @api private
 class slurm::common::config {
 
   create_resources('slurm::spank', $slurm::spank_plugins)
@@ -8,42 +8,111 @@ class slurm::common::config {
       ensure  => 'present',
       path    => $slurm::slurm_conf_path,
       content => $slurm::slurm_conf_content,
-      source  => $slurm::_slurm_conf_source,
+      source  => $slurm::slurm_conf_source,
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
+      notify  => $slurm::service_notify,
     }
 
-    file { 'slurm-partitions.conf':
-      ensure  => 'present',
-      path    => $slurm::partition_conf_path,
-      content => $slurm::partitionlist_content,
-      source  => $slurm::_partitionlist_source,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
+    concat { 'slurm-partitions.conf':
+      ensure => 'present',
+      path   => $slurm::partition_conf_path,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+      notify => $slurm::service_notify,
+    }
+    concat::fragment { 'slurm-partitions.conf-header':
+      target  => 'slurm-partitions.conf',
+      content => "# File managed by Puppet - DO NOT EDIT\n",
+      order   => '00',
+    }
+    if $slurm::partition_source {
+      concat::fragment { 'slurm-partitions.conf-source':
+        target => 'slurm-partitions.conf',
+        source => $slurm::partition_source,
+        order  => '01',
+      }
+    }
+    $::slurm::partitions.each |$name, $partition| {
+      slurm::partition { $name: * => $partition }
     }
 
-    if $slurm::_node_source {
-      file { 'slurm-nodes.conf':
+    concat { 'slurm-nodes.conf':
+      ensure => 'present',
+      path   => $slurm::node_conf_path,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+      notify => $slurm::service_notify,
+    }
+    concat::fragment { 'slurm-nodes.conf-header':
+      target  => 'slurm-nodes.conf',
+      content => "# File managed by Puppet - DO NOT EDIT\n",
+      order   => '00',
+    }
+    if $slurm::node_source {
+      concat::fragment { 'slurm-nodes.conf-source':
+        target => 'slurm-nodes.conf',
+        source => $slurm::node_source,
+        order  => '01',
+      }
+    }
+    $::slurm::nodes.each |$name, $_node| {
+      slurm::node { $name: * => $_node }
+    }
+
+    if $slurm::slurmd or $slurm::slurmctld {
+      concat { 'slurm-topology.conf':
         ensure => 'present',
-        path   => $slurm::node_conf_path,
-        source => $slurm::_node_source,
+        path   => $slurm::topology_conf_path,
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
+        notify => $slurm::service_notify,
       }
-    } else {
-      datacat { 'slurm-nodes.conf':
-        ensure   => 'present',
-        path     => $slurm::node_conf_path,
-        template => 'slurm/slurm.conf/nodes.conf.erb',
-        owner    => 'root',
-        group    => 'root',
-        mode     => '0644',
+      concat::fragment { 'slurm-topology.conf-header':
+        target  => 'slurm-topology.conf',
+        content => "# File managed by Puppet - DO NOT EDIT\n",
+        order   => '00',
       }
+      if $slurm::topology_source {
+        concat::fragment { 'slurm-topology.conf-source':
+          target => 'slurm-topology.conf',
+          source => $slurm::topology_source,
+          order  => '01',
+        }
+      }
+      $::slurm::switches.each |$name, $switch| {
+        slurm::switch { $name: * => $switch }
+      }
+    }
 
-      Datacat_fragment <<| tag == $slurm::slurm_nodelist_tag |>>
+    if $slurm::slurmd {
+      concat { 'slurm-gres.conf':
+        ensure => 'present',
+        path   => $slurm::gres_conf_path,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        notify => $slurm::service_notify,
+      }
+      concat::fragment { 'slurm-gres.conf-header':
+        target  => 'slurm-gres.conf',
+        content => "# File managed by Puppet - DO NOT EDIT\n",
+        order   => '00',
+      }
+      if $slurm::gres_source {
+        concat::fragment { 'slurm-gres.conf-source':
+          target => 'slurm-gres.conf',
+          source => $slurm::gres_source,
+          order  => '01',
+        }
+      }
+      $::slurm::greses.each |$name, $gres| {
+        slurm::gres { $name: * => $gres }
+      }
     }
 
     file { 'plugstack.conf.d':
@@ -63,6 +132,7 @@ class slurm::common::config {
       group   => 'root',
       mode    => '0644',
       content => template('slurm/spank/plugstack.conf.erb'),
+      notify  => $slurm::service_notify,
     }
 
     file { 'slurm-cgroup.conf':
@@ -72,22 +142,15 @@ class slurm::common::config {
       group   => 'root',
       mode    => '0644',
       content => $slurm::cgroup_conf_content,
-      source  => $slurm::_cgroup_conf_source,
-    }
-
-    file { 'cgroup_allowed_devices_file.conf':
-      ensure  => 'file',
-      path    => $slurm::cgroup_allowed_devices_file_real,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      content => template($slurm::cgroup_allowed_devices_template),
+      source  => $slurm::cgroup_conf_source,
+      notify  => $slurm::service_notify,
     }
   }
 
-  sysctl { 'net.core.somaxconn':
-    ensure => present,
-    value  => '1024',
+  if $slurm::tuning_net_core_somaxconn {
+    sysctl { 'net.core.somaxconn':
+      ensure => 'present',
+      value  => String($slurm::tuning_net_core_somaxconn),
+    }
   }
-
 }

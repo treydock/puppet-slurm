@@ -2,22 +2,24 @@ require 'spec_helper'
 
 describe 'slurm_version fact' do
   before :each do
-    Facter::Util::Resolution.stubs(:which).with("sinfo").returns("/usr/bin/sinfo")
     Facter.clear
+    allow(Facter.fact(:kernel)).to receive(:value).and_return('Linux')
   end
 
-  it "should return 14.03.6" do
-    Facter::Util::Resolution.stubs(:exec).with("sinfo -V 2>/dev/null").returns("slurm 14.03.6")
-    Facter.fact(:slurm_version).value.should == "14.03.6"
+  it 'returns 19.05.3' do
+    allow(Facter::Util::Resolution).to receive(:which).with('sinfo').and_return('/usr/bin/sinfo')
+    allow(Facter::Util::Resolution).to receive(:exec).with('timeout 2 /usr/bin/sinfo -V 2>/dev/null').and_return('slurm 19.05.3')
+    expect(Facter.fact(:slurm_version).value).to eq('19.05.3')
   end
 
-  it "should be nil if sinfo -V returns unexpected output" do
-    Facter::Util::Resolution.stubs(:exec).with("sinfo -V 2>/dev/null").returns("foo")
-    Facter.fact(:slurm_version).value.should == nil
+  it 'is nil if sinfo -V returns unexpected output' do
+    allow(Facter::Util::Resolution).to receive(:which).with('sinfo').and_return('/usr/bin/sinfo')
+    allow(Facter::Util::Resolution).to receive(:exec).with('timeout 2 /usr/bin/sinfo -V 2>/dev/null').and_return('')
+    expect(Facter.fact(:slurm_version).value).to be_nil
   end
 
-  it "should be nil if sinfo not found" do
-    Facter::Util::Resolution.stubs(:which).with("sinfo").returns(nil)
-    Facter.fact(:slurm_version).value.should == nil
+  it 'is nil if sinfo not present' do
+    allow(Facter::Util::Resolution).to receive(:which).with('sinfo').and_return(nil)
+    expect(Facter.fact(:slurm_version).value).to be_nil
   end
 end

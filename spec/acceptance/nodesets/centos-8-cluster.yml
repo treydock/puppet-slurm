@@ -1,0 +1,69 @@
+HOSTS:
+  slurmctld:
+    roles:
+      - default
+      - agent
+      - slurmctld
+    platform: el-8-x86_64
+    hypervisor: docker
+    image: centos:8
+    docker_preserve_image: true
+    docker_cmd:
+      - '/usr/sbin/init'
+    docker_image_commands:
+      - 'yum install -y dnf-utils'
+      - 'dnf config-manager --set-enabled PowerTools'
+      - 'yum install -y tar wget iproute initscripts'
+    ip: 192.168.2.2
+    docker_container_name: 'slurmctld-el8'
+  slurmdbd:
+    roles:
+      - agent
+      - slurmdbd
+    platform: el-8-x86_64
+    hypervisor: docker
+    image: centos:8
+    docker_preserve_image: true
+    docker_cmd:
+      - '/usr/sbin/init'
+    docker_image_commands:
+      - 'yum install -y dnf-utils'
+      - 'dnf config-manager --set-enabled PowerTools'
+      - 'yum install -y tar wget iproute initscripts'
+    ip: 192.168.2.3
+    docker_container_name: 'slurmdbd-el8'
+  slurmd:
+    roles:
+      - agent
+      - slurmd
+    platform: el-8-x86_64
+    hypervisor: docker
+    image: centos:8
+    docker_preserve_image: true
+    docker_cmd:
+      - '/usr/sbin/init'
+    docker_image_commands:
+      - 'yum install -y dnf-utils'
+      - 'dnf config-manager --set-enabled PowerTools'
+      - 'yum install -y tar wget iproute initscripts'
+    ip: 192.168.2.4
+    docker_container_name: 'slurmd-el8'
+  slurm-client:
+    roles:
+      - agent
+      - slurm-client
+    platform: el-8-x86_64
+    hypervisor: docker
+    image: centos:8
+    docker_preserve_image: true
+    docker_cmd:
+      - '/usr/sbin/init'
+    docker_image_commands:
+      - 'yum install -y dnf-utils'
+      - 'dnf config-manager --set-enabled PowerTools'
+      - 'yum install -y tar wget iproute initscripts'
+    ip: 192.168.2.6
+    docker_container_name: 'slurm-client-el8'
+CONFIG:
+  log_level: debug
+  type: foss

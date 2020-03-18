@@ -4,16 +4,34 @@
 # See the slurm.conf man page for more information.
 #
 
-<% slurm_conf = scope.lookupvar('slurm::slurm_conf') -%>
+<% slurm_conf = scope['slurm::slurm_conf'] -%>
 <% slurm_conf.keys.sort.each do |key| -%>
 <% value = slurm_conf[key] -%>
-<% next if value == :undef or ! value or value == 'UNSET' -%>
-<% if value.is_a?(Array) -%>
+<%- if value == :undef or ! value or value == 'UNSET' -%>
+# <%= key %>
+<%- elsif scope['slurm::params::slurm_conf_multiple'].include?(key) -%>
+<%- value = [value] if value.is_a?(String) -%>
+<%- value.each do |v| -%>
+<%= key %>=<%= v %>
+<%- end -%>
+<%- elsif value.is_a?(Array) -%>
 <%= key %>=<%= value.join(',') %>
+<%- elsif value.is_a?(Hash) -%>
+<%-
+values = []
+value.each do |k,v|
+  if v.empty? || v == 'none' || v == 'undef' || v.nil?
+    values << k
+  else
+    values << "#{k}=#{v}"
+  end
+end
+-%>
+<%= key %>=<%= values.join(',') %>
 <% else -%>
 <%= key %>=<%= value %>
 <% end -%>
 <% end -%>
 
-Include <%= scope.lookupvar('slurm::node_conf_path') %>
-Include <%= scope.lookupvar('slurm::partition_conf_path') %>
+Include <%= scope['slurm::node_conf_path'] %>
+Include <%= scope['slurm::partition_conf_path'] %>

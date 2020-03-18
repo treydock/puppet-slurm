@@ -1,0 +1,19 @@
+---
+slurm::source_dependencies:
+  - bzip2
+  - gcc
+  - make
+  - perl-devel
+  - munge-devel
+  - readline-devel
+  - numactl-devel
+  - pam-devel
+  - glib2-devel
+  - hwloc-devel
+  - openssl-devel
+  - curl-devel
+  - libcgroup-devel
+  - lz4-devel
+  - freeipmi-devel
+  - man2html
+  - mariadb-devel

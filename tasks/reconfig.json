@@ -1,0 +1,10 @@
+{
+  "description": "Execute 'scontrol reconfig'",
+  "input_method": "stdin",
+  "parameters": {
+    "scontrol": {
+      "description": "Path to scontrol (default: 'scontrol', searches $PATH)",
+      "type": "String[1]"
+    }
+  }
+}

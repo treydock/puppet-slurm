@@ -1,25 +1,28 @@
-# Private class
+# @api private
 class slurm::slurmdbd::config {
+  file { 'slurmdbd-ArchiveDir':
+    ensure => 'directory',
+    path   => $slurm::slurmdbd_archive_dir,
+    owner  => $slurm::slurm_user,
+    group  => $slurm::slurm_user_group,
+    mode   => '0700',
+  }
 
-  if $slurm::manage_database {
-    if $slurm::use_remote_database {
-      @@mysql::db { "slurmdbd_${::fqdn}":
-        user     => $slurm::slurmdbd_storage_user,
-        password => $slurm::slurmdbd_storage_pass,
-        dbname   => $slurm::slurmdbd_storage_loc,
-        host     => $::fqdn,
-        grant    => ['ALL'],
-        tag      => $::domain,
-      }
-    } else {
-      include mysql::server
-
-      mysql::db { $slurm::slurmdbd_storage_loc:
-        user     => $slurm::slurmdbd_storage_user,
-        password => $slurm::slurmdbd_storage_pass,
-        host     => $slurm::slurmdbd_storage_host,
-        grant    => ['ALL'],
-      }
+  if $slurm::slurmdbd_archive_dir_nfs_device {
+    exec { 'mkdir-slurmdbd-ArchiveDir':
+      path    => '/bin:/usr/bin',
+      command => "mkdir -p ${slurm::slurmdbd_archive_dir}",
+      creates => $slurm::slurmdbd_archive_dir,
+      before  => Mount['slurmdbd-ArchiveDir'],
+    }
+    mount { 'slurmdbd-ArchiveDir':
+      ensure  => 'mounted',
+      name    => $slurm::slurmdbd_archive_dir,
+      atboot  => true,
+      device  => $slurm::slurmdbd_archive_dir_nfs_device,
+      fstype  => 'nfs',
+      options => $slurm::slurmdbd_archive_dir_nfs_options,
+      before  => File['slurmdbd-ArchiveDir'],
     }
   }
 
@@ -30,27 +33,6 @@ class slurm::slurmdbd::config {
     group   => $slurm::slurm_user_group,
     mode    => '0600',
     content => template('slurm/slurmdbd/slurmdbd.conf.erb'),
-    notify  => Service['slurmdbd'],
+    notify  => Exec['slurmdbd reload'],
   }
-
-  if $slurm::manage_logrotate {
-    #Refer to: http://slurm.schedmd.com/slurm.conf.html#SECTION_LOGGING
-    logrotate::rule { 'slurmdbd':
-      path          => $slurm::slurmdbd_log_file,
-      compress      => true,
-      missingok     => true,
-      copytruncate  => false,
-      delaycompress => false,
-      ifempty       => false,
-      rotate        => '10',
-      sharedscripts => true,
-      size          => '10M',
-      create        => true,
-      create_mode   => '0640',
-      create_owner  => $slurm::slurm_user,
-      create_group  => 'root',
-      postrotate    => $slurm::_logrotate_slurmdbd_postrotate,
-    }
-  }
-
 }

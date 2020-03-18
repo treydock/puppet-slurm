@@ -3,4 +3,7 @@
 # File managed by Puppet!
 #
 
-export SLURM_CONF="<%= scope.lookupvar('slurm::slurm_conf_path') %>"
+<%- if scope['slurm::profiled_add_path'] -%>
+export PATH="<%= scope['slurm::source_install_prefix'] %>/bin:$PATH"
+<%- end -%>
+export SLURM_CONF="<%= scope['slurm::slurm_conf_path'] %>"

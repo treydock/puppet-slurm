@@ -1,4 +1,19 @@
-# == Define: slurm::spank
+# @summary Manage SLURM SPANK plugin
+#
+# @param plugin
+#   The shared library
+# @param arguments
+#   Arguments for the plugin
+# @param required
+#   Is this plugin required?
+# @param config_path
+#   Configuration path
+# @param manage_package
+#   Manage plugin package?
+# @param package_name
+#   Plugin package name
+# @param restart_slurmd
+#   Restart slurmd upon changes?
 #
 define slurm::spank (
   $plugin = "${title}.so",
@@ -17,6 +32,12 @@ define slurm::spank (
 
   $config_path_real = pick($config_path, "${slurm::plugstack_conf_d_path}/${title}.conf")
 
+  if $slurm::repo_baseurl {
+    $package_require = Yumrepo['slurm']
+  } else {
+    $package_require = undef
+  }
+
   if $restart_slurmd {
     $notify = Service['slurmd']
   } else {
@@ -29,7 +50,7 @@ define slurm::spank (
       name    => $package_name,
       before  => File["SLURM SPANK ${title} config"],
       notify  => $notify,
-      require => $slurm::package_require,
+      require => $package_require,
     }
   }
 
