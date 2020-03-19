@@ -18,25 +18,24 @@ describe 'slurm::spank' do
     it do
       is_expected.to contain_package('SLURM SPANK x11 package').only_with(ensure: 'installed',
                                                                           name: 'slurm-spank-x11',
-                                                                          before: 'File[SLURM SPANK x11 config]')
+                                                                          before: 'Concat::Fragment[plugstack.conf-x11]')
     end
 
     it do
-      is_expected.to contain_file('SLURM SPANK x11 config').only_with(ensure: 'file',
-                                                                      path: '/etc/slurm/plugstack.conf.d/x11.conf',
-                                                                      owner: 'root',
-                                                                      group: 'root',
-                                                                      mode: '0644',
-                                                                      content: %r{^optional x11.so$})
+      is_expected.to contain_concat__fragment('plugstack.conf-x11').only_with(
+        target: 'plugstack.conf',
+        content: %r{^optional x11.so$},
+        order: '50',
+      )
     end
 
     context 'when required => true' do
       let(:params) { { required: true } }
 
       it do
-        verify_contents(catalogue, 'SLURM SPANK x11 config', [
-                          'required x11.so',
-                        ])
+        verify_fragment_contents(catalogue, 'plugstack.conf-x11', [
+                                   'required x11.so',
+                                 ])
       end
     end
 
@@ -50,17 +49,10 @@ describe 'slurm::spank' do
       let(:params) { { arguments: { 'ssh_cmd' => 'ssh', 'helpertask_cmd' => '2>/tmp/log' } } }
 
       it do
-        verify_contents(catalogue, 'SLURM SPANK x11 config', [
-                          'optional x11.so helpertask_cmd=2>/tmp/log ssh_cmd=ssh',
-                        ])
+        verify_fragment_contents(catalogue, 'plugstack.conf-x11', [
+                                   'optional x11.so helpertask_cmd=2>/tmp/log ssh_cmd=ssh',
+                                 ])
       end
-    end
-
-    context 'when restart_slurmd => true' do
-      let(:params) { { restart_slurmd: true } }
-
-      it { is_expected.to contain_package('SLURM SPANK x11 package').with_notify('Service[slurmd]') }
-      it { is_expected.to contain_file('SLURM SPANK x11 config').with_notify('Service[slurmd]') }
     end
 
     describe 'auks example' do
@@ -81,9 +73,9 @@ describe 'slurm::spank' do
       it { is_expected.to contain_package('SLURM SPANK auks package').with_name('auks-slurm') }
 
       it do
-        verify_contents(catalogue, 'SLURM SPANK auks config', [
-                          'required auks.so conf=/etc/auks/auks.conf default=enabled minimum_uid=0 spankstackcred=no',
-                        ])
+        verify_fragment_contents(catalogue, 'plugstack.conf-auks', [
+                                   'required auks.so conf=/etc/auks/auks.conf default=enabled minimum_uid=0 spankstackcred=no',
+                                 ])
       end
     end
   end

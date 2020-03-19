@@ -157,27 +157,11 @@ shared_examples_for 'slurm::common::config' do
   end
 
   it do
-    is_expected.to contain_file('plugstack.conf.d').with(ensure: 'directory',
-                                                         path: '/etc/slurm/plugstack.conf.d',
-                                                         recurse: 'true',
-                                                         purge: 'true',
+    is_expected.to contain_concat('plugstack.conf').with(ensure: 'present',
+                                                         path: '/etc/slurm/plugstack.conf',
                                                          owner: 'root',
                                                          group: 'root',
                                                          mode: '0644')
-  end
-
-  it do
-    is_expected.to contain_file('plugstack.conf').with(ensure: 'file',
-                                                       path: '/etc/slurm/plugstack.conf',
-                                                       owner: 'root',
-                                                       group: 'root',
-                                                       mode: '0644')
-  end
-
-  it do
-    verify_exact_file_contents(catalogue, 'plugstack.conf', [
-                                 'include /etc/slurm/plugstack.conf.d/*.conf',
-                               ])
   end
 
   it do
@@ -394,8 +378,7 @@ shared_examples_for 'slurm::common::config' do
 
     it { is_expected.not_to contain_file('slurm.conf') }
     it { is_expected.not_to contain_concat('slurm-topology.conf') }
-    it { is_expected.not_to contain_file('plugstack.conf.d') }
-    it { is_expected.not_to contain_file('plugstack.conf') }
+    it { is_expected.not_to contain_concat('plugstack.conf') }
     it { is_expected.not_to contain_file('slurm-cgroup.conf') }
     it { is_expected.not_to contain_file('cgroup_allowed_devices_file.conf') }
   end

@@ -64,10 +64,8 @@
 # @param slurmdbd_host
 # @param conf_dir
 # @param log_dir
-# @param log_dir# @param 
+# @param log_dir
 # @param plugstack_conf
-# @param plugstack_conf_d
-# @param purge_plugstack_conf_d
 # @param spank_plugins
 # @param configless
 # @param conf_server
@@ -235,8 +233,6 @@ class slurm (
 
   # SPANK
   $plugstack_conf         = undef,
-  $plugstack_conf_d       = undef,
-  $purge_plugstack_conf_d = true,
   $spank_plugins          = {},
 
   # configless
@@ -362,7 +358,6 @@ class slurm (
   $gres_conf_path                     = "${conf_dir}/gres.conf"
   $slurmdbd_conf_path                 = "${conf_dir}/slurmdbd.conf"
   $plugstack_conf_path                = pick($plugstack_conf, "${conf_dir}/plugstack.conf")
-  $plugstack_conf_d_path              = pick($plugstack_conf_d, "${conf_dir}/plugstack.conf.d")
   $cgroup_conf_path                   = "${conf_dir}/cgroup.conf"
 
   if $install_prefix in ['/usr','/usr/local'] {
