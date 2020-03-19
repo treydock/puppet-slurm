@@ -36,7 +36,7 @@ describe 'slurm' do
     it_behaves_like 'slurm::client'
 
     context 'install from source' do
-      let(:param_override) { { version: '19.05.4', install_method: 'source' } }
+      let(:param_override) { { version: '20.02.0', install_method: 'source' } }
 
       it { is_expected.to compile.with_all_deps }
       it_behaves_like 'slurm::common::install::source'
