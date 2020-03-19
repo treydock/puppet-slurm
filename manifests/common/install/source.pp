@@ -7,7 +7,7 @@ class slurm::common::install::source {
   if versioncmp($facts['os']['release']['major'], '8') >= 0 {
     if $slurm::source_install_manage_alternatives {
       alternatives { 'python':
-        path   => '/usr/bin/python2',
+        path   => '/usr/bin/python3',
         before => Exec['configure-slurm'],
       }
     }
