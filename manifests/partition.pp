@@ -128,8 +128,8 @@ define slurm::partition (
   }
 
 
-  concat::fragment { "slurm-partitions.conf-${name}":
-    target  => 'slurm-partitions.conf',
+  concat::fragment { "slurm.conf-partition-${name}":
+    target  => 'slurm.conf',
     content => template($::slurm::partition_template),
     order   => $order,
   }

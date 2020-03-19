@@ -356,8 +356,6 @@ class slurm (
   }
 
   $slurm_conf_path                    = "${conf_dir}/slurm.conf"
-  $node_conf_path                     = "${conf_dir}/nodes.conf"
-  $partition_conf_path                = "${conf_dir}/partitions.conf"
   $topology_conf_path                 = "${conf_dir}/topology.conf"
   $gres_conf_path                     = "${conf_dir}/gres.conf"
   $slurmdbd_conf_path                 = "${conf_dir}/slurmdbd.conf"

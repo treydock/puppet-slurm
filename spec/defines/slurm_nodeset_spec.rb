@@ -15,8 +15,8 @@ describe 'slurm::nodeset' do
     it { is_expected.to contain_class('slurm') }
 
     it do
-      is_expected.to contain_concat__fragment('slurm-partitions.conf-nodeset-test').with(
-        target: 'slurm-partitions.conf',
+      is_expected.to contain_concat__fragment('slurm.conf-nodeset-test').with(
+        target: 'slurm.conf',
         content: 'NodeSet=test Feature=gpu',
         order: '40',
       )

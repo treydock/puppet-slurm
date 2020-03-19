@@ -19,8 +19,8 @@ define slurm::down_node (
 
   $content = "DownNodes=${down_nodes} State=${state} Reason=\"${reason}\"\n"
 
-  concat::fragment { "slurm-node.conf-${name}":
-    target  => 'slurm-nodes.conf',
+  concat::fragment { "slurm.conf-downnode-${name}":
+    target  => 'slurm.conf',
     content => $content,
     order   => $order,
   }

@@ -33,8 +33,8 @@ define slurm::nodeset (
 
   $content = join($params, ' ')
 
-  concat::fragment { "slurm-partitions.conf-nodeset-${name}":
-    target  => 'slurm-partitions.conf',
+  concat::fragment { "slurm.conf-nodeset-${name}":
+    target  => 'slurm.conf',
     content => $content,
     order   => $order,
   }

@@ -4,24 +4,8 @@ shared_examples_for 'common::config' do |node|
     it { is_expected.to be_mode 644 }
     it { is_expected.to be_owned_by 'root' }
     it { is_expected.to be_grouped_into 'root' }
-    its(:content) { is_expected.to match %r{^Include /etc/slurm/nodes.conf$} }
-    its(:content) { is_expected.to match %r{^Include /etc/slurm/partitions.conf$} }
-  end
-
-  describe file('/etc/slurm/nodes.conf'), node: node do
-    it { is_expected.to be_file }
-    it { is_expected.to be_mode 644 }
-    it { is_expected.to be_owned_by 'root' }
-    it { is_expected.to be_grouped_into 'root' }
-    its(:content) { is_expected.to match %r{^NodeName=slurmd CPUs=1 State=UNKNOWN$} }
-  end
-
-  describe file('/etc/slurm/partitions.conf'), node: node do
-    it { is_expected.to be_file }
-    it { is_expected.to be_mode 644 }
-    it { is_expected.to be_owned_by 'root' }
-    it { is_expected.to be_grouped_into 'root' }
     its(:content) { is_expected.to match %r{^PartitionName=general Default=YES Nodes=slurmd State=UP$} }
+    its(:content) { is_expected.to match %r{^NodeName=slurmd CPUs=1 State=UNKNOWN$} }
   end
 
   describe file('/etc/slurm/plugstack.conf.d'), node: node do
