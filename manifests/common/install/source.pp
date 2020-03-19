@@ -11,6 +11,18 @@ class slurm::common::install::source {
         before => Exec['configure-slurm'],
       }
     }
+    if $slurm::slurmrestd {
+      exec { 'yum -y install http://ftp.redhat.com/pub/redhat/rhel/rhel-8-beta/appstream/x86_64/Packages/http-parser-2.8.0-1.el8.x86_64.rpm':
+        path   => '/usr/bin:/bin:/usr/sbin:/sbin',
+        unless => 'rpm -q http-parser',
+        before => Exec['configure-slurm'],
+      }
+      -> exec { 'yum -y install http://ftp.redhat.com/pub/redhat/rhel/rhel-8-beta/appstream/x86_64/Packages/http-parser-devel-2.8.0-1.el8.x86_64.rpm':
+        path   => '/usr/bin:/bin:/usr/sbin:/sbin',
+        unless => 'rpm -q http-parser-devel',
+        before => Exec['configure-slurm'],
+      }
+    }
   }
 
   archive { $src_file:
@@ -24,10 +36,16 @@ class slurm::common::install::source {
     notify       => Exec['configure-slurm'],
   }
 
+  if $slurm::slurmrestd {
+    $slurmrestd_flag = '--enable-slurmrestd'
+  } else {
+    $slurmrestd_flag = '--disable-slurmrestd'
+  }
   $base_configure_flags = join([
     "--prefix=${slurm::install_prefix}",
     "--libdir=${slurm::install_prefix}/lib64",
     "--sysconfdir=${slurm::conf_dir}",
+    $slurmrestd_flag,
   ], ' ')
   $configure_flags = join($slurm::configure_flags, ' ')
   $configure_command = "configure ${base_configure_flags} ${configure_flags}"

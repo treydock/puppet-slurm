@@ -9,6 +9,7 @@
 # @param slurmdbd
 # @param database
 # @param client
+# @param slurmrestd
 # @param repo_baseurl
 # @param install_method
 # @param install_prefix
@@ -118,6 +119,12 @@
 # @param manage_task_prolog
 # @param task_prolog
 # @param task_prolog_source
+# @param slurmrestd_listen_address
+# @param slurmrestd_service_ensure
+# @param slurmrestd_service_enable
+# @param slurmrestd_service_limits
+# @param slurmrestd_options
+# @param slurmrestd_restart_on_failure
 # @param cgroup_conf_template
 # @param cgroup_conf_source
 # @param cgroup_automount
@@ -143,6 +150,7 @@
 # @param slurmd_port
 # @param slurmctld_port
 # @param slurmdbd_port
+# @param slurmrestd_port
 # @param tuning_net_core_somaxconn
 # @param clusters
 # @param qoses
@@ -156,6 +164,7 @@ class slurm (
   Boolean $slurmdbd   = false,
   Boolean $database   = false,
   Boolean $client     = true,
+  Boolean $slurmrestd = false,
 
   # Repo (optional)
   Optional[Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl, Pattern[/^file:\/\//]]] $repo_baseurl = undef,
@@ -304,6 +313,14 @@ class slurm (
   $task_prolog                  = undef,
   $task_prolog_source           = undef,
 
+  # slurmrestd
+  String $slurmrestd_listen_address = '0.0.0.0',
+  Enum['running','stopped'] $slurmrestd_service_ensure = 'running',
+  Boolean $slurmrestd_service_enable                   = true,
+  Hash $slurmrestd_service_limits                      = {},
+  String $slurmrestd_options                           = '',
+  Boolean $slurmrestd_restart_on_failure               = true,
+
   # cgroups
   String $cgroup_conf_template             = 'slurm/cgroup/cgroup.conf.erb',
   Optional[String] $cgroup_conf_source               = undef,
@@ -334,6 +351,7 @@ class slurm (
   Stdlib::Port $slurmd_port    = 6818,
   Stdlib::Port $slurmctld_port = 6817,
   Stdlib::Port $slurmdbd_port  = 6819,
+  Stdlib::Port $slurmrestd_port = 6820,
 
   # tuning
   Variant[Boolean, Integer] $tuning_net_core_somaxconn = 1024,
@@ -353,8 +371,8 @@ class slurm (
     fail("Unsupported OS: ${os}, module ${module_name} only supports RedHat 7 and 8")
   }
 
-  if ! ($slurmd or $slurmctld or $slurmdbd or $database or $client) {
-    fail("Module ${module_name}: Must select a mode of either slurmd, slurmctld, slurmdbd database, or client.")
+  if ! ($slurmd or $slurmctld or $slurmdbd or $database or $client or $slurmrestd) {
+    fail("Module ${module_name}: Must select a mode of either slurmd, slurmctld, slurmrestd, slurmdbd database, or client.")
   }
 
   $slurm_conf_path                    = "${conf_dir}/slurm.conf"
@@ -509,6 +527,10 @@ class slurm (
 
   if $client {
     contain slurm::client
+  }
+
+  if $slurmrestd {
+    contain slurm::slurmrestd
   }
 
   contain slurm::resources

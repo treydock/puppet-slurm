@@ -14,6 +14,7 @@ describe 'slurm' do
     let(:slurmctld) { false }
     let(:slurmdbd) { false }
     let(:database) { false }
+    let(:slurmrestd) { false }
     let(:default_params) do
       {
         client: client,
@@ -21,6 +22,7 @@ describe 'slurm' do
         slurmctld: slurmctld,
         slurmdbd: slurmdbd,
         database: database,
+        slurmrestd: slurmrestd,
         install_method: 'package',
       }
     end
@@ -32,6 +34,7 @@ describe 'slurm' do
     it { is_expected.not_to contain_class('slurm::slurmctld') }
     it { is_expected.not_to contain_class('slurm::slurmdbd') }
     it { is_expected.not_to contain_class('slurm::slurmdbd::db') }
+    it { is_expected.not_to contain_class('slurm::slurmrestd') }
 
     it_behaves_like 'slurm::client'
 
@@ -52,6 +55,7 @@ describe 'slurm' do
       it { is_expected.not_to contain_class('slurm::slurmdbd') }
       it { is_expected.not_to contain_class('slurm::client') }
       it { is_expected.not_to contain_class('slurm::slurmdbd::db') }
+      it { is_expected.not_to contain_class('slurm::slurmrestd') }
 
       it_behaves_like 'slurm::slurmd'
     end
@@ -66,6 +70,7 @@ describe 'slurm' do
       it { is_expected.not_to contain_class('slurm::slurmdbd') }
       it { is_expected.not_to contain_class('slurm::client') }
       it { is_expected.not_to contain_class('slurm::slurmdbd::db') }
+      it { is_expected.not_to contain_class('slurm::slurmrestd') }
 
       it_behaves_like 'slurm::slurmctld'
     end
@@ -80,6 +85,7 @@ describe 'slurm' do
       it { is_expected.not_to contain_class('slurm::slurmctld') }
       it { is_expected.not_to contain_class('slurm::client') }
       it { is_expected.not_to contain_class('slurm::slurmdbd::db') }
+      it { is_expected.not_to contain_class('slurm::slurmrestd') }
 
       it_behaves_like 'slurm::slurmdbd'
     end
@@ -95,8 +101,24 @@ describe 'slurm' do
       it { is_expected.not_to contain_class('slurm::slurmd') }
       it { is_expected.not_to contain_class('slurm::slurmctld') }
       it { is_expected.not_to contain_class('slurm::client') }
+      it { is_expected.not_to contain_class('slurm::slurmrestd') }
 
       it_behaves_like 'slurm::slurmdbd::db'
+    end
+
+    context 'slurmrestd' do
+      let(:client) { false }
+      let(:slurmrestd) { true }
+
+      it { is_expected.to compile.with_all_deps }
+      it { is_expected.to contain_class('slurm::slurmrestd') }
+      it { is_expected.not_to contain_class('slurm::slurmd') }
+      it { is_expected.not_to contain_class('slurm::slurmctld') }
+      it { is_expected.not_to contain_class('slurm::client') }
+      it { is_expected.not_to contain_class('slurm::slurmdbd') }
+      it { is_expected.not_to contain_class('slurm::slurmdbd::db') }
+
+      it_behaves_like 'slurm::slurmrestd'
     end
   end
 end
