@@ -139,6 +139,7 @@
 # @param cgroup_task_affinity
 # @param slurm_sh_template
 # @param slurm_csh_template
+# @param profile_d_env_vars
 # @param slurmd_port
 # @param slurmctld_port
 # @param slurmdbd_port
@@ -327,6 +328,7 @@ class slurm (
   # profile.d
   $slurm_sh_template  = 'slurm/profile.d/slurm.sh.erb',
   $slurm_csh_template = 'slurm/profile.d/slurm.csh.erb',
+  Hash $profile_d_env_vars = {},
 
   # ports
   Stdlib::Port $slurmd_port    = 6818,

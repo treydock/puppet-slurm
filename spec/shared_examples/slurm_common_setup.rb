@@ -72,6 +72,21 @@ shared_examples_for 'slurm::common::setup' do
     end
   end
 
+  context 'profile_d_env_vars defined' do
+    let(:param_override) { { profile_d_env_vars: { 'FOO' => 'bar' } } }
+
+    it do
+      verify_contents(catalogue, '/etc/profile.d/slurm.sh', [
+                        'export FOO="bar"',
+                      ])
+    end
+    it do
+      verify_contents(catalogue, '/etc/profile.d/slurm.csh', [
+                        'setenv FOO "bar"',
+                      ])
+    end
+  end
+
   context 'when manage_logrotate => false' do
     let(:param_override) {  { manage_logrotate: false } }
 

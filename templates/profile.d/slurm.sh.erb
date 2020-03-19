@@ -9,3 +9,6 @@ export PATH="<%= scope['slurm::source_install_prefix'] %>/bin:$PATH"
 <%- if !scope['slurm::configless'] -%>
 export SLURM_CONF="<%= scope['slurm::slurm_conf_path'] %>"
 <%- end -%>
+<%- scope['slurm::profile_d_env_vars'].each_pair do |k, v| -%>
+export <%= k %>="<%= v %>"
+<%- end -%>
