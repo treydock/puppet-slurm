@@ -59,6 +59,8 @@
 # @param state_dir_nfs_options
 # @param job_checkpoint_dir_nfs_device
 # @param job_checkpoint_dir_nfs_options
+# @param job_submit_lua_source
+# @param job_submit_lua_content
 # @param cluster_name
 # @param slurmctld_host
 # @param slurmdbd_host
@@ -221,6 +223,8 @@ class slurm (
   $state_dir_nfs_options          = 'rw,sync,noexec,nolock,auto',
   $job_checkpoint_dir_nfs_device  = undef,
   $job_checkpoint_dir_nfs_options = 'rw,sync,noexec,nolock,auto',
+  $job_submit_lua_source          = undef,
+  $job_submit_lua_content         = undef,
 
   # Cluster config
   $cluster_name       = 'linux',
