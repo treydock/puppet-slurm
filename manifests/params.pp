@@ -166,6 +166,7 @@ class slurm::params {
     'TreeWidth' => '50',
     'UnkillableStepProgram' => undef,
     'UnkillableStepTimeout' => '60',
+    'UsePAM' => '0',
     'VSizeFactor' => '0',
     'WaitTime' => '0',
     'X11Parameters' => undef,

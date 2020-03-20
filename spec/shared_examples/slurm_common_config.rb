@@ -126,7 +126,7 @@ shared_examples_for 'slurm::common::config' do
                                      'TopologyPlugin=topology/none',
                                      'TreeWidth=50',
                                      'UnkillableStepTimeout=60',
-                                     'UsePAM=1',
+                                     'UsePAM=0',
                                      'VSizeFactor=0',
                                      'WaitTime=0',
                                    ])

@@ -418,10 +418,6 @@ class slurm (
     'StateSaveLocation' => $state_save_location,
     'TaskEpilog' => $task_epilog,
     'TaskProlog' => $task_prolog,
-    'UsePAM' => $install_pam ? {
-      true    => '1',
-      default => '0',
-    },
   }
 
   $slurm_conf_defaults  = merge($::slurm::params::slurm_conf_defaults, $slurm_conf_local_defaults)
