@@ -20,7 +20,9 @@
 <%-
 values = []
 value.each do |k,v|
-  if v.empty? || v == 'none' || v == 'undef' || v.nil?
+  if v.is_a?(Fixnum)
+    values << "#{k}=#{v}"
+  elsif v.empty? || v == 'none' || v == 'undef' || v.nil?
     values << k
   else
     values << "#{k}=#{v}"
