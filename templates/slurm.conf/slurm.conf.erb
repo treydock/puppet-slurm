@@ -22,7 +22,7 @@ values = []
 value.each do |k,v|
   if v.is_a?(Fixnum)
     values << "#{k}=#{v}"
-  elsif v.empty? || v == 'none' || v == 'undef' || v.nil?
+  elsif v.empty? || v == 'none' || v == 'undef' || v.nil? || v == :undef
     values << k
   else
     values << "#{k}=#{v}"
