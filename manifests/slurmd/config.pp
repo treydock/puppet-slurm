@@ -14,6 +14,7 @@ class slurm::slurmd::config {
           recurse      => true,
           recurselimit => 1,
           purge        => true,
+          sourceselect => $slurm::epilog_sourceselect,
         }
       } else {
         file { 'epilog':
@@ -39,6 +40,7 @@ class slurm::slurmd::config {
           recurse      => true,
           recurselimit => 1,
           purge        => true,
+          sourceselect => $slurm::prolog_sourceselect,
         }
       } else {
         file { 'prolog':

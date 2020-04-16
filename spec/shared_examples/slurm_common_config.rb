@@ -218,7 +218,7 @@ shared_examples_for 'slurm::common::config' do
             'bf_continue' => '',
             'defer' => '',
             'batch_sched_delay' => '3',
-            'bf_max_job_start' => 0
+            'bf_max_job_start' => 0,
           },
           'TaskPlugin' => ['task/affinity', 'task/cgroup'],
         },
