@@ -10,6 +10,7 @@
 # @param count
 # @param cores
 # @param file
+# @param flags
 # @param links
 # @param switch_name
 # @param switches
@@ -25,6 +26,7 @@ define slurm::gres (
   $count = undef,
   $cores = undef,
   $file = undef,
+  Optional[Enum['CountOnly']] $flags = undef,
   $links = undef,
   $switch_name = $name,
   $switches = undef,
@@ -43,6 +45,7 @@ define slurm::gres (
     'Count' => $count,
     'Cores' => $cores,
     'File' => $file,
+    'Flags' => $flags,
     'Links' => $links,
   }
 
