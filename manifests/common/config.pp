@@ -102,6 +102,11 @@ class slurm::common::config {
       mode   => '0644',
       notify => $slurm::service_notify,
     }
+    concat::fragment { 'plugstack.conf-header':
+      target  => 'plugstack.conf',
+      content => "# File managed by Puppet - DO NOT EDIT\n",
+      order   => '00',
+    }
 
     file { 'slurm-cgroup.conf':
       ensure  => 'file',
