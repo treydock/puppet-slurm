@@ -94,4 +94,11 @@ class slurm::slurmd::config {
       target => '/run/slurm/conf/slurm.conf',
     }
   }
+  if $slurm::configless {
+    file { 'plugstack.conf':
+      ensure => 'link',
+      path   => $slurm::plugstack_conf_path,
+      target => '/run/slurm/conf/plugstack.conf',
+    }
+  }
 }
