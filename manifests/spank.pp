@@ -40,10 +40,12 @@ define slurm::spank (
     }
   }
 
-  concat::fragment { "plugstack.conf-${name}":
-    target  => 'plugstack.conf',
-    content => template('slurm/spank/plugin.conf.erb'),
-    order   => $order,
+  if $slurm::manage_slurm_conf and ! $slurm::configless {
+    concat::fragment { "plugstack.conf-${name}":
+      target  => 'plugstack.conf',
+      content => template('slurm/spank/plugin.conf.erb'),
+      order   => $order,
+    }
   }
 
 }
