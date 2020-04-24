@@ -381,8 +381,13 @@ class slurm (
   $topology_conf_path                 = "${conf_dir}/topology.conf"
   $gres_conf_path                     = "${conf_dir}/gres.conf"
   $slurmdbd_conf_path                 = "${conf_dir}/slurmdbd.conf"
-  $plugstack_conf_path                = pick($plugstack_conf, "${conf_dir}/plugstack.conf")
   $cgroup_conf_path                   = "${conf_dir}/cgroup.conf"
+  $plugstack_conf_path                = pick($plugstack_conf, "${conf_dir}/plugstack.conf")
+  if $configless {
+    $plug_stack_config = undef
+  } else {
+    $plug_stack_config = $plugstack_conf_path
+  }
 
   if $install_prefix in ['/usr','/usr/local'] {
     $profiled_add_path = false
@@ -423,7 +428,7 @@ class slurm (
     'EpilogSlurmctld' => undef, #TODO
     'HealthCheckProgram' => $_health_check_program,
     'JobCheckpointDir' => $job_checkpoint_dir,
-    'PlugStackConfig' => $plugstack_conf_path,
+    'PlugStackConfig' => $plug_stack_config,
     'Prolog' => $prolog,
     'PrologSlurmctld' => undef, #TODO
     'ResvEpilog' => undef, #TODO
