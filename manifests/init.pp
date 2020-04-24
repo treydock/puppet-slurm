@@ -244,10 +244,6 @@ class slurm (
   Stdlib::Absolutepath $conf_dir = '/etc/slurm',
   Stdlib::Absolutepath $log_dir  = '/var/log/slurm',
 
-  # SPANK
-  $plugstack_conf         = undef,
-  $spank_plugins          = {},
-
   # configless
   Boolean $configless            = false,
   Optional[String] $conf_server  = undef,
@@ -359,6 +355,7 @@ class slurm (
   Variant[Boolean, Integer] $tuning_net_core_somaxconn = 1024,
 
   # resource management
+  Hash $spank_plugins = {},
   Hash $clusters = {},
   Hash $qoses = {},
   Hash $reservations = {},
@@ -382,12 +379,7 @@ class slurm (
   $gres_conf_path                     = "${conf_dir}/gres.conf"
   $slurmdbd_conf_path                 = "${conf_dir}/slurmdbd.conf"
   $cgroup_conf_path                   = "${conf_dir}/cgroup.conf"
-  $plugstack_conf_path                = pick($plugstack_conf, "${conf_dir}/plugstack.conf")
-  if $configless {
-    $plug_stack_config = undef
-  } else {
-    $plug_stack_config = $plugstack_conf_path
-  }
+  $plugstack_conf_path                = "${conf_dir}/plugstack.conf"
 
   if $install_prefix in ['/usr','/usr/local'] {
     $profiled_add_path = false
@@ -428,7 +420,8 @@ class slurm (
     'EpilogSlurmctld' => undef, #TODO
     'HealthCheckProgram' => $_health_check_program,
     'JobCheckpointDir' => $job_checkpoint_dir,
-    'PlugStackConfig' => $plug_stack_config,
+    # Must remained undefined to support configless, we save to same directory as slurm.conf
+    'PlugStackConfig' => undef,
     'Prolog' => $prolog,
     'PrologSlurmctld' => undef, #TODO
     'ResvEpilog' => undef, #TODO

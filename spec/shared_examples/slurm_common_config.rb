@@ -70,7 +70,6 @@ shared_examples_for 'slurm::common::config' do
                                      'MinJobAge=300',
                                      'MpiDefault=none',
                                      'OverTimeLimit=0',
-                                     'PlugStackConfig=/etc/slurm/plugstack.conf',
                                      'PluginDir=/usr/lib64/slurm',
                                      'PreemptMode=OFF',
                                      'PreemptType=preempt/none',
