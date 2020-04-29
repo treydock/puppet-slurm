@@ -1,6 +1,16 @@
 # @summary Manage SLURM GRES configuration
 #
+# @example Add static GPU GRES
+#   slurm::gres { 'gpu':
+#     type  => 'v100',
+#     file  => '/dev/nvidia0',
+#     cores => '0,1',
+#   }
 #
+# @example Add nvml AutoDetect gres
+#   slurm::gres { 'nvml':
+#     auto_detect => 'nvml',
+#   }
 #
 #
 # @param gres_name
@@ -37,16 +47,22 @@ define slurm::gres (
 
   include ::slurm
 
-  $conf_values = {
-    'Name' => $gres_name,
-    'Type' => $type,
-    'NodeName' => $node_name,
-    'AutoDetect' => $auto_detect,
-    'Count' => $count,
-    'Cores' => $cores,
-    'File' => $file,
-    'Flags' => $flags,
-    'Links' => $links,
+  if $auto_detect {
+    $conf_values = {
+      'AutoDetect' => $auto_detect,
+    }
+  } else {
+    $conf_values = {
+      'Name' => $gres_name,
+      'Type' => $type,
+      'NodeName' => $node_name,
+      'AutoDetect' => $auto_detect,
+      'Count' => $count,
+      'Cores' => $cores,
+      'File' => $file,
+      'Flags' => $flags,
+      'Links' => $links,
+    }
   }
 
   concat::fragment { "slurm-gres.conf-${name}":
