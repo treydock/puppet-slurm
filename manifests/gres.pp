@@ -40,7 +40,6 @@ define slurm::gres (
   $links = undef,
   $switch_name = $name,
   $switches = undef,
-  $nodes = undef,
   $link_speed = undef,
   $order = '50',
 ) {
