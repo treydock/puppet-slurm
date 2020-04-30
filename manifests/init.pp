@@ -198,6 +198,7 @@ class slurm (
   Boolean $slurmctld_restart_on_failure               = true,
   Boolean $slurmdbd_restart_on_failure                = true,
   Boolean $reload_services                            = true,
+  Boolean $restart_services                           = false,
 
   # User and group management
   $manage_slurm_user      = true,
@@ -476,16 +477,22 @@ class slurm (
 
   if $slurmd and $slurmd_service_ensure == 'running' and $reload_services and $facts['slurmd_version'] {
     $slurmd_notify = Exec['slurmd reload']
+  } elsif $slurmd and $slurmd_service_ensure == 'running' and $restart_services {
+    $slurmd_notify = Service['slurmd']
   } else {
     $slurmd_notify = undef
   }
   if $slurmctld and $slurmctld_service_ensure == 'running' and $reload_services and $facts['slurmctld_version'] {
     $slurmctld_notify = Exec['scontrol reconfig']
+  } elsif $slurmctld and $slurmctld_service_ensure == 'running' and $restart_services {
+    $slurmctld_notify = Service['slurmctld']
   } else {
     $slurmctld_notify = undef
   }
   if $slurmdbd and $slurmdbd_service_ensure == 'running' and $reload_services and $facts['slurmdbd_version'] {
     $slurmdbd_notify = Exec['slurmdbd reload']
+  } elsif $slurmdbd and $slurmdbd_service_ensure == 'running' and $restart_services {
+    $slurmdbd_notify = Service['slurmdbd']
   } else {
     $slurmdbd_notify = undef
   }
