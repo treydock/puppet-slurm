@@ -52,9 +52,9 @@ define slurm::gres (
     }
   } else {
     $conf_values = {
+      'NodeName' => $node_name,
       'Name' => $gres_name,
       'Type' => $type,
-      'NodeName' => $node_name,
       'AutoDetect' => $auto_detect,
       'Count' => $count,
       'Cores' => $cores,
