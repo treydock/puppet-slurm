@@ -84,21 +84,4 @@ class slurm::slurmd::config {
     group  => $slurm::slurmd_user_group,
     mode   => '0755',
   }
-
-  # TODO: pam_slurm_adopt still needs /etc/slurm/slurm.conf with configless
-  # https://bugs.schedmd.com/show_bug.cgi?id=8712
-  if $slurm::configless and $slurm::install_pam {
-    file { 'slurm.conf':
-      ensure => 'link',
-      path   => $slurm::slurm_conf_path,
-      target => '/run/slurm/conf/slurm.conf',
-    }
-  }
-  if $slurm::configless {
-    file { 'plugstack.conf':
-      ensure => 'link',
-      path   => $slurm::plugstack_conf_path,
-      target => '/run/slurm/conf/plugstack.conf',
-    }
-  }
 }
