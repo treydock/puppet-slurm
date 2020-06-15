@@ -35,7 +35,7 @@ define slurm::nodeset (
 
   concat::fragment { "slurm.conf-nodeset-${name}":
     target  => 'slurm.conf',
-    content => $content,
+    content => "${content}\n",
     order   => $order,
   }
 
