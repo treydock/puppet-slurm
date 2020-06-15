@@ -85,6 +85,7 @@
 # @param gres_source
 # @param partitions
 # @param nodes
+# @param nodesets
 # @param switches
 # @param greses
 # @param slurmd_log_file
@@ -263,6 +264,7 @@ class slurm (
   $gres_source            = undef,
   $partitions             = {},
   $nodes                  = {},
+  $nodesets               = {},
   $switches               = {},
   $greses                 = {},
 
