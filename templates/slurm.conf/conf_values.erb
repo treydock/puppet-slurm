@@ -2,7 +2,11 @@
 values = []
 @conf_values.each_pair do |key,value|
   next if (value.nil? || value == 'UNSET')
-  values << "#{key}=#{value}"
+  if value.is_a?(Array)
+    values << "#{key}=#{value.join(',')}"
+  else
+    values << "#{key}=#{value}"
+  end
 end
 -%>
 <%= values.join(" ") %>
