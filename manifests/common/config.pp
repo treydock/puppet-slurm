@@ -3,30 +3,14 @@ class slurm::common::config {
 
   create_resources('slurm::spank', $slurm::spank_plugins)
 
-  # Bootstrap slurm.conf in configless so that slurmd can start
-  # Put slurm.conf in conf-cache and do not replace the file afterwards
-  if $slurm::configless and $slurm::slurmd {
-    $slurm_conf_path = "${slurm::slurmd_spool_dir}/conf-cache/slurm.conf"
-    $manage_slurm_conf = $slurm::manage_slurm_conf
-    $slurm_conf_replace = false
-  } elsif $slurm::configless {
-    $slurm_conf_path = $slurm::slurm_conf_path
-    $manage_slurm_conf = false
-    $slurm_conf_replace = false
-  } else {
-    $slurm_conf_path = $slurm::slurm_conf_path
-    $manage_slurm_conf = $slurm::manage_slurm_conf
-    $slurm_conf_replace = undef
-  }
-  if $manage_slurm_conf {
+  if $slurm::manage_slurm_conf and ! $slurm::configless {
     concat { 'slurm.conf':
-      ensure  => 'present',
-      path    => $slurm_conf_path,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      replace => $slurm_conf_replace,
-      notify  => $slurm::service_notify,
+      ensure => 'present',
+      path   => $slurm::slurm_conf_path,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+      notify => $slurm::service_notify,
     }
 
     concat::fragment { 'slurm.conf-config':
