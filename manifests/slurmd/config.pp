@@ -84,4 +84,13 @@ class slurm::slurmd::config {
     group  => $slurm::slurmd_user_group,
     mode   => '0755',
   }
+  if $slurm::configless {
+    file { 'slurmd-conf-cache':
+      ensure => 'directory',
+      path   => "${slurm::slurmd_spool_dir}/conf-cache",
+      owner  => $slurm::slurmd_user,
+      group  => $slurm::slurmd_user_group,
+      mode   => '0755',
+    }
+  }
 }
