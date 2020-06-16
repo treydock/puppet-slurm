@@ -5,14 +5,13 @@ class slurm::common::config {
 
   # Bootstrap slurm.conf in configless so that slurmd can start
   # Put slurm.conf in conf-cache and do not replace the file afterwards
-  if $slurm::configless {
-    if $slurm::slurmd {
-      $slurm_conf_path = "${slurm::slurmd_spool_dir}/conf-cache"
-      $manage_slurm_conf = $slurm::manage_slurm_conf
-    } else {
-      $slurm_conf_path = $slurm::slurm_conf_path
-      $manage_slurm_conf = false
-    }
+  if $slurm::configless and $slurm::slurmd {
+    $slurm_conf_path = "${slurm::slurmd_spool_dir}/conf-cache"
+    $manage_slurm_conf = $slurm::manage_slurm_conf
+    $slurm_conf_replace = false
+  } elsif $slurm::configless {
+    $slurm_conf_path = $slurm::slurm_conf_path
+    $manage_slurm_conf = false
     $slurm_conf_replace = false
   } else {
     $slurm_conf_path = $slurm::slurm_conf_path
