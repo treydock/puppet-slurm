@@ -33,6 +33,7 @@ describe 'slurmdbd' do
         it_behaves_like 'common::install-slurmdbd', node
       end
       it_behaves_like 'common::setup', node
+      it_behaves_like 'common::config', node
       it_behaves_like 'slurmdbd::config', node
       it_behaves_like 'slurmdbd::service', node
     end
