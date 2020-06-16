@@ -34,6 +34,7 @@
 # @param slurmctld_restart_on_failure
 # @param slurmdbd_restart_on_failure
 # @param reload_services
+# @param restart_services
 # @param manage_slurm_user
 # @param slurm_user_group
 # @param slurm_group_gid
@@ -111,9 +112,11 @@
 # @param manage_epilog
 # @param epilog
 # @param epilog_source
+# @param epilog_sourceselect
 # @param manage_prolog
 # @param prolog
 # @param prolog_source
+# @param prolog_sourceselect
 # @param manage_task_epilog
 # @param task_epilog
 # @param task_epilog_source
