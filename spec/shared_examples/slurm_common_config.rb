@@ -360,14 +360,14 @@ shared_examples_for 'slurm::common::config' do
     it do
       if slurmd
         verify_exact_fragment_contents(catalogue, 'slurm-gres.conf-gpu', [
-                                         'Name=gpu NodeName=c0[1-2] File=/dev/nvidia[0-1]',
+                                         'NodeName=c0[1-2] Name=gpu File=/dev/nvidia[0-1]',
                                        ])
       end
     end
     it do
       if slurmd
         verify_exact_fragment_contents(catalogue, 'slurm-gres.conf-gpu2', [
-                                         'Name=gpu NodeName=c0[3-4] File=/dev/nvidia[0-3]',
+                                         'NodeName=c0[3-4] Name=gpu File=/dev/nvidia[0-3]',
                                        ])
       end
     end

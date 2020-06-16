@@ -17,7 +17,7 @@ describe 'slurm::nodeset' do
     it do
       is_expected.to contain_concat__fragment('slurm.conf-nodeset-test').with(
         target: 'slurm.conf',
-        content: 'NodeSet=test Feature=gpu',
+        content: "NodeSet=test Feature=gpu\n",
         order: '40',
       )
     end
