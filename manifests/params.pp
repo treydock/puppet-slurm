@@ -16,7 +16,7 @@ class slurm::params {
     'AcctGatherInfinibandType' => undef,
     'AcctGatherFilesystemType' => undef,
     'AcctGatherProfileType' => undef,
-    'AllowSpecResourcesUsage' => 'YES',
+    'AllowSpecResourcesUsage' => 'NO',
     'AuthAltTypes' => undef,
     'AuthInfo' => undef,
     'AuthType' => 'auth/munge',

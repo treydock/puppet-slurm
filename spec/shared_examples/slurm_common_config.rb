@@ -25,7 +25,7 @@ shared_examples_for 'slurm::common::config' do
                                      'AccountingStorageType=accounting_storage/slurmdbd',
                                      'AccountingStoreJobComment=YES',
                                      'AcctGatherNodeFreq=0',
-                                     'AllowSpecResourcesUsage=YES',
+                                     'AllowSpecResourcesUsage=NO',
                                      'AuthType=auth/munge',
                                      'BatchStartTimeout=10',
                                      'CheckpointType=checkpoint/none',
