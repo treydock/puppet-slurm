@@ -3,7 +3,14 @@ class slurm::common::install::source {
   $src_file = "/usr/local/src/slurm-${slurm::version}.tar.bz2"
   $src_dir = "/usr/local/src/slurm-${slurm::version}"
 
-  ensure_packages($slurm::source_dependencies)
+  if $slurm::osfamily == 'RedHat' {
+    include epel
+    $package_require = Yumrepo['epel']
+  } else {
+    $package_require = undef
+  }
+
+  ensure_packages($slurm::source_dependencies, { 'require' => $package_require })
   if versioncmp($facts['os']['release']['major'], '8') >= 0 {
     if $slurm::source_install_manage_alternatives {
       alternatives { 'python':
