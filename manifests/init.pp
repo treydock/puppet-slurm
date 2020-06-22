@@ -159,6 +159,7 @@
 # @param clusters
 # @param qoses
 # @param reservations
+# @param accounts
 # @param purge_qos
 #
 class slurm (
@@ -365,6 +366,7 @@ class slurm (
   Hash $clusters = {},
   Hash $qoses = {},
   Hash $reservations = {},
+  Hash $accounts = {},
   Boolean $purge_qos = false,
 ) inherits slurm::params {
 

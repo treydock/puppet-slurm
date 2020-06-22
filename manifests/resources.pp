@@ -16,6 +16,9 @@ class slurm::resources {
   $slurm::reservations.each |$name, $reservation| {
     slurm_reservation { $name: * => $reservation }
   }
+  $slurm::accounts.each |$name, $account| {
+    slurm_account { $name: * => $account }
+  }
 
   if $slurm::purge_qos {
     resources { 'slurm_qos': purge => true }
