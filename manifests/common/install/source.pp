@@ -10,7 +10,7 @@ class slurm::common::install::source {
     $package_require = undef
   }
 
-  ensure_packages($slurm::source_dependencies, { 'require' => $package_require, 'before' => Exec['configure-slurm'] })
+  ensure_packages($slurm::source_dependencies, { 'require' => $package_require, 'before' => Archive[$src_file] })
   if versioncmp($facts['os']['release']['major'], '8') >= 0 {
     if $slurm::source_install_manage_alternatives {
       alternatives { 'python':
