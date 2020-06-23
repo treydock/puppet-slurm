@@ -14,8 +14,9 @@ class slurm::common::install::source {
   if versioncmp($facts['os']['release']['major'], '8') >= 0 {
     if $slurm::source_install_manage_alternatives {
       alternatives { 'python':
-        path   => '/usr/bin/python3',
-        before => Exec['configure-slurm'],
+        path    => '/usr/bin/python3',
+        require => Package['python3'],
+        before  => Exec['configure-slurm'],
       }
     }
     if $slurm::slurmrestd {
