@@ -24,7 +24,6 @@
 # @param links
 # @param switch_name
 # @param switches
-# @param nodes
 # @param link_speed
 # @param order
 #

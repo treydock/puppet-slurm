@@ -52,8 +52,6 @@
 # @param use_syslog
 # @param manage_logrotate
 # @param manage_rsyslog
-# @param manage_state_dir_nfs_mount
-# @param manage_job_checkpoint_dir_nfs_mount
 # @param manage_database
 # @param export_database
 # @param export_database_tag
@@ -69,7 +67,6 @@
 # @param conf_dir
 # @param log_dir
 # @param log_dir
-# @param plugstack_conf
 # @param spank_plugins
 # @param configless
 # @param conf_server
