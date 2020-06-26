@@ -1,8 +1,0 @@
-<%-
-partition = []
-@conf_values.each_pair do |key,value|
-  next if (value.nil? || value == 'UNSET')
-  partition << "#{key}=#{value}"
-end
--%>
-<%= partition.join(" ") %>

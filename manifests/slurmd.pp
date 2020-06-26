@@ -19,18 +19,6 @@ class slurm::slurmd {
   -> Class['slurm::slurmd::config']
   -> Class['slurm::slurmd::service']
 
-  Class['slurm::common::install']
-  ~> Class['slurm::slurmd::service']
-
-  Class['slurm::common::setup']
-  ~> Class['slurm::slurmd::service']
-
-  Class['slurm::common::config']
-  ~> Class['slurm::slurmd::service']
-
-  Class['slurm::slurmd::config']
-  ~> Class['slurm::slurmd::service']
-
   if $slurm::use_nhc and $slurm::include_nhc {
     include ::nhc
     Class['::nhc'] -> Class['slurm::common::config']

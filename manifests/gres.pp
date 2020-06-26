@@ -1,6 +1,16 @@
 # @summary Manage SLURM GRES configuration
 #
+# @example Add static GPU GRES
+#   slurm::gres { 'gpu':
+#     type  => 'v100',
+#     file  => '/dev/nvidia0',
+#     cores => '0,1',
+#   }
 #
+# @example Add nvml AutoDetect gres
+#   slurm::gres { 'nvml':
+#     auto_detect => 'nvml',
+#   }
 #
 #
 # @param gres_name
@@ -10,6 +20,7 @@
 # @param count
 # @param cores
 # @param file
+# @param flags
 # @param links
 # @param switch_name
 # @param switches
@@ -25,25 +36,32 @@ define slurm::gres (
   $count = undef,
   $cores = undef,
   $file = undef,
+  Optional[Enum['CountOnly']] $flags = undef,
   $links = undef,
   $switch_name = $name,
   $switches = undef,
-  $nodes = undef,
   $link_speed = undef,
   $order = '50',
 ) {
 
   include ::slurm
 
-  $conf_values = {
-    'Name' => $gres_name,
-    'Type' => $type,
-    'NodeName' => $node_name,
-    'AutoDetect' => $auto_detect,
-    'Count' => $count,
-    'Cores' => $cores,
-    'File' => $file,
-    'Links' => $links,
+  if $auto_detect {
+    $conf_values = {
+      'AutoDetect' => $auto_detect,
+    }
+  } else {
+    $conf_values = {
+      'NodeName' => $node_name,
+      'Name' => $gres_name,
+      'Type' => $type,
+      'AutoDetect' => $auto_detect,
+      'Count' => $count,
+      'Cores' => $cores,
+      'File' => $file,
+      'Flags' => $flags,
+      'Links' => $links,
+    }
   }
 
   concat::fragment { "slurm-gres.conf-${name}":

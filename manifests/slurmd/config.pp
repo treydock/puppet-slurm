@@ -14,6 +14,7 @@ class slurm::slurmd::config {
           recurse      => true,
           recurselimit => 1,
           purge        => true,
+          sourceselect => $slurm::epilog_sourceselect,
         }
       } else {
         file { 'epilog':
@@ -39,6 +40,7 @@ class slurm::slurmd::config {
           recurse      => true,
           recurselimit => 1,
           purge        => true,
+          sourceselect => $slurm::prolog_sourceselect,
         }
       } else {
         file { 'prolog':
@@ -81,5 +83,14 @@ class slurm::slurmd::config {
     owner  => $slurm::slurmd_user,
     group  => $slurm::slurmd_user_group,
     mode   => '0755',
+  }
+  if $slurm::configless {
+    file { 'slurmd-conf-cache':
+      ensure => 'directory',
+      path   => "${slurm::slurmd_spool_dir}/conf-cache",
+      owner  => $slurm::slurmd_user,
+      group  => $slurm::slurmd_user_group,
+      mode   => '0755',
+    }
   }
 }

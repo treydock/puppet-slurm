@@ -4,8 +4,7 @@ shared_examples_for 'slurm::slurmdbd::config' do
                                                       path: '/etc/slurm/slurmdbd.conf',
                                                       owner: 'slurm',
                                                       group: 'slurm',
-                                                      mode: '0600',
-                                                      notify: 'Exec[slurmdbd reload]')
+                                                      mode: '0600')
   end
 
   it do

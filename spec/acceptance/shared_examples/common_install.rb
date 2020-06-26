@@ -29,3 +29,8 @@ shared_examples_for 'common::install-slurmdbd' do |node|
     it { is_expected.to be_installed.with_version(RSpec.configuration.slurm_version.to_s) }
   end
 end
+shared_examples_for 'common::install-slurmrestd' do |node|
+  describe package('slurm-slurmrestd'), node: node do
+    it { is_expected.to be_installed.with_version(RSpec.configuration.slurm_version.to_s) }
+  end
+end

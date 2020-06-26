@@ -1,8 +1,0 @@
-<%-
-node = []
-@conf_values.each_pair do |key,value|
-  next if (value.nil? || value == 'UNSET')
-  node << "#{key}=#{value}"
-end
--%>
-<%= node.join(" ") %>

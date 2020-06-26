@@ -33,6 +33,6 @@ class slurm::slurmdbd::config {
     group   => $slurm::slurm_user_group,
     mode    => '0600',
     content => template('slurm/slurmdbd/slurmdbd.conf.erb'),
-    notify  => Exec['slurmdbd reload'],
+    notify  => $slurm::slurmdbd_notify,
   }
 }

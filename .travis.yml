@@ -5,6 +5,7 @@ cache: bundler
 before_install:
   - bundle -v
   - rm -f Gemfile.lock
+  - gem update --system $RUBYGEMS_VERSION
   - gem --version
   - bundle -v
 script:
@@ -12,6 +13,9 @@ script:
 bundler_args: --without system_tests
 rvm:
   - 2.5.3
+env:
+  global:
+    - FACTER_GEM_VERSION="< 4.0"
 stages:
   - static
   - spec

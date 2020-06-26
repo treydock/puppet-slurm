@@ -51,4 +51,29 @@ class slurm::slurmctld::config {
       before  => File['JobCheckpointDir'],
     }
   }
+
+  if $slurm::job_submit_lua_source or $slurm::job_submit_lua_content {
+    file { "${slurm::conf_dir}/job_submit.lua":
+      ensure  => 'file',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      source  => $slurm::job_submit_lua_source,
+      content => $slurm::job_submit_lua_content,
+    }
+  }
+
+  if $slurm::slurm_conf['AuthAltTypes'] and $slurm::slurm_conf['AuthAltTypes'] == 'auth/jwt' {
+    $jwt_key = "${slurm::state_save_location}/jwt_hs256.key"
+    exec { 'slurmctld-genrsa':
+      path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+      command => "openssl genrsa -out ${jwt_key} 2048",
+      creates => $jwt_key,
+    }
+    -> file { $jwt_key:
+      owner => $slurm::slurm_user,
+      group => 'root',
+      mode  => '0640',
+    }
+  }
 }

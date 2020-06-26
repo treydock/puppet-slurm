@@ -75,6 +75,12 @@ class slurm::common::setup {
           content => ":programname, isequal, \"slurmdbd\" -${::slurm::log_dir}/slurmdbd.log\n& stop",
         }
       }
+      if $slurm::slurmrestd {
+        rsyslog::snippet { '60_slurmrestd':
+          ensure  => 'present',
+          content => ":programname, isequal, \"slurmrestd\" -${::slurm::log_dir}/slurmrestd.log\n& stop",
+        }
+      }
     }
   }
 }

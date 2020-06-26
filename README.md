@@ -25,7 +25,7 @@ Manage SLURM.
 
 ### Supported Versions of SLURM
 
-This module is designed to work with SLURM 19.05.x.
+This module is designed to work with SLURM 20.02.x.
 
 ## Usage
 
@@ -221,7 +221,7 @@ Run unit tests
 The following environment variables can be used to modify the behavior of the beaker tests:
 
 * *SLURM\_BEAKER\_repo\_baseurl* - URL to Yum repository containing SLURM RPMs. If not present will install from source
-* *SLURM\_BEAKER\\_version* - Version of SLURM to install.  Defaults to **19.05.4**
+* *SLURM\_BEAKER\\_version* - Version of SLURM to install.  Defaults to **20.02.0**
 
 Example of running beaker tests using an internal repository, and leaving VMs running after the tests.
 

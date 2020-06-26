@@ -9,143 +9,126 @@ shared_examples_for 'slurm::common::config' do
   end
 
   it do
-    is_expected.to contain_file('slurm.conf').with(ensure: 'present',
-                                                   path: '/etc/slurm/slurm.conf',
-                                                   owner: 'root',
-                                                   group: 'root',
-                                                   mode: '0644')
+    is_expected.to contain_concat('slurm.conf').with(
+      ensure: 'present',
+      path: '/etc/slurm/slurm.conf',
+      owner: 'root',
+      group: 'root',
+      mode: '0644',
+    )
   end
 
   it do
-    verify_exact_file_contents(catalogue, 'slurm.conf', [
-                                 'AccountingStorageHost=slurmdbd',
-                                 'AccountingStoragePort=6819',
-                                 'AccountingStorageType=accounting_storage/slurmdbd',
-                                 'AccountingStoreJobComment=YES',
-                                 'AcctGatherNodeFreq=0',
-                                 'AllowSpecResourcesUsage=0',
-                                 'AuthType=auth/munge',
-                                 'BatchStartTimeout=10',
-                                 'CheckpointType=checkpoint/none',
-                                 'ClusterName=linux',
-                                 'CompleteWait=0',
-                                 'CoreSpecPlugin=core_spec/none',
-                                 'CpuFreqGovernors=OnDemand,Performance,UserSpace',
-                                 'CredType=cred/munge',
-                                 'DefaultStorageHost=slurmdbd',
-                                 'DefaultStoragePort=6819',
-                                 'DisableRootJobs=NO',
-                                 'EioTimeout=60',
-                                 'EnforcePartLimits=NO',
-                                 'EpilogMsgTime=2000',
-                                 'FairShareDampeningFactor=1',
-                                 'FirstJobId=1',
-                                 'GetEnvTimeout=2',
-                                 'GroupUpdateForce=1',
-                                 'GroupUpdateTime=600',
-                                 'GpuFreqDef=high,memory=high',
-                                 'HealthCheckInterval=0',
-                                 'HealthCheckNodeState=ANY',
-                                 'InactiveLimit=0',
-                                 'JobAcctGatherType=jobacct_gather/cgroup',
-                                 'JobAcctGatherFrequency=task=30,energy=0,network=0,filesystem=0',
-                                 'JobCheckpointDir=/var/spool/slurmctld.checkpoint',
-                                 'JobCompType=jobcomp/none',
-                                 'JobRequeue=1',
-                                 'KillOnBadExit=0',
-                                 'KillWait=30',
-                                 'LaunchType=launch/slurm',
-                                 'LogTimeFormat=iso8601_ms',
-                                 'MailProg=/bin/mail',
-                                 'MaxArraySize=1001',
-                                 'MaxJobCount=10000',
-                                 'MaxJobId=67043328',
-                                 'MaxStepCount=40000',
-                                 'MaxTasksPerNode=512',
-                                 'MCSPlugin=mcs/none',
-                                 'MemLimitEnforce=no',
-                                 'MessageTimeout=10',
-                                 'MinJobAge=300',
-                                 'MpiDefault=none',
-                                 'OverTimeLimit=0',
-                                 'PlugStackConfig=/etc/slurm/plugstack.conf',
-                                 'PluginDir=/usr/lib64/slurm',
-                                 'PreemptMode=OFF',
-                                 'PreemptType=preempt/none',
-                                 'PriorityCalcPeriod=5',
-                                 'PriorityDecayHalfLife=7-0',
-                                 'PriorityFavorSmall=NO',
-                                 'PriorityMaxAge=7-0',
-                                 'PrioritySiteFactorPlugin=site_factor/none',
-                                 'PriorityType=priority/basic',
-                                 'PriorityUsageResetPeriod=NONE',
-                                 'PriorityWeightAge=0',
-                                 'PriorityWeightAssoc=0',
-                                 'PriorityWeightFairshare=0',
-                                 'PriorityWeightJobSize=0',
-                                 'PriorityWeightPartition=0',
-                                 'PriorityWeightQOS=0',
-                                 'PriorityWeightTRES=0',
-                                 'ProctrackType=proctrack/cgroup',
-                                 'PropagatePrioProcess=0',
-                                 'PropagateResourceLimits=ALL',
-                                 'ResumeRate=300',
-                                 'ResumeTimeout=60',
-                                 'ResvOverRun=0',
-                                 'ReturnToService=0',
-                                 'RoutePlugin=route/default',
-                                 'SchedulerTimeSlice=30',
-                                 'SchedulerType=sched/backfill',
-                                 'SelectType=select/linear',
-                                 'SlurmctldDebug=info',
-                                 'SlurmctldHost=slurm',
-                                 'SlurmctldLogFile=/var/log/slurm/slurmctld.log',
-                                 'SlurmctldPidFile=/var/run/slurmctld.pid',
-                                 'SlurmctldPort=6817',
-                                 'SlurmctldTimeout=120',
-                                 'SlurmdDebug=info',
-                                 'SlurmdLogFile=/var/log/slurm/slurmd.log',
-                                 'SlurmdPidFile=/var/run/slurmd.pid',
-                                 'SlurmdPort=6818',
-                                 'SlurmdSpoolDir=/var/spool/slurmd',
-                                 'SlurmdTimeout=300',
-                                 'SlurmdUser=root',
-                                 'SlurmSchedLogFile=/var/log/slurm/slurmsched.log',
-                                 'SlurmSchedLogLevel=0',
-                                 'SlurmUser=slurm',
-                                 'StateSaveLocation=/var/spool/slurmctld.state',
-                                 'SuspendRate=60',
-                                 'SuspendTime=-1',
-                                 'SuspendTimeout=30',
-                                 'SwitchType=switch/none',
-                                 'TaskPlugin=task/affinity,task/cgroup',
-                                 'TCPTimeout=2',
-                                 'TmpFS=/tmp',
-                                 'TopologyPlugin=topology/none',
-                                 'TreeWidth=50',
-                                 'UnkillableStepTimeout=60',
-                                 'UsePAM=1',
-                                 'VSizeFactor=0',
-                                 'WaitTime=0',
-                                 'Include /etc/slurm/nodes.conf',
-                                 'Include /etc/slurm/partitions.conf',
-                               ])
-  end
-
-  it do
-    is_expected.to contain_concat('slurm-partitions.conf').with(ensure: 'present',
-                                                                path: '/etc/slurm/partitions.conf',
-                                                                owner: 'root',
-                                                                group: 'root',
-                                                                mode: '0644')
-  end
-
-  it do
-    is_expected.to contain_concat('slurm-nodes.conf').with(ensure: 'present',
-                                                           path: '/etc/slurm/nodes.conf',
-                                                           owner: 'root',
-                                                           group: 'root',
-                                                           mode: '0644')
+    verify_exact_fragment_contents(catalogue, 'slurm.conf-config', [
+                                     'AccountingStorageHost=slurmdbd',
+                                     'AccountingStoragePort=6819',
+                                     'AccountingStorageType=accounting_storage/slurmdbd',
+                                     'AccountingStoreJobComment=YES',
+                                     'AcctGatherNodeFreq=0',
+                                     'AllowSpecResourcesUsage=NO',
+                                     'AuthType=auth/munge',
+                                     'BatchStartTimeout=10',
+                                     'CheckpointType=checkpoint/none',
+                                     'ClusterName=linux',
+                                     'CompleteWait=0',
+                                     'CoreSpecPlugin=core_spec/none',
+                                     'CpuFreqGovernors=OnDemand,Performance,UserSpace',
+                                     'CredType=cred/munge',
+                                     'DefaultStorageHost=slurmdbd',
+                                     'DefaultStoragePort=6819',
+                                     'DisableRootJobs=NO',
+                                     'EioTimeout=60',
+                                     'EnforcePartLimits=NO',
+                                     'EpilogMsgTime=2000',
+                                     'FairShareDampeningFactor=1',
+                                     'FirstJobId=1',
+                                     'GetEnvTimeout=2',
+                                     'GroupUpdateForce=1',
+                                     'GroupUpdateTime=600',
+                                     'GpuFreqDef=high,memory=high',
+                                     'HealthCheckInterval=0',
+                                     'HealthCheckNodeState=ANY',
+                                     'InactiveLimit=0',
+                                     'JobAcctGatherType=jobacct_gather/cgroup',
+                                     'JobAcctGatherFrequency=task=30,energy=0,network=0,filesystem=0',
+                                     'JobCheckpointDir=/var/spool/slurmctld.checkpoint',
+                                     'JobCompType=jobcomp/none',
+                                     'JobRequeue=1',
+                                     'KillOnBadExit=0',
+                                     'KillWait=30',
+                                     'LaunchType=launch/slurm',
+                                     'LogTimeFormat=iso8601_ms',
+                                     'MailProg=/bin/mail',
+                                     'MaxArraySize=1001',
+                                     'MaxDBDMsgs=10000',
+                                     'MaxJobCount=10000',
+                                     'MaxJobId=67043328',
+                                     'MaxStepCount=40000',
+                                     'MaxTasksPerNode=512',
+                                     'MCSPlugin=mcs/none',
+                                     'MessageTimeout=10',
+                                     'MinJobAge=300',
+                                     'MpiDefault=none',
+                                     'OverTimeLimit=0',
+                                     'PluginDir=/usr/lib64/slurm',
+                                     'PreemptMode=OFF',
+                                     'PreemptType=preempt/none',
+                                     'PriorityCalcPeriod=5',
+                                     'PriorityDecayHalfLife=7-0',
+                                     'PriorityFavorSmall=NO',
+                                     'PriorityMaxAge=7-0',
+                                     'PrioritySiteFactorPlugin=site_factor/none',
+                                     'PriorityType=priority/basic',
+                                     'PriorityUsageResetPeriod=NONE',
+                                     'PriorityWeightAge=0',
+                                     'PriorityWeightAssoc=0',
+                                     'PriorityWeightFairshare=0',
+                                     'PriorityWeightJobSize=0',
+                                     'PriorityWeightPartition=0',
+                                     'PriorityWeightQOS=0',
+                                     'PriorityWeightTRES=0',
+                                     'ProctrackType=proctrack/cgroup',
+                                     'PropagatePrioProcess=0',
+                                     'PropagateResourceLimits=ALL',
+                                     'ResumeRate=300',
+                                     'ResumeTimeout=60',
+                                     'ResvOverRun=0',
+                                     'ReturnToService=0',
+                                     'RoutePlugin=route/default',
+                                     'SchedulerTimeSlice=30',
+                                     'SchedulerType=sched/backfill',
+                                     'SelectType=select/linear',
+                                     'SlurmctldDebug=info',
+                                     'SlurmctldHost=slurm',
+                                     'SlurmctldLogFile=/var/log/slurm/slurmctld.log',
+                                     'SlurmctldPidFile=/var/run/slurmctld.pid',
+                                     'SlurmctldPort=6817',
+                                     'SlurmctldTimeout=120',
+                                     'SlurmdDebug=info',
+                                     'SlurmdLogFile=/var/log/slurm/slurmd.log',
+                                     'SlurmdPidFile=/var/run/slurmd.pid',
+                                     'SlurmdPort=6818',
+                                     'SlurmdSpoolDir=/var/spool/slurmd',
+                                     'SlurmdTimeout=300',
+                                     'SlurmdUser=root',
+                                     'SlurmSchedLogFile=/var/log/slurm/slurmsched.log',
+                                     'SlurmSchedLogLevel=0',
+                                     'SlurmUser=slurm',
+                                     'StateSaveLocation=/var/spool/slurmctld.state',
+                                     'SuspendRate=60',
+                                     'SuspendTime=-1',
+                                     'SuspendTimeout=30',
+                                     'SwitchType=switch/none',
+                                     'TaskPlugin=task/affinity,task/cgroup',
+                                     'TCPTimeout=2',
+                                     'TmpFS=/tmp',
+                                     'TopologyPlugin=topology/none',
+                                     'TreeWidth=50',
+                                     'UnkillableStepTimeout=60',
+                                     'UsePAM=0',
+                                     'VSizeFactor=0',
+                                     'WaitTime=0',
+                                   ])
   end
 
   it do
@@ -161,7 +144,7 @@ shared_examples_for 'slurm::common::config' do
   end
 
   it do
-    if slurmd
+    if slurmd || slurmctld
       is_expected.to contain_concat('slurm-gres.conf').with(ensure: 'present',
                                                             path: '/etc/slurm/gres.conf',
                                                             owner: 'root',
@@ -173,27 +156,11 @@ shared_examples_for 'slurm::common::config' do
   end
 
   it do
-    is_expected.to contain_file('plugstack.conf.d').with(ensure: 'directory',
-                                                         path: '/etc/slurm/plugstack.conf.d',
-                                                         recurse: 'true',
-                                                         purge: 'true',
+    is_expected.to contain_concat('plugstack.conf').with(ensure: 'present',
+                                                         path: '/etc/slurm/plugstack.conf',
                                                          owner: 'root',
                                                          group: 'root',
                                                          mode: '0644')
-  end
-
-  it do
-    is_expected.to contain_file('plugstack.conf').with(ensure: 'file',
-                                                       path: '/etc/slurm/plugstack.conf',
-                                                       owner: 'root',
-                                                       group: 'root',
-                                                       mode: '0644')
-  end
-
-  it do
-    verify_exact_file_contents(catalogue, 'plugstack.conf', [
-                                 'include /etc/slurm/plugstack.conf.d/*.conf',
-                               ])
   end
 
   it do
@@ -233,7 +200,7 @@ shared_examples_for 'slurm::common::config' do
     let(:param_override) { { use_syslog: true } }
 
     it do
-      is_expected.to contain_file('slurm.conf') \
+      is_expected.to contain_concat__fragment('slurm.conf-config') \
         .without_content(%r{^SlurmctldLogFile.*$}) \
         .without_content(%r{^SlurmdLogFile.*$})
     end
@@ -250,6 +217,7 @@ shared_examples_for 'slurm::common::config' do
             'bf_continue' => '',
             'defer' => '',
             'batch_sched_delay' => '3',
+            'bf_max_job_start' => 0,
           },
           'TaskPlugin' => ['task/affinity', 'task/cgroup'],
         },
@@ -257,13 +225,13 @@ shared_examples_for 'slurm::common::config' do
     end
 
     it 'overrides values' do
-      verify_contents(catalogue, 'slurm.conf', [
-                        'PreemptMode=SUSPEND,GANG',
-                        'PreemptType=preempt/partition_prio',
-                        'ProctrackType=proctrack/linuxproc',
-                        'SchedulerParameters=bf_continue,defer,batch_sched_delay=3',
-                        'TaskPlugin=task/affinity,task/cgroup',
-                      ])
+      verify_fragment_contents(catalogue, 'slurm.conf-config', [
+                                 'PreemptMode=SUSPEND,GANG',
+                                 'PreemptType=preempt/partition_prio',
+                                 'ProctrackType=proctrack/linuxproc',
+                                 'SchedulerParameters=bf_continue,defer,batch_sched_delay=3,bf_max_job_start=0',
+                                 'TaskPlugin=task/affinity,task/cgroup',
+                               ])
     end
   end
 
@@ -278,10 +246,10 @@ shared_examples_for 'slurm::common::config' do
     end
 
     it 'overrides values' do
-      verify_contents(catalogue, 'slurm.conf', [
-                        'SlurmctldHost=slurmctld1(10.0.0.1)',
-                        'SlurmctldHost=slurmctld2(10.0.0.2)',
-                      ])
+      verify_fragment_contents(catalogue, 'slurm.conf-config', [
+                                 'SlurmctldHost=slurmctld1(10.0.0.1)',
+                                 'SlurmctldHost=slurmctld2(10.0.0.2)',
+                               ])
     end
   end
 
@@ -304,12 +272,12 @@ shared_examples_for 'slurm::common::config' do
     end
 
     it do
-      verify_exact_fragment_contents(catalogue, 'slurm-partitions.conf-DEFAULT', [
+      verify_exact_fragment_contents(catalogue, 'slurm.conf-partition-DEFAULT', [
                                        'PartitionName=DEFAULT Nodes=c[0-9] State=UP',
                                      ])
     end
     it do
-      verify_exact_fragment_contents(catalogue, 'slurm-partitions.conf-general', [
+      verify_exact_fragment_contents(catalogue, 'slurm.conf-partition-general', [
                                        'PartitionName=general Default=YES MaxNodes=1 MaxTime=48:00:00 State=UP',
                                      ])
     end
@@ -333,12 +301,12 @@ shared_examples_for 'slurm::common::config' do
     end
 
     it do
-      verify_exact_fragment_contents(catalogue, 'slurm-nodes.conf-c01', [
+      verify_exact_fragment_contents(catalogue, 'slurm.conf-node-c01', [
                                        'NodeName=c01 NodeHostname=c01 NodeAddr=10.0.0.1 CPUs=4 State=UNKNOWN',
                                      ])
     end
     it do
-      verify_exact_fragment_contents(catalogue, 'slurm-nodes.conf-c02', [
+      verify_exact_fragment_contents(catalogue, 'slurm.conf-node-c02', [
                                        'NodeName=c02 NodeHostname=c02 NodeAddr=10.0.0.2 CPUs=4 State=UNKNOWN',
                                      ])
     end
@@ -392,14 +360,14 @@ shared_examples_for 'slurm::common::config' do
     it do
       if slurmd
         verify_exact_fragment_contents(catalogue, 'slurm-gres.conf-gpu', [
-                                         'Name=gpu NodeName=c0[1-2] File=/dev/nvidia[0-1]',
+                                         'NodeName=c0[1-2] Name=gpu File=/dev/nvidia[0-1]',
                                        ])
       end
     end
     it do
       if slurmd
         verify_exact_fragment_contents(catalogue, 'slurm-gres.conf-gpu2', [
-                                         'Name=gpu NodeName=c0[3-4] File=/dev/nvidia[0-3]',
+                                         'NodeName=c0[3-4] Name=gpu File=/dev/nvidia[0-3]',
                                        ])
       end
     end
@@ -409,11 +377,8 @@ shared_examples_for 'slurm::common::config' do
     let(:param_override) {  { manage_slurm_conf: false } }
 
     it { is_expected.not_to contain_file('slurm.conf') }
-    it { is_expected.not_to contain_concat('slurm-partitions.conf') }
-    it { is_expected.not_to contain_concat('slurm-nodes.conf') }
     it { is_expected.not_to contain_concat('slurm-topology.conf') }
-    it { is_expected.not_to contain_file('plugstack.conf.d') }
-    it { is_expected.not_to contain_file('plugstack.conf') }
+    it { is_expected.not_to contain_concat('plugstack.conf') }
     it { is_expected.not_to contain_file('slurm-cgroup.conf') }
     it { is_expected.not_to contain_file('cgroup_allowed_devices_file.conf') }
   end
@@ -421,20 +386,20 @@ shared_examples_for 'slurm::common::config' do
   context 'when slurm_conf_source => "file:///path/slurm.conf"' do
     let(:param_override) {  { slurm_conf_source: 'file:///path/slurm.conf' } }
 
-    it { is_expected.to contain_file('slurm.conf').without_content }
-    it { is_expected.to contain_file('slurm.conf').with_source('file:///path/slurm.conf') }
+    it { is_expected.to contain_concat__fragment('slurm.conf-config').without_content }
+    it { is_expected.to contain_concat__fragment('slurm.conf-config').with_source('file:///path/slurm.conf') }
   end
 
   context 'when partition_source => "file:///path/partitions.conf"' do
     let(:param_override) { { partition_source: 'file:///path/partitions.conf' } }
 
-    it { is_expected.to contain_concat__fragment('slurm-partitions.conf-source').with_source('file:///path/partitions.conf') }
+    it { is_expected.to contain_concat__fragment('slurm.conf-partition-source').with_source('file:///path/partitions.conf') }
   end
 
   context 'when node_source => "file:///path/nodes.conf"' do
     let(:param_override) {  { node_source: 'file:///path/nodes.conf' } }
 
-    it { is_expected.to contain_concat__fragment('slurm-nodes.conf-source').with_source('file:///path/nodes.conf') }
+    it { is_expected.to contain_concat__fragment('slurm.conf-node-source').with_source('file:///path/nodes.conf') }
   end
 
   context 'when topology_source => "file:///path/topology.conf"' do

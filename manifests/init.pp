@@ -9,6 +9,7 @@
 # @param slurmdbd
 # @param database
 # @param client
+# @param slurmrestd
 # @param repo_baseurl
 # @param install_method
 # @param install_prefix
@@ -33,6 +34,7 @@
 # @param slurmctld_restart_on_failure
 # @param slurmdbd_restart_on_failure
 # @param reload_services
+# @param restart_services
 # @param manage_slurm_user
 # @param slurm_user_group
 # @param slurm_group_gid
@@ -59,16 +61,18 @@
 # @param state_dir_nfs_options
 # @param job_checkpoint_dir_nfs_device
 # @param job_checkpoint_dir_nfs_options
+# @param job_submit_lua_source
+# @param job_submit_lua_content
 # @param cluster_name
 # @param slurmctld_host
 # @param slurmdbd_host
 # @param conf_dir
 # @param log_dir
-# @param log_dir# @param 
+# @param log_dir
 # @param plugstack_conf
-# @param plugstack_conf_d
-# @param purge_plugstack_conf_d
 # @param spank_plugins
+# @param configless
+# @param conf_server
 # @param slurm_conf_override
 # @param slurm_conf_template
 # @param slurm_conf_source
@@ -82,6 +86,7 @@
 # @param gres_source
 # @param partitions
 # @param nodes
+# @param nodesets
 # @param switches
 # @param greses
 # @param slurmd_log_file
@@ -107,15 +112,23 @@
 # @param manage_epilog
 # @param epilog
 # @param epilog_source
+# @param epilog_sourceselect
 # @param manage_prolog
 # @param prolog
 # @param prolog_source
+# @param prolog_sourceselect
 # @param manage_task_epilog
 # @param task_epilog
 # @param task_epilog_source
 # @param manage_task_prolog
 # @param task_prolog
 # @param task_prolog_source
+# @param slurmrestd_listen_address
+# @param slurmrestd_service_ensure
+# @param slurmrestd_service_enable
+# @param slurmrestd_service_limits
+# @param slurmrestd_options
+# @param slurmrestd_restart_on_failure
 # @param cgroup_conf_template
 # @param cgroup_conf_source
 # @param cgroup_automount
@@ -137,13 +150,17 @@
 # @param cgroup_task_affinity
 # @param slurm_sh_template
 # @param slurm_csh_template
+# @param profile_d_env_vars
 # @param slurmd_port
 # @param slurmctld_port
 # @param slurmdbd_port
+# @param slurmrestd_port
 # @param tuning_net_core_somaxconn
 # @param clusters
 # @param qoses
 # @param reservations
+# @param accounts
+# @param users
 # @param purge_qos
 #
 class slurm (
@@ -153,6 +170,7 @@ class slurm (
   Boolean $slurmdbd   = false,
   Boolean $database   = false,
   Boolean $client     = true,
+  Boolean $slurmrestd = false,
 
   # Repo (optional)
   Optional[Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl, Pattern[/^file:\/\//]]] $repo_baseurl = undef,
@@ -186,6 +204,7 @@ class slurm (
   Boolean $slurmctld_restart_on_failure               = true,
   Boolean $slurmdbd_restart_on_failure                = true,
   Boolean $reload_services                            = true,
+  Boolean $restart_services                           = false,
 
   # User and group management
   $manage_slurm_user      = true,
@@ -220,6 +239,8 @@ class slurm (
   $state_dir_nfs_options          = 'rw,sync,noexec,nolock,auto',
   $job_checkpoint_dir_nfs_device  = undef,
   $job_checkpoint_dir_nfs_options = 'rw,sync,noexec,nolock,auto',
+  $job_submit_lua_source          = undef,
+  $job_submit_lua_content         = undef,
 
   # Cluster config
   $cluster_name       = 'linux',
@@ -230,26 +251,25 @@ class slurm (
   Stdlib::Absolutepath $conf_dir = '/etc/slurm',
   Stdlib::Absolutepath $log_dir  = '/var/log/slurm',
 
-  # SPANK
-  $plugstack_conf         = undef,
-  $plugstack_conf_d       = undef,
-  $purge_plugstack_conf_d = true,
-  $spank_plugins          = {},
+  # configless
+  Boolean $configless            = false,
+  Optional[String] $conf_server  = undef,
 
   # slurm.conf - overrides
   $slurm_conf_override    = {},
   $slurm_conf_template    = 'slurm/slurm.conf/slurm.conf.erb',
   $slurm_conf_source      = undef,
-  $partition_template     = 'slurm/slurm.conf/partition.conf.erb',
+  $partition_template     = 'slurm/slurm.conf/conf_values.erb',
   $partition_source       = undef,
-  $node_template          = 'slurm/slurm.conf/node.conf.erb',
+  $node_template          = 'slurm/slurm.conf/conf_values.erb',
   $node_source            = undef,
-  $switch_template        = 'slurm/switch.conf.erb',
+  $switch_template        = 'slurm/slurm.conf/conf_values.erb',
   $topology_source        = undef,
-  $gres_template          = 'slurm/gres.conf.erb',
+  $gres_template          = 'slurm/slurm.conf/conf_values.erb',
   $gres_source            = undef,
   $partitions             = {},
   $nodes                  = {},
+  $nodesets               = {},
   $switches               = {},
   $greses                 = {},
 
@@ -287,15 +307,25 @@ class slurm (
   $manage_epilog                = true,
   $epilog                       = undef,
   $epilog_source                = undef,
+  $epilog_sourceselect          = undef,
   $manage_prolog                = true,
   $prolog                       = undef,
   $prolog_source                = undef,
+  $prolog_sourceselect          = undef,
   $manage_task_epilog           = true,
   $task_epilog                  = undef,
   $task_epilog_source           = undef,
   $manage_task_prolog           = true,
   $task_prolog                  = undef,
   $task_prolog_source           = undef,
+
+  # slurmrestd
+  String $slurmrestd_listen_address = '0.0.0.0',
+  Enum['running','stopped'] $slurmrestd_service_ensure = 'running',
+  Boolean $slurmrestd_service_enable                   = true,
+  Hash $slurmrestd_service_limits                      = {},
+  String $slurmrestd_options                           = '',
+  Boolean $slurmrestd_restart_on_failure               = true,
 
   # cgroups
   String $cgroup_conf_template             = 'slurm/cgroup/cgroup.conf.erb',
@@ -321,19 +351,24 @@ class slurm (
   # profile.d
   $slurm_sh_template  = 'slurm/profile.d/slurm.sh.erb',
   $slurm_csh_template = 'slurm/profile.d/slurm.csh.erb',
+  Hash $profile_d_env_vars = {},
 
   # ports
   Stdlib::Port $slurmd_port    = 6818,
   Stdlib::Port $slurmctld_port = 6817,
   Stdlib::Port $slurmdbd_port  = 6819,
+  Stdlib::Port $slurmrestd_port = 6820,
 
   # tuning
   Variant[Boolean, Integer] $tuning_net_core_somaxconn = 1024,
 
   # resource management
+  Hash $spank_plugins = {},
   Hash $clusters = {},
   Hash $qoses = {},
   Hash $reservations = {},
+  Hash $accounts = {},
+  Hash $users = {},
   Boolean $purge_qos = false,
 ) inherits slurm::params {
 
@@ -345,19 +380,16 @@ class slurm (
     fail("Unsupported OS: ${os}, module ${module_name} only supports RedHat 7 and 8")
   }
 
-  if ! ($slurmd or $slurmctld or $slurmdbd or $database or $client) {
-    fail("Module ${module_name}: Must select a mode of either slurmd, slurmctld, slurmdbd database, or client.")
+  if ! ($slurmd or $slurmctld or $slurmdbd or $database or $client or $slurmrestd) {
+    fail("Module ${module_name}: Must select a mode of either slurmd, slurmctld, slurmrestd, slurmdbd database, or client.")
   }
 
   $slurm_conf_path                    = "${conf_dir}/slurm.conf"
-  $node_conf_path                     = "${conf_dir}/nodes.conf"
-  $partition_conf_path                = "${conf_dir}/partitions.conf"
   $topology_conf_path                 = "${conf_dir}/topology.conf"
   $gres_conf_path                     = "${conf_dir}/gres.conf"
   $slurmdbd_conf_path                 = "${conf_dir}/slurmdbd.conf"
-  $plugstack_conf_path                = pick($plugstack_conf, "${conf_dir}/plugstack.conf")
-  $plugstack_conf_d_path              = pick($plugstack_conf_d, "${conf_dir}/plugstack.conf.d")
   $cgroup_conf_path                   = "${conf_dir}/cgroup.conf"
+  $plugstack_conf_path                = "${conf_dir}/plugstack.conf"
 
   if $install_prefix in ['/usr','/usr/local'] {
     $profiled_add_path = false
@@ -398,7 +430,8 @@ class slurm (
     'EpilogSlurmctld' => undef, #TODO
     'HealthCheckProgram' => $_health_check_program,
     'JobCheckpointDir' => $job_checkpoint_dir,
-    'PlugStackConfig' => $plugstack_conf_path,
+    # Must remained undefined to support configless, we save to same directory as slurm.conf
+    'PlugStackConfig' => undef,
     'Prolog' => $prolog,
     'PrologSlurmctld' => undef, #TODO
     'ResvEpilog' => undef, #TODO
@@ -417,10 +450,6 @@ class slurm (
     'StateSaveLocation' => $state_save_location,
     'TaskEpilog' => $task_epilog,
     'TaskProlog' => $task_prolog,
-    'UsePAM' => $install_pam ? {
-      true    => '1',
-      default => '0',
-    },
   }
 
   $slurm_conf_defaults  = merge($::slurm::params::slurm_conf_defaults, $slurm_conf_local_defaults)
@@ -457,16 +486,22 @@ class slurm (
 
   if $slurmd and $slurmd_service_ensure == 'running' and $reload_services and $facts['slurmd_version'] {
     $slurmd_notify = Exec['slurmd reload']
+  } elsif $slurmd and $slurmd_service_ensure == 'running' and $restart_services {
+    $slurmd_notify = Service['slurmd']
   } else {
     $slurmd_notify = undef
   }
   if $slurmctld and $slurmctld_service_ensure == 'running' and $reload_services and $facts['slurmctld_version'] {
     $slurmctld_notify = Exec['scontrol reconfig']
+  } elsif $slurmctld and $slurmctld_service_ensure == 'running' and $restart_services {
+    $slurmctld_notify = Service['slurmctld']
   } else {
     $slurmctld_notify = undef
   }
   if $slurmdbd and $slurmdbd_service_ensure == 'running' and $reload_services and $facts['slurmdbd_version'] {
     $slurmdbd_notify = Exec['slurmdbd reload']
+  } elsif $slurmdbd and $slurmdbd_service_ensure == 'running' and $restart_services {
+    $slurmdbd_notify = Service['slurmdbd']
   } else {
     $slurmdbd_notify = undef
   }
@@ -508,6 +543,10 @@ class slurm (
 
   if $client {
     contain slurm::client
+  }
+
+  if $slurmrestd {
+    contain slurm::slurmrestd
   }
 
   contain slurm::resources

@@ -20,7 +20,9 @@
 <%-
 values = []
 value.each do |k,v|
-  if v.empty? || v == 'none' || v == 'undef' || v.nil?
+  if v.is_a?(Numeric)
+    values << "#{k}=#{v}"
+  elsif v.empty? || v == 'none' || v == 'undef' || v.nil? || v == :undef
     values << k
   else
     values << "#{k}=#{v}"
@@ -32,6 +34,3 @@ end
 <%= key %>=<%= value %>
 <% end -%>
 <% end -%>
-
-Include <%= scope['slurm::node_conf_path'] %>
-Include <%= scope['slurm::partition_conf_path'] %>

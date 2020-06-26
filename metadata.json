@@ -25,8 +25,8 @@
       "version_requirement": ">=2.3.0 <11.0.0"
     },
     {
-      "name": "stahnma/epel",
-      "version_requirement": ">= 0.0.6 <2.0.0"
+      "name": "puppet/epel",
+      "version_requirement": ">= 3.0.0 <4.0.0"
     },
     {
       "name": "herculesteam/augeasproviders_sysctl",
@@ -54,7 +54,7 @@
     },
     {
       "name": "treydock/slurm_providers",
-      "version_requirement": ">= 0.2.0 <1.0.0"
+      "version_requirement": ">= 0.5.0 <1.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -91,7 +91,7 @@
     "hpc",
     "batch"
   ],
-  "pdk-version": "1.14.1",
+  "pdk-version": "1.16.0",
   "template-url": "https://github.com/treydock/pdk-templates.git#master",
-  "template-ref": "heads/master-0-g64aa7a6"
+  "template-ref": "heads/master-0-geb8119e"
 }

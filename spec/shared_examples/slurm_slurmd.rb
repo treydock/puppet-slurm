@@ -5,12 +5,8 @@ shared_examples_for 'slurm::slurmd' do
   it { is_expected.to contain_class('slurm::common::install').that_comes_before('Class[slurm::common::setup]') }
   it { is_expected.to contain_class('slurm::common::setup').that_comes_before('Class[slurm::common::config]') }
   it { is_expected.to contain_class('slurm::common::config').that_comes_before('Class[slurm::slurmd::config]') }
-  it { is_expected.to contain_class('slurm::slurmd::config').that_notifies('Class[slurm::slurmd::service]') }
+  it { is_expected.to contain_class('slurm::slurmd::config').that_comes_before('Class[slurm::slurmd::service]') }
   it { is_expected.to contain_class('slurm::slurmd::service') }
-
-  it { is_expected.to contain_class('slurm::common::install').that_notifies('Class[slurm::slurmd::service]') }
-  it { is_expected.to contain_class('slurm::common::setup').that_notifies('Class[slurm::slurmd::service]') }
-  it { is_expected.to contain_class('slurm::common::config').that_notifies('Class[slurm::slurmd::service]') }
 
   it_behaves_like 'slurm::common::user'
   it_behaves_like 'slurm::common::install::rpm'

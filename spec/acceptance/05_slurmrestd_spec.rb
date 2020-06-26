@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'slurmdbd' do
+describe 'slurmrestd' do
   if fact('virtual') == 'docker'
     let(:slurm_user) { 'root' }
   else
@@ -15,8 +15,7 @@ describe 'slurmdbd' do
       include mysql::server
       class { 'slurm':
         client => false,
-        slurmdbd => true,
-        database => true,
+        slurmrestd => true,
       }
       EOS
 
@@ -30,12 +29,10 @@ describe 'slurmdbd' do
     nodes.each do |node|
       it_behaves_like 'common::user', node
       unless RSpec.configuration.slurm_repo_baseurl.nil?
-        it_behaves_like 'common::install-slurmdbd', node
+        it_behaves_like 'common::install-slurmrestd', node
       end
-      it_behaves_like 'common::setup', node
       it_behaves_like 'common::config', node
-      it_behaves_like 'slurmdbd::config', node
-      it_behaves_like 'slurmdbd::service', node
+      it_behaves_like 'slurmrestd::service', node
     end
   end
 end
