@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.9.20
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="file_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><div id='filecontents'>
+<h1 id="label-puppet-slurm">puppet-slurm</h1>
+
+<p><a href="https://forge.puppetlabs.com/treydock/slurm"><img
+src="http://img.shields.io/puppetforge/v/treydock/slurm.svg"></a> <a
+href="https://travis-ci.org/treydock/puppet-slurm"><img
+src="https://travis-ci.org/treydock/puppet-slurm.svg?branch=master"></a></p>
+
+<h4 id="label-Table+of+Contents">Table of Contents</h4>
+<ol><li>
+<p><a href="#label-Overview">Overview</a></p>
+<ul><li>
+<p><a href="#label-Supported+versions+of+slurm">Supported Versions of SLURM</a></p>
+</li></ul>
+</li><li>
+<p><a href="#label-Usage">Usage - Configuration options</a></p>
+<ul><li>
+<p><a href="#label-Setup">Setup</a></p>
+</li><li>
+<p><a href="#label-Dependencies">Dependencies</a></p>
+</li><li>
+<p><a href="#label-Common">Common</a></p>
+</li><li>
+<p><a href="#label-Roles">Roles</a></p>
+</li><li>
+<p><a href="#label-Role+slurmdbd+and+database">Role: slurmdbd</a></p>
+</li><li>
+<p><a href="#label-Role+slurmctld">Role: slurmctld</a></p>
+</li><li>
+<p><a href="#label-Role+slurmd">Role: slurmd</a></p>
+</li><li>
+<p><a href="#label-Role+client">Role: client</a></p>
+</li></ul>
+</li><li>
+<p><a href="#label-Reference">Reference - Parameter and detailed reference to all
+options</a></p>
+</li><li>
+<p><a href="#label-Limitations">Limitations - OS compatibility, etc.</a></p>
+</li></ol>
+
+<h2 id="label-Overview">Overview</h2>
+
+<p>Manage SLURM.</p>
+
+<h3 id="label-Supported+Versions+of+SLURM">Supported Versions of SLURM</h3>
+
+<p>This module is designed to work with SLURM 20.02.x.</p>
+
+<h2 id="label-Usage">Usage</h2>
+
+<p>This module is designed so the majority of configuration changes are made
+through the <code>slurm</code> class directly.</p>
+
+<p>In most cases all that is needed to begin using this module is to have
+<code>include slurm</code> defined. The following usage examples are all
+assuming that a host has <code>include slurm</code> performed already and
+the rest of the configuration is done via Hiera.</p>
+
+<p>It&#39;s advisable to put as much of the Hiera data as possible in a
+location like <code>common.yaml</code>.</p>
+
+<h3 id="label-Setup">Setup</h3>
+
+<p>In order to use SLURM the munge daemon must be configured. This module will
+include the <code>munge</code> class from <a
+href="https://forge.puppet.com/treydock/munge">treydock/munge</a> but will
+not configure munge. The minimial configuration needed is to set the munge
+key source to the munge key stored in a module somewhere.</p>
+
+<pre class="code ruby"><code class="ruby">munge::munge_key_source: &quot;puppet:///modules/profile/munge.key&quot;
+</code></pre>
+
+<p>As of version v2.3.0 you can also provide the content of the munge key, for
+example if your using EYAML in Hiera.</p>
+
+<pre class="code ruby"><code class="ruby">munge::munge_key_content: &quot;supersecret&quot;
+</code></pre>
+
+<h3 id="label-Dependencies">Dependencies</h3>
+
+<p>The following parameter changes can be made to avoid dependencies on
+several modules</p>
+<ul><li>
+<p><code>slurm::manage_firewall: false</code> - Disable dependency on
+puppetlabs/firewall</p>
+</li><li>
+<p><code>slurm::use_nhc: false</code> OR <code>slurm::include_nhc:
+false</code> - Disable dependency on treydock/nhc</p>
+</li><li>
+<p><code>slurm::manage_rsyslog: false</code> OR <code>slurm::use_syslog:
+false</code> - Disable dependenchy on saz/rsyslog</p>
+</li><li>
+<p><code>slurm::manage_logrotate: false</code> - Disable dependency on
+puppet/logrotate</p>
+</li><li>
+<p><code>slurm::source_install_manage_alternatives: false</code> - When
+<code>install_method</code> is <code>source</code> and installing on a
+system without a default Python install, this will disable a dependency on
+puppet/alternatives</p>
+</li><li>
+<p><code>slurm::tuning_net_core_somaxconn: false</code> - Disable dependency
+on herculesteam/augeasproviders_sysctl</p>
+</li></ul>
+
+<p><strong>NOTE</strong>: If <code>use_syslog</code> is set to
+<code>true</code> there is a soft dependency on <a
+href="https://forge.puppet.com/saz/rsyslog">saz/rsyslog</a>
+<strong>NOTE</strong>: If <code>use_nhc</code> and <code>include_nhc</code>
+are set to <code>true</code> there is a soft dependency on <a
+href="https://forge.puppet.com/treydock/nhc">treydock/nhc</a></p>
+
+<h3 id="label-common">common</h3>
+
+<p>The following could be included in <code>common.yaml</code>. This assumes
+your site has access to SLURM RPMs.</p>
+
+<pre class="code ruby"><code class="ruby">slurm::repo_baseurl: &quot;https://repo.hpc.osc.edu/internal/slurm/%{facts.os.release.major}/&quot;
+slurm::install_torque_wrapper: true
+slurm::install_pam: true
+slurm::slurm_group_gid: 93
+slurm::slurm_user_uid: 93
+slurm::slurm_user_home: /var/lib/slurm
+slurm::manage_firewall: false
+slurm::use_syslog: true
+slurm::cluster_name: example
+slurm::slurmctld_host:
+  - slurmctld.example.com
+slurm::slurmdbd_host: slurmdbd.example.com
+slurm::greses:
+  nvml:
+    auto_detect: nvml
+slurm::slurmd_spool_dir: /var/spool/slurmd
+slurm::slurm_conf_override:
+  AccountingStorageTRES:
+    - gres/gpu
+    - gres/gpu:tesla
+    - license/ansys
+  Licenses:
+    - ansys:2
+  ReturnToService: 2
+  SelectType: select/cons_tres
+  SelectTypeParameters:
+    - CR_CPU
+slurm::partitions:
+  batch:
+    default: &#39;YES&#39;
+    def_mem_per_cpu: 1700
+    max_mem_per_cpu: 1750
+    nodes: slurmd01
+slurm::nodes:
+  slurmd01:
+    node_hostname: slurmd01.example.com
+    cpus: 4
+    threads_per_core: 1
+    cores_per_socket: 1
+    sockets: 4
+    real_memory: 7000
+</code></pre>
+
+<h3 id="label-Roles">Roles</h3>
+
+<p>The behavior of this module is determined by 5 booleans that set the role
+for a host.</p>
+<ul><li>
+<p><code>client</code> - When true will setup a host as SLURM client</p>
+</li><li>
+<p><code>slurmctld</code> - When true will setup a host to run slurmctld</p>
+</li><li>
+<p><code>slurmdbd</code> - When true will setup a host to run slurmdbd</p>
+</li><li>
+<p><code>database</code> - When true will setup a host to manage the slurmdbd
+MySQL database</p>
+</li><li>
+<p><code>slurmd</code> - When true will setup a host to run slurmd</p>
+</li></ul>
+
+<p><strong>NOTE:</strong> The only role enabled by default is
+<code>client</code>.</p>
+
+<h3 id="label-Role-3A+slurmdbd+and+database">Role: slurmdbd and database</h3>
+
+<p>The following example will setup an instance of slurmdbd that exports the
+database resource that can be collected by a database server:</p>
+
+<pre class="code ruby"><code class="ruby">slurm::client: true
+slurm::slurmdbd: true
+slurm::database: true
+slurm::slurmdbd_storage_host: db.example.com
+slurm::slurmdbd_storage_loc: slurm_acct_db
+slurm::slurmdbd_storage_user: slurmdbd
+slurm::slurmdbd_storage_pass: changeme
+slurm::export_database: true
+slurm::export_database_tag: &quot;%{lookup(&#39;slurm::slurmdbd_storage_host&#39;)}&quot;
+slurm::slurmdbd_conf_override:
+  MaxQueryTimeRange: &#39;90-00:00:00&#39;
+  MessageTimeout: &#39;10&#39;
+</code></pre>
+
+<p>The database server would have something like the following to collect the
+db resources</p>
+
+<pre class="code ruby"><code class="ruby">Mysql::Db &lt;&lt;| tag == $facts[&#39;fqdn&#39;] |&gt;&gt;
+</code></pre>
+
+<p>The following example would avoid PuppetDB dependency and require including
+the <code>slurm</code> class on the MySQL server</p>
+
+<pre class="code ruby"><code class="ruby"># common.yaml
+slurm::slurmdbd_storage_host: db.example.com
+slurm::slurmdbd_storage_loc: slurm_acct_db
+slurm::slurmdbd_storage_user: slurmdbd
+slurm::slurmdbd_storage_pass: changeme
+# fqdn/db.example.com.yaml
+slurm::client: false
+slurm::database: true
+# fqdn/slurmdbd.example.com.yaml
+slurm::slurmdbd: true
+slurm::database: false
+</code></pre>
+
+<h3 id="label-Role-3A+slurmctld">Role: slurmctld</h3>
+
+<p>The following enables a host to act as the slurmctld daemon with a remote
+slurmdbd.</p>
+
+<pre class="code ruby"><code class="ruby">slurm::client: true
+slurm::slurmdbd: false
+slurm::database: false
+slurm::slurmctld: true
+</code></pre>
+
+<h3 id="label-Role-3A+slurmd">Role: slurmd</h3>
+
+<p>The following enables a host to act as a slurmd compute node</p>
+
+<pre class="code ruby"><code class="ruby">slurm::client: true
+slurm::slurmdbd: false
+slurm::database: false
+slurm::slurmctld: false
+slurm::slurmd: true
+</code></pre>
+
+<h3 id="label-Role-3A+client">Role: client</h3>
+
+<p>If the majority of your configuration is done in <code>common.yaml</code>
+then the default for <code>slurm::client</code> of <code>true</code> is
+sufficient to configure a host to act as a SLURM client.</p>
+
+<h2 id="label-Reference">Reference</h2>
+
+<p><a
+href="http://treydock.github.io/puppet-slurm/">treydock.github.io/puppet-slurm/</a></p>
+
+<h2 id="label-Limitations">Limitations</h2>
+
+<p>This module has been tested on:</p>
+<ul><li>
+<p>RedHat/CentOS 7 x86_64</p>
+</li></ul>
+
+<h2 id="label-Development">Development</h2>
+
+<h3 id="label-Testing">Testing</h3>
+
+<p>Testing requires the following dependencies:</p>
+<ul><li>
+<p>rake</p>
+</li><li>
+<p>bundler</p>
+</li></ul>
+
+<p>Install gem dependencies</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_install'>install</span>
+</code></pre>
+
+<p>Run unit tests</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_rake'>rake</span> <span class='id identifier rubyid_spec'>spec</span>
+</code></pre>
+
+<p>The following environment variables can be used to modify the behavior of
+the beaker tests:</p>
+<ul><li>
+<p><em>SLURM_BEAKER_repo_baseurl</em> - URL to Yum repository containing SLURM
+RPMs. If not present will install from source</p>
+</li><li>
+<p><em>SLURM_BEAKER_version</em> - Version of SLURM to install. Defaults to
+<strong>20.02.0</strong></p>
+</li></ul>
+
+<p>Example of running beaker tests using an internal repository, and leaving
+VMs running after the tests.</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_export'>export</span> <span class='const'>BEAKER_destroy</span><span class='op'>=</span><span class='id identifier rubyid_no'>no</span>
+<span class='id identifier rubyid_export'>export</span> <span class='const'>BEAKER_PUPPET_COLLECTION</span><span class='op'>=</span><span class='id identifier rubyid_puppet5'>puppet5</span>
+<span class='id identifier rubyid_export'>export</span> <span class='const'>BEAKER_set</span><span class='op'>=</span><span class='id identifier rubyid_centos'>centos</span><span class='op'>-</span><span class='int'>7</span>
+<span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_rake'>rake</span> <span class='id identifier rubyid_beaker'>beaker</span>
+</code></pre>
+</div></div>
+
+      <div id="footer">
+     Generated by <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>.
+</div>
+
+    </div>
+  </body>
+</html>
