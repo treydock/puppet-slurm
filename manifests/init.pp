@@ -158,8 +158,9 @@
 # @param reservations
 # @param accounts
 # @param users
+# @param licenses
 # @param purge_qos
-#
+# @param slurmdbd_conn_validator_timeout
 class slurm (
   # Roles
   Boolean $slurmd     = false,
@@ -366,7 +367,9 @@ class slurm (
   Hash $reservations = {},
   Hash $accounts = {},
   Hash $users = {},
+  Hash $licenses = {},
   Boolean $purge_qos = false,
+  Integer $slurmdbd_conn_validator_timeout = 30,
 ) inherits slurm::params {
 
   $osfamily = $facts.dig('os', 'family')

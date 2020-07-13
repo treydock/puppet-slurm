@@ -7,6 +7,10 @@ class slurm::resources {
     install_prefix => $slurm::install_prefix,
   }
 
+  slurmdbd_conn_validator { 'puppet':
+    timeout => $slurm::slurmdbd_conn_validator_timeout,
+  }
+
   $slurm::clusters.each |$name, $cluster| {
     slurm_cluster { $name: * => $cluster }
   }
@@ -21,6 +25,9 @@ class slurm::resources {
   }
   $slurm::users.each |$name, $user| {
     slurm_user { $name: * => $user }
+  }
+  $slurm::licenses.each |$name, $license| {
+    slurm_license { $name: * => $license }
   }
 
   if $slurm::purge_qos {

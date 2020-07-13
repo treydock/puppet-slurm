@@ -54,7 +54,7 @@
     },
     {
       "name": "treydock/slurm_providers",
-      "version_requirement": ">= 0.5.0 <1.0.0"
+      "version_requirement": ">= 0.6.0 <1.0.0"
     }
   ],
   "operatingsystem_support": [
