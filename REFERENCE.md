@@ -449,14 +449,6 @@ Data type: `Any`
 
 Default value: `true`
 
-##### `manage_state_dir_nfs_mount`
-
-
-
-##### `manage_job_checkpoint_dir_nfs_mount`
-
-
-
 ##### `manage_database`
 
 Data type: `Any`
@@ -574,10 +566,6 @@ Default value: '/var/log/slurm'
 
 
 Default value: '/var/log/slurm'
-
-##### `plugstack_conf`
-
-
 
 ##### `spank_plugins`
 
@@ -1307,6 +1295,14 @@ Data type: `Hash`
 
 Default value: {}
 
+##### `licenses`
+
+Data type: `Hash`
+
+
+
+Default value: {}
+
 ##### `purge_qos`
 
 Data type: `Boolean`
@@ -1314,6 +1310,14 @@ Data type: `Boolean`
 
 
 Default value: `false`
+
+##### `slurmdbd_conn_validator_timeout`
+
+Data type: `Integer`
+
+
+
+Default value: 30
 
 ## Defined types
 
@@ -1472,10 +1476,6 @@ Data type: `Any`
 
 
 Default value: `undef`
-
-##### `nodes`
-
-
 
 ##### `link_speed`
 
