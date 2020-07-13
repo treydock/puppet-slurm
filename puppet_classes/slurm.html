@@ -6,15 +6,15 @@
 <title>
   Puppet Class: slurm
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::slurm";
   relpath = '../';
 </script>
@@ -2097,6 +2097,19 @@
   
     <li>
       
+        <span class='name'>licenses</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>purge_qos</span>
       
       
@@ -2108,7 +2121,21 @@
       
     </li>
   
+    <li>
+      
+        <span class='name'>slurmdbd_conn_validator_timeout</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>30</tt>)</em>
+      
+      
+    </li>
+  
 </ul>
+
 
 
 </div><div class="method_details_list">
@@ -2118,7 +2145,6 @@
         <pre class="lines">
 
 
-163
 164
 165
 166
@@ -2505,10 +2531,13 @@
 547
 548
 549
-550</pre>
+550
+551
+552
+553</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 163</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 164</span>
 
 class slurm (
   # Roles
@@ -2716,7 +2745,9 @@ class slurm (
   Hash $reservations = {},
   Hash $accounts = {},
   Hash $users = {},
+  Hash $licenses = {},
   Boolean $purge_qos = false,
+  Integer $slurmdbd_conn_validator_timeout = 30,
 ) inherits slurm::params {
 
   $osfamily = $facts.dig(&#39;os&#39;, &#39;family&#39;)

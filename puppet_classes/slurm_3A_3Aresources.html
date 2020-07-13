@@ -6,15 +6,15 @@
 <title>
   Puppet Class: slurm::resources
   
-    &mdash; Documentation by YARD 0.9.20
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
-  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/style.css" type="text/css" />
 
-  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
-<script type="text/javascript" charset="utf-8">
+<script type="text/javascript">
   pathId = "puppet_classes::slurm::resources";
   relpath = '../';
 </script>
@@ -85,6 +85,7 @@
 <div class="tags">
   
 
+
 </div><div class="method_details_list">
   <table class="source_code">
     <tr>
@@ -118,7 +119,14 @@
 26
 27
 28
-29</pre>
+29
+30
+31
+32
+33
+34
+35
+36</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/resources.pp', line 3</span>
@@ -128,6 +136,10 @@ class slurm::resources {
 
   slurm_config { &#39;puppet&#39;:
     install_prefix =&gt; $slurm::install_prefix,
+  }
+
+  slurmdbd_conn_validator { &#39;puppet&#39;:
+    timeout =&gt; $slurm::slurmdbd_conn_validator_timeout,
   }
 
   $slurm::clusters.each |$name, $cluster| {
@@ -144,6 +156,9 @@ class slurm::resources {
   }
   $slurm::users.each |$name, $user| {
     slurm_user { $name: * =&gt; $user }
+  }
+  $slurm::licenses.each |$name, $license| {
+    slurm_license { $name: * =&gt; $license }
   }
 
   if $slurm::purge_qos {
