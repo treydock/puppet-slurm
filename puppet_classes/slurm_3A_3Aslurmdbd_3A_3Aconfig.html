@@ -126,7 +126,8 @@
 35
 36
 37
-38</pre>
+38
+39</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/slurmdbd/config.pp', line 2</span>
@@ -159,13 +160,14 @@ class slurm::slurmdbd::config {
   }
 
   file { &#39;slurmdbd.conf&#39;:
-    ensure  =&gt; &#39;file&#39;,
-    path    =&gt; $slurm::slurmdbd_conf_path,
-    owner   =&gt; $slurm::slurm_user,
-    group   =&gt; $slurm::slurm_user_group,
-    mode    =&gt; &#39;0600&#39;,
-    content =&gt; template(&#39;slurm/slurmdbd/slurmdbd.conf.erb&#39;),
-    notify  =&gt; $slurm::slurmdbd_notify,
+    ensure    =&gt; &#39;file&#39;,
+    path      =&gt; $slurm::slurmdbd_conf_path,
+    owner     =&gt; $slurm::slurm_user,
+    group     =&gt; $slurm::slurm_user_group,
+    mode      =&gt; &#39;0600&#39;,
+    content   =&gt; template(&#39;slurm/slurmdbd/slurmdbd.conf.erb&#39;),
+    notify    =&gt; $slurm::slurmdbd_notify,
+    show_diff =&gt; false,
   }
 }</pre>
       </td>
