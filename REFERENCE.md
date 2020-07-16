@@ -473,6 +473,22 @@ Data type: `Any`
 
 Default value: $facts['domain']
 
+##### `cli_filter_lua_source`
+
+Data type: `Any`
+
+
+
+Default value: `undef`
+
+##### `cli_filter_lua_content`
+
+Data type: `Any`
+
+
+
+Default value: `undef`
+
 ##### `state_dir_nfs_device`
 
 Data type: `Any`

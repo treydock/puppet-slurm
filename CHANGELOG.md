@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v0.3.0](https://github.com/treydock/puppet-slurm/tree/v0.3.0) (2020-07-16)
+
+[Full Changelog](https://github.com/treydock/puppet-slurm/compare/v0.2.1...v0.3.0)
+
+### Added
+
+- Add cli\_filter\_lua\_source and cli\_filter\_lua\_content parameters [\#5](https://github.com/treydock/puppet-slurm/pull/5) ([treydock](https://github.com/treydock))
+
 ## [v0.2.1](https://github.com/treydock/puppet-slurm/tree/v0.2.1) (2020-07-13)
 
 [Full Changelog](https://github.com/treydock/puppet-slurm/compare/v0.2.0...v0.2.1)
