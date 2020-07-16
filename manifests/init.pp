@@ -55,6 +55,8 @@
 # @param manage_database
 # @param export_database
 # @param export_database_tag
+# @param cli_filter_lua_source
+# @param cli_filter_lua_content
 # @param state_dir_nfs_device
 # @param state_dir_nfs_options
 # @param job_checkpoint_dir_nfs_device
@@ -231,6 +233,10 @@ class slurm (
   $manage_database     = true,
   $export_database     = false,
   $export_database_tag = $facts['domain'],
+
+  # client config
+  $cli_filter_lua_source  = undef,
+  $cli_filter_lua_content = undef,
 
   # Config - controller
   $state_dir_nfs_device           = undef,
