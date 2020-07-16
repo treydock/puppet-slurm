@@ -122,6 +122,17 @@ class slurm::common::config {
     }
   }
 
+  if $slurm::client and ($slurm::cli_filter_lua_source or $slurm::cli_filter_lua_content) {
+    file { "${slurm::conf_dir}/cli_filter.lua":
+      ensure  => 'file',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      source  => $slurm::cli_filter_lua_source,
+      content => $slurm::cli_filter_lua_content,
+    }
+  }
+
   if $slurm::tuning_net_core_somaxconn {
     sysctl { 'net.core.somaxconn':
       ensure => 'present',
