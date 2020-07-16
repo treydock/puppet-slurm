@@ -758,6 +758,32 @@
   
     <li>
       
+        <span class='name'>cli_filter_lua_source</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>cli_filter_lua_content</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>state_dir_nfs_device</span>
       
       
@@ -2145,8 +2171,6 @@
         <pre class="lines">
 
 
-164
-165
 166
 167
 168
@@ -2534,10 +2558,16 @@
 550
 551
 552
-553</pre>
+553
+554
+555
+556
+557
+558
+559</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 164</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 166</span>
 
 class slurm (
   # Roles
@@ -2609,6 +2639,10 @@ class slurm (
   $manage_database     = true,
   $export_database     = false,
   $export_database_tag = $facts[&#39;domain&#39;],
+
+  # client config
+  $cli_filter_lua_source  = undef,
+  $cli_filter_lua_content = undef,
 
   # Config - controller
   $state_dir_nfs_device           = undef,
