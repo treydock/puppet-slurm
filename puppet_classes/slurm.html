@@ -2058,6 +2058,19 @@
   
     <li>
       
+        <span class='name'>include_resources</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>clusters</span>
       
       
@@ -2171,7 +2184,6 @@
         <pre class="lines">
 
 
-166
 167
 168
 169
@@ -2564,10 +2576,14 @@
 556
 557
 558
-559</pre>
+559
+560
+561
+562
+563</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 166</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 167</span>
 
 class slurm (
   # Roles
@@ -2773,6 +2789,7 @@ class slurm (
   Variant[Boolean, Integer] $tuning_net_core_somaxconn = 1024,
 
   # resource management
+  Boolean $include_resources = false,
   Hash $spank_plugins = {},
   Hash $clusters = {},
   Hash $qoses = {},
@@ -2961,7 +2978,9 @@ class slurm (
     contain slurm::slurmrestd
   }
 
-  contain slurm::resources
+  if $include_resources {
+    contain slurm::resources
+  }
 }</pre>
       </td>
     </tr>
