@@ -155,6 +155,7 @@
 # @param slurmdbd_port
 # @param slurmrestd_port
 # @param tuning_net_core_somaxconn
+# @param include_resources
 # @param clusters
 # @param qoses
 # @param reservations
@@ -367,6 +368,7 @@ class slurm (
   Variant[Boolean, Integer] $tuning_net_core_somaxconn = 1024,
 
   # resource management
+  Boolean $include_resources = false,
   Hash $spank_plugins = {},
   Hash $clusters = {},
   Hash $qoses = {},
@@ -555,5 +557,7 @@ class slurm (
     contain slurm::slurmrestd
   }
 
-  contain slurm::resources
+  if $include_resources {
+    contain slurm::resources
+  }
 }
