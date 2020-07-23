@@ -1271,6 +1271,14 @@ Data type: `Variant[Boolean, Integer]`
 
 Default value: 1024
 
+##### `include_resources`
+
+Data type: `Boolean`
+
+
+
+Default value: `false`
+
 ##### `clusters`
 
 Data type: `Hash`
