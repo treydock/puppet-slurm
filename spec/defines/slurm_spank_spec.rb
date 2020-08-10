@@ -45,8 +45,28 @@ describe 'slurm::spank' do
       it { is_expected.not_to contain_package('SLURM SPANK x11 package') }
     end
 
-    context 'when arguments specified' do
+    context 'when arguments specified as Hash' do
       let(:params) { { arguments: { 'ssh_cmd' => 'ssh', 'helpertask_cmd' => '2>/tmp/log' } } }
+
+      it do
+        verify_fragment_contents(catalogue, 'plugstack.conf-x11', [
+                                   'optional x11.so helpertask_cmd=2>/tmp/log ssh_cmd=ssh',
+                                 ])
+      end
+    end
+
+    context 'when arguments specified as Array' do
+      let(:params) { { arguments: ['ssh_cmd=ssh', 'helpertask_cmd=2>/tmp/log'] } }
+
+      it do
+        verify_fragment_contents(catalogue, 'plugstack.conf-x11', [
+                                   'optional x11.so helpertask_cmd=2>/tmp/log ssh_cmd=ssh',
+                                 ])
+      end
+    end
+
+    context 'when arguments specified as String' do
+      let(:params) { { arguments: 'helpertask_cmd=2>/tmp/log ssh_cmd=ssh' } }
 
       it do
         verify_fragment_contents(catalogue, 'plugstack.conf-x11', [

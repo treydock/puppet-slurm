@@ -15,7 +15,7 @@
 #
 define slurm::spank (
   String $plugin = "${name}.so",
-  Hash $arguments = {},
+  Optional[Variant[Hash, Array, String]] $arguments = undef,
   Boolean $required = false,
   Boolean $manage_package = true,
   String $package_name = "slurm-spank-${name}",
