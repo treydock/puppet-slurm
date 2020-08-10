@@ -2,8 +2,17 @@
 values = []
 values << (@required ? "required" : "optional")
 values << @plugin
-@arguments.keys.sort.each do |k|
-  values << "#{k}=#{@arguments[k]}"
+case @arguments
+when Hash
+  @arguments.keys.sort.each do |k|
+    values << "#{k}=#{@arguments[k]}"
+  end
+when Array
+  @arguments.sort.each do |a|
+    values << a
+  end
+when String
+  values << @arguments
 end
 -%>
 <%= values.join(" ") %>
