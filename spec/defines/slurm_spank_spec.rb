@@ -18,7 +18,7 @@ describe 'slurm::spank' do
     it do
       is_expected.to contain_package('SLURM SPANK x11 package').only_with(ensure: 'installed',
                                                                           name: 'slurm-spank-x11',
-                                                                          before: 'Concat::Fragment[plugstack.conf-x11]')
+                                                                          notify: [])
     end
 
     it do
@@ -26,6 +26,7 @@ describe 'slurm::spank' do
         target: 'plugstack.conf',
         content: %r{^optional x11.so$},
         order: '50',
+        require: 'Package[SLURM SPANK x11 package]',
       )
     end
 
@@ -72,6 +73,14 @@ describe 'slurm::spank' do
         verify_fragment_contents(catalogue, 'plugstack.conf-x11', [
                                    'optional x11.so helpertask_cmd=2>/tmp/log ssh_cmd=ssh',
                                  ])
+      end
+    end
+
+    describe 'configless' do
+      let(:pre_condition) { "class { 'slurm': slurmd => true, configless => true }" }
+
+      it 'works without error' do
+        is_expected.to create_slurm__spank('x11')
       end
     end
 

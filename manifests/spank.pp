@@ -31,13 +31,15 @@ define slurm::spank (
   }
 
   if $manage_package {
+    $fragment_require = Package["SLURM SPANK ${name} package"]
     package { "SLURM SPANK ${name} package":
       ensure  => 'installed',
       name    => $package_name,
-      before  => Concat::Fragment["plugstack.conf-${name}"],
-      notify  => $slurm::slurmd_notify,
+      notify  => $slurm::service_notify,
       require => $package_require,
     }
+  } else {
+    $fragment_require = undef
   }
 
   if $slurm::manage_slurm_conf and ! $slurm::configless {
@@ -45,6 +47,7 @@ define slurm::spank (
       target  => 'plugstack.conf',
       content => template('slurm/spank/plugin.conf.erb'),
       order   => $order,
+      require => $fragment_require,
     }
   }
 
