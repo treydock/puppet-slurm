@@ -2079,11 +2079,11 @@ Default value: "${name}.so"
 
 ##### `arguments`
 
-Data type: `Hash`
+Data type: `Optional[Variant[Hash, Array, String]]`
 
 Arguments for the plugin
 
-Default value: {}
+Default value: `undef`
 
 ##### `required`
 
