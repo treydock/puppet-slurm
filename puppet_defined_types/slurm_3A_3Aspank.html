@@ -107,10 +107,10 @@
         <span class='name'>arguments</span>
       
       
-        <span class='type'>(<tt>Hash</tt>)</span>
+        <span class='type'>(<tt>Optional[Variant[Hash, Array, String]]</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>{}</tt>)</em>
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
       
       
         &mdash;
@@ -245,7 +245,7 @@
 
 define slurm::spank (
   String $plugin = &quot;${name}.so&quot;,
-  Hash $arguments = {},
+  Optional[Variant[Hash, Array, String]] $arguments = undef,
   Boolean $required = false,
   Boolean $manage_package = true,
   String $package_name = &quot;slurm-spank-${name}&quot;,
