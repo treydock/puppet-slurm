@@ -238,7 +238,10 @@
 48
 49
 50
-51</pre>
+51
+52
+53
+54</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/spank.pp', line 16</span>
@@ -261,13 +264,15 @@ define slurm::spank (
   }
 
   if $manage_package {
+    $fragment_require = Package[&quot;SLURM SPANK ${name} package&quot;]
     package { &quot;SLURM SPANK ${name} package&quot;:
       ensure  =&gt; &#39;installed&#39;,
       name    =&gt; $package_name,
-      before  =&gt; Concat::Fragment[&quot;plugstack.conf-${name}&quot;],
-      notify  =&gt; $slurm::slurmd_notify,
+      notify  =&gt; $slurm::service_notify,
       require =&gt; $package_require,
     }
+  } else {
+    $fragment_require = undef
   }
 
   if $slurm::manage_slurm_conf and ! $slurm::configless {
@@ -275,6 +280,7 @@ define slurm::spank (
       target  =&gt; &#39;plugstack.conf&#39;,
       content =&gt; template(&#39;slurm/spank/plugin.conf.erb&#39;),
       order   =&gt; $order,
+      require =&gt; $fragment_require,
     }
   }
 
