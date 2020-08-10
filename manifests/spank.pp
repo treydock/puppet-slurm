@@ -35,7 +35,7 @@ define slurm::spank (
     package { "SLURM SPANK ${name} package":
       ensure  => 'installed',
       name    => $package_name,
-      notify  => $slurm::slurmd_notify,
+      notify  => $slurm::service_notify,
       require => $package_require,
     }
   } else {

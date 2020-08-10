@@ -17,7 +17,8 @@ describe 'slurm::spank' do
 
     it do
       is_expected.to contain_package('SLURM SPANK x11 package').only_with(ensure: 'installed',
-                                                                          name: 'slurm-spank-x11')
+                                                                          name: 'slurm-spank-x11',
+                                                                          notify: [])
     end
 
     it do
