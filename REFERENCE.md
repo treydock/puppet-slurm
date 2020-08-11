@@ -2109,6 +2109,14 @@ Plugin package name
 
 Default value: "slurm-spank-${name}"
 
+##### `package_ensure`
+
+Data type: `String`
+
+Plugin package ensure value
+
+Default value: 'installed'
+
 ##### `order`
 
 Data type: `Any`
