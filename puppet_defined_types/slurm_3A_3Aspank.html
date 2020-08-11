@@ -176,6 +176,24 @@
   
     <li>
       
+        <span class='name'>package_ensure</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;installed&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Plugin package ensure value</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>order</span>
       
       
@@ -203,8 +221,6 @@
         <pre class="lines">
 
 
-16
-17
 18
 19
 20
@@ -241,10 +257,13 @@
 51
 52
 53
-54</pre>
+54
+55
+56
+57</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/spank.pp', line 16</span>
+        <pre class="code"><span class="info file"># File 'manifests/spank.pp', line 18</span>
 
 define slurm::spank (
   String $plugin = &quot;${name}.so&quot;,
@@ -252,6 +271,7 @@ define slurm::spank (
   Boolean $required = false,
   Boolean $manage_package = true,
   String $package_name = &quot;slurm-spank-${name}&quot;,
+  String $package_ensure = &#39;installed&#39;,
   $order = &#39;50&#39;,
 ) {
 
@@ -266,7 +286,7 @@ define slurm::spank (
   if $manage_package {
     $fragment_require = Package[&quot;SLURM SPANK ${name} package&quot;]
     package { &quot;SLURM SPANK ${name} package&quot;:
-      ensure  =&gt; &#39;installed&#39;,
+      ensure  =&gt; $package_ensure,
       name    =&gt; $package_name,
       notify  =&gt; $slurm::service_notify,
       require =&gt; $package_require,
