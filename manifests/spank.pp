@@ -10,6 +10,8 @@
 #   Manage plugin package?
 # @param package_name
 #   Plugin package name
+# @param package_ensure
+#   Plugin package ensure value
 # @param order
 #   Order in plugstack.conf
 #
@@ -19,6 +21,7 @@ define slurm::spank (
   Boolean $required = false,
   Boolean $manage_package = true,
   String $package_name = "slurm-spank-${name}",
+  String $package_ensure = 'installed',
   $order = '50',
 ) {
 
@@ -33,7 +36,7 @@ define slurm::spank (
   if $manage_package {
     $fragment_require = Package["SLURM SPANK ${name} package"]
     package { "SLURM SPANK ${name} package":
-      ensure  => 'installed',
+      ensure  => $package_ensure,
       name    => $package_name,
       notify  => $slurm::service_notify,
       require => $package_require,
