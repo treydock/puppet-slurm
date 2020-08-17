@@ -41,6 +41,9 @@ class slurm::common::config {
     $::slurm::nodes.each |$name, $_node| {
       slurm::node { $name: * => $_node }
     }
+    $::slurm::nodesets.each |$name, $_nodeset| {
+      slurm::nodeset { $name: * => $_nodeset }
+    }
   }
 
   if $slurm::manage_slurm_conf and ! $slurm::configless {
