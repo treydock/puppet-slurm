@@ -230,7 +230,10 @@
 139
 140
 141
-142</pre>
+142
+143
+144
+145</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/common/config.pp', line 2</span>
@@ -276,6 +279,9 @@ class slurm::common::config {
     }
     $::slurm::nodes.each |$name, $_node| {
       slurm::node { $name: * =&gt; $_node }
+    }
+    $::slurm::nodesets.each |$name, $_nodeset| {
+      slurm::nodeset { $name: * =&gt; $_nodeset }
     }
   }
 
