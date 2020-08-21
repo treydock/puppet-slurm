@@ -126,7 +126,8 @@
 33
 34
 35
-36</pre>
+36
+37</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/resources.pp', line 3</span>
@@ -139,6 +140,7 @@ class slurm::resources {
   }
 
   slurmdbd_conn_validator { &#39;puppet&#39;:
+    ensure  =&gt; &#39;present&#39;,
     timeout =&gt; $slurm::slurmdbd_conn_validator_timeout,
   }
 
