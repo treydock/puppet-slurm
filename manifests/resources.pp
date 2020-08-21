@@ -8,6 +8,7 @@ class slurm::resources {
   }
 
   slurmdbd_conn_validator { 'puppet':
+    ensure  => 'present',
     timeout => $slurm::slurmdbd_conn_validator_timeout,
   }
 
