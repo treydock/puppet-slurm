@@ -1,13 +1,14 @@
 [Unit]
 Description=slurmrestd daemon
 After=network.target
-ConditionPathExists=<%= scope['slurm::slurm_conf_path'] %>
+ConditionPathExists=<%= scope['slurm::slurmrestd_conf_path'] %>
 
 [Service]
 Type=simple
-User=<%= scope['slurm::slurm_user'] %>
-Group=<%= scope['slurm::slurm_user_group'] %>
+User=<%= scope['slurm::slurmrestd_user'] %>
+Group=<%= scope['slurm::slurmrestd_user_group'] %>
 EnvironmentFile=-/etc/sysconfig/slurmrestd
+Environment=SLURM_CONF=<%= scope['slurm::slurmrestd_conf_path'] %>
 ExecStart=/usr/sbin/slurmrestd $SLURMRESTD_OPTIONS <%= scope['slurm::slurmrestd_listen_address'] %>:<%= scope['slurm::slurmrestd_port'] %>
 <%- if scope['slurm::slurmrestd_restart_on_failure'] %>
 Restart=on-failure

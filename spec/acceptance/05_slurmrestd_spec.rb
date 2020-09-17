@@ -14,7 +14,6 @@ describe 'slurmrestd' do
       pp = <<-EOS
       include mysql::server
       class { 'slurm':
-        client => false,
         slurmrestd => true,
       }
       EOS
@@ -33,6 +32,10 @@ describe 'slurmrestd' do
       end
       it_behaves_like 'common::config', node
       it_behaves_like 'slurmrestd::service', node
+
+      describe port(6820) do
+        it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
+      end
     end
   end
 end
