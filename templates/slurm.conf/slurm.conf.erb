@@ -22,7 +22,9 @@ values = []
 value.each do |k,v|
   if v.is_a?(Numeric)
     values << "#{k}=#{v}"
-  elsif v.empty? || v == 'none' || v == 'undef' || v.nil? || v == :undef
+  elsif v == 'none' || v == 'undef' || v.nil? || v == :undef
+    values << k
+  elsif v.empty?
     values << k
   else
     values << "#{k}=#{v}"
