@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v0.6.3](https://github.com/treydock/puppet-slurm/tree/v0.6.3) (2020-11-23)
+
+[Full Changelog](https://github.com/treydock/puppet-slurm/compare/v0.6.2...v0.6.3)
+
+### Fixed
+
+- Fix template error for Hash values in slurm.conf [\#13](https://github.com/treydock/puppet-slurm/pull/13) ([treydock](https://github.com/treydock))
+
 ## [v0.6.2](https://github.com/treydock/puppet-slurm/tree/v0.6.2) (2020-08-21)
 
 [Full Changelog](https://github.com/treydock/puppet-slurm/compare/v0.6.1...v0.6.2)

@@ -577,12 +577,6 @@ Data type: `Stdlib::Absolutepath`
 
 Default value: '/var/log/slurm'
 
-##### `log_dir`
-
-
-
-Default value: '/var/log/slurm'
-
 ##### `spank_plugins`
 
 Data type: `Hash`
