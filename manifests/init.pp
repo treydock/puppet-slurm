@@ -68,7 +68,6 @@
 # @param slurmdbd_host
 # @param conf_dir
 # @param log_dir
-# @param log_dir
 # @param spank_plugins
 # @param configless
 # @param conf_server
