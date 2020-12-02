@@ -1,7 +1,7 @@
 # puppet-slurm
 
 [![Puppet Forge](http://img.shields.io/puppetforge/v/treydock/slurm.svg)](https://forge.puppetlabs.com/treydock/slurm)
-[![Build Status](https://travis-ci.org/treydock/puppet-slurm.svg?branch=master)](https://travis-ci.org/treydock/puppet-slurm)
+[![CI Status](https://github.com/treydock/puppet-slurm/workflows/CI/badge.svg?branch=master)](https://github.com/treydock/puppet-slurm/actions?query=workflow%3ACI)
 
 #### Table of Contents
 

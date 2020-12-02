@@ -31,6 +31,7 @@ _Private Classes_
 * `slurm::slurmdbd::db`: 
 * `slurm::slurmdbd::service`: 
 * `slurm::slurmrestd`: 
+* `slurm::slurmrestd::config`: 
 * `slurm::slurmrestd::service`: 
 
 **Defined types**
@@ -1008,6 +1009,30 @@ Data type: `String`
 
 
 Default value: '0.0.0.0'
+
+##### `slurmrestd_auth_type`
+
+Data type: `String`
+
+
+
+Default value: 'auth/jwt'
+
+##### `slurmrestd_user`
+
+Data type: `String`
+
+
+
+Default value: 'nobody'
+
+##### `slurmrestd_user_group`
+
+Data type: `String`
+
+
+
+Default value: 'nobody'
 
 ##### `slurmrestd_service_ensure`
 
