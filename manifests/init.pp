@@ -122,6 +122,9 @@
 # @param task_prolog
 # @param task_prolog_source
 # @param slurmrestd_listen_address
+# @param slurmrestd_auth_type
+# @param slurmrestd_user
+# @param slurmrestd_user_group
 # @param slurmrestd_service_ensure
 # @param slurmrestd_service_enable
 # @param slurmrestd_service_limits
@@ -325,6 +328,9 @@ class slurm (
 
   # slurmrestd
   String $slurmrestd_listen_address = '0.0.0.0',
+  String $slurmrestd_auth_type = 'auth/jwt',
+  String $slurmrestd_user = 'nobody',
+  String $slurmrestd_user_group = 'nobody',
   Enum['running','stopped'] $slurmrestd_service_ensure = 'running',
   Boolean $slurmrestd_service_enable                   = true,
   Hash $slurmrestd_service_limits                      = {},
@@ -397,6 +403,7 @@ class slurm (
   $slurmdbd_conf_path                 = "${conf_dir}/slurmdbd.conf"
   $cgroup_conf_path                   = "${conf_dir}/cgroup.conf"
   $plugstack_conf_path                = "${conf_dir}/plugstack.conf"
+  $slurmrestd_conf_path               = "${conf_dir}/slurmrestd.conf"
 
   if $install_prefix in ['/usr','/usr/local'] {
     $profiled_add_path = false
