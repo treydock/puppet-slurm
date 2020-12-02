@@ -1629,6 +1629,45 @@
   
     <li>
       
+        <span class='name'>slurmrestd_auth_type</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;auth/jwt&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>slurmrestd_user</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;nobody&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>slurmrestd_user_group</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;nobody&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>slurmrestd_service_ensure</span>
       
       
@@ -2171,9 +2210,6 @@
         <pre class="lines">
 
 
-166
-167
-168
 169
 170
 171
@@ -2567,10 +2603,17 @@
 559
 560
 561
-562</pre>
+562
+563
+564
+565
+566
+567
+568
+569</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 166</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 169</span>
 
 class slurm (
   # Roles
@@ -2734,6 +2777,9 @@ class slurm (
 
   # slurmrestd
   String $slurmrestd_listen_address = &#39;0.0.0.0&#39;,
+  String $slurmrestd_auth_type = &#39;auth/jwt&#39;,
+  String $slurmrestd_user = &#39;nobody&#39;,
+  String $slurmrestd_user_group = &#39;nobody&#39;,
   Enum[&#39;running&#39;,&#39;stopped&#39;] $slurmrestd_service_ensure = &#39;running&#39;,
   Boolean $slurmrestd_service_enable                   = true,
   Hash $slurmrestd_service_limits                      = {},
@@ -2806,6 +2852,7 @@ class slurm (
   $slurmdbd_conf_path                 = &quot;${conf_dir}/slurmdbd.conf&quot;
   $cgroup_conf_path                   = &quot;${conf_dir}/cgroup.conf&quot;
   $plugstack_conf_path                = &quot;${conf_dir}/plugstack.conf&quot;
+  $slurmrestd_conf_path               = &quot;${conf_dir}/slurmrestd.conf&quot;
 
   if $install_prefix in [&#39;/usr&#39;,&#39;/usr/local&#39;] {
     $profiled_add_path = false
