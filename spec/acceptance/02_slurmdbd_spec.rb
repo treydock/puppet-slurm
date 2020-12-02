@@ -1,7 +1,7 @@
 require 'spec_helper_acceptance'
 
 describe 'slurmdbd' do
-  if fact('virtual') == 'docker'
+  if ['docker', 'hyperv'].include?(fact('virtual'))
     let(:slurm_user) { 'root' }
   else
     let(:slurm_user) { 'slurm' }

@@ -80,6 +80,8 @@ EOS
     on hosts, 'mkdir -p /etc/puppetlabs/puppet/data'
     create_remote_file(hosts, '/etc/puppetlabs/puppet/data/common.yaml', common_yaml)
     create_remote_file(hosts, '/etc/puppetlabs/puppet/data/docker.yaml', docker_yaml)
+    # 'hyperv' is reported by Github Actions
+    create_remote_file(hosts, '/etc/puppetlabs/puppet/data/hyperv.yaml', docker_yaml)
 
     # Hack to work around issues with recent systemd and docker and running services as non-root
     if fact('os.family') == 'RedHat' && fact('os.release.major').to_i >= 7
