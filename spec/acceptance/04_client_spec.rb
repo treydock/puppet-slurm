@@ -10,7 +10,7 @@ describe 'slurm::client class:' do
       EOS
 
       apply_manifest_on(nodes, pp, catch_failures: true)
-      if fact('virtual') == 'docker'
+      if ['docker', 'hyperv'].include?(fact('virtual'))
         on nodes, 'chown root:root /run/munge'
       end
       apply_manifest_on(nodes, pp, catch_changes: true)
