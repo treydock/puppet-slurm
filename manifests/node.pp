@@ -5,6 +5,7 @@
 # @param node_name
 # @param node_hostname
 # @param node_addr
+# @param bcast_addr
 # @param boards
 # @param core_spec_count
 # @param cores_per_socket
@@ -29,6 +30,7 @@ define slurm::node (
   $node_name        = $name,
   $node_hostname    = undef,
   $node_addr        = undef,
+  $bcast_addr       = undef,
   $boards           = undef,
   $core_spec_count  = undef,
   $cores_per_socket = undef,
@@ -56,6 +58,7 @@ define slurm::node (
     'NodeName' => $node_name,
     'NodeHostname' => $node_hostname,
     'NodeAddr'  => $node_addr,
+    'BcastAddr' => $bcast_addr,
     'Boards'  => $boards,
     'CoreSpecCount' => $core_spec_count,
     'CoresPerSocket' => $cores_per_socket,

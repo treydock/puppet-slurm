@@ -47,6 +47,7 @@ define slurm::gres (
 
   if $auto_detect {
     $conf_values = {
+      'NodeName'   => $node_name,
       'AutoDetect' => $auto_detect,
     }
   } else {

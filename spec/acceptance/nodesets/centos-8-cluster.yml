@@ -12,7 +12,7 @@ HOSTS:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y dnf-utils'
-      - 'dnf config-manager --set-enabled PowerTools'
+      - 'dnf config-manager --set-enabled powertools'
       - 'yum install -y tar wget iproute initscripts'
     ip: 192.168.2.2
     docker_container_name: 'slurmctld-el8'
@@ -28,7 +28,7 @@ HOSTS:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y dnf-utils'
-      - 'dnf config-manager --set-enabled PowerTools'
+      - 'dnf config-manager --set-enabled powertools'
       - 'yum install -y tar wget iproute initscripts'
     ip: 192.168.2.3
     docker_container_name: 'slurmdbd-el8'
@@ -44,7 +44,7 @@ HOSTS:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y dnf-utils'
-      - 'dnf config-manager --set-enabled PowerTools'
+      - 'dnf config-manager --set-enabled powertools'
       - 'yum install -y tar wget iproute initscripts'
     ip: 192.168.2.4
     docker_container_name: 'slurmd-el8'
@@ -60,7 +60,7 @@ HOSTS:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y dnf-utils'
-      - 'dnf config-manager --set-enabled PowerTools'
+      - 'dnf config-manager --set-enabled powertools'
       - 'yum install -y tar wget iproute initscripts'
     ip: 192.168.2.6
     docker_container_name: 'slurm-client-el8'
