@@ -15,7 +15,7 @@ HOSTS:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y dnf-utils'
-      - 'dnf config-manager --set-enabled PowerTools'
+      - 'dnf config-manager --set-enabled powertools'
       - 'yum install -y tar wget iproute initscripts'
     ip: 192.168.2.2
     docker_container_name: 'slurm-el8'
