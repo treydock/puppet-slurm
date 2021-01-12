@@ -21,6 +21,7 @@ shared_examples_for 'slurm::slurmdbd::config' do
                                  'DbdHost=slurmdbd',
                                  'DbdPort=6819',
                                  'DebugLevel=info',
+                                 'DebugLevelSyslog=info',
                                  'LogFile=/var/log/slurm/slurmdbd.log',
                                  'LogTimeFormat=iso8601_ms',
                                  'MaxQueryTimeRange=INFINITE',
