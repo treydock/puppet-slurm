@@ -2,4 +2,4 @@
 # File managed by Puppet!
 #
 
-SLURMRESTD_OPTIONS="<%= scope['slurm::slurmrestd_options'] %>"
+SLURMRESTD_OPTIONS="-f <%= scope['slurm::slurm_conf_path'] %> <%= scope['slurm::slurmrestd_options'] %>"

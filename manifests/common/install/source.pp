@@ -48,16 +48,11 @@ class slurm::common::install::source {
     notify       => Exec['install-slurm'],
   }
 
-  if $slurm::slurmrestd {
-    $slurmrestd_flag = '--enable-slurmrestd'
-  } else {
-    $slurmrestd_flag = '--disable-slurmrestd'
-  }
   $base_configure_flags = join([
     "--prefix=${slurm::install_prefix}",
     "--libdir=${slurm::install_prefix}/lib64",
     "--sysconfdir=${slurm::conf_dir}",
-    $slurmrestd_flag,
+    '--enable-slurmrestd',
   ], ' ')
   $configure_flags = join($slurm::configure_flags, ' ')
   $configure_command = "./configure ${base_configure_flags} ${configure_flags}"

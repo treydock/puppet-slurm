@@ -153,6 +153,17 @@ class slurm::common::config {
     }
   }
 
+  if ('auth/jwt' in $slurm::auth_alt_types) and ($slurm::slurmctld or $slurm::slurmdbd) {
+    file { $slurm::jwt_key_path:
+      ensure  => 'file',
+      owner   => $slurm::slurm_user,
+      group   => $slurm::slurm_user,
+      mode    => '0600',
+      content => $slurm::jwt_key_content,
+      source  => $slurm::jwt_key_source,
+    }
+  }
+
   if $slurm::tuning_net_core_somaxconn {
     sysctl { 'net.core.somaxconn':
       ensure => 'present',

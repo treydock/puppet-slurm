@@ -59,6 +59,9 @@ slurm::version: '#{RSpec.configuration.slurm_version}'
 slurm::slurmctld_host: '#{slurmctld_host}'
 slurm::slurmdbd_host: '#{slurmdbd_host}'
 slurm::slurmd_options: '-N slurmd'
+slurm::auth_alt_types:
+  - auth/jwt
+slurm::jwt_key_source: 'puppet:///modules/site_slurm/jwt.key'
 slurm::partitions:
   general:
     default: 'YES'

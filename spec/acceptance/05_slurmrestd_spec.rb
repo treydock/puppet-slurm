@@ -14,6 +14,7 @@ describe 'slurmrestd' do
       pp = <<-EOS
       include mysql::server
       class { 'slurm':
+        slurmctld  => true,
         slurmrestd => true,
       }
       EOS

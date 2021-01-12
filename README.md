@@ -16,6 +16,7 @@
     * [Role: slurmctld](#role-slurmctld)
     * [Role: slurmd](#role-slurmd)
     * [Role: client](#role-client)
+    * [Role: slurmrestd](#role-slurmrestd)
 3. [Reference - Parameter and detailed reference to all options](#reference)
 4. [Limitations - OS compatibility, etc.](#limitations)
 
@@ -125,6 +126,7 @@ The behavior of this module is determined by 5 booleans that set the role for a 
 * `slurmdbd` - When true will setup a host to run slurmdbd
 * `database` - When true will setup a host to manage the slurmdbd MySQL database
 * `slurmd` - When true will setup a host to run slurmd
+* `slurmrestd` - When true will setup a host to run slurmctld
 
 **NOTE:** The only role enabled by default is `client`.
 
@@ -196,6 +198,22 @@ slurm::slurmd: true
 
 If the majority of your configuration is done in `common.yaml` then the default for `slurm::client` of `true` is sufficient to configure a host to act as a SLURM client.
 
+### Role: slurmrestd
+
+First the common Hiera such as `common.yaml` should have something like the below. Setting `auth_alt_types` to include `auth/jwt` will activate the Puppet code to manage JWT resources where appropriate.
+
+```yaml
+slurm::auth_alt_types:
+  - auth/jwt
+slurm::jwt_key_source: 'puppet:///modules/site_slurm/jwt.key'
+```
+
+For the host to run slurmrestd:
+
+```yaml
+slurm::slurmrestd: true
+```
+
 ## Reference
 
 [http://treydock.github.io/puppet-slurm/](http://treydock.github.io/puppet-slurm/)
@@ -207,3 +225,4 @@ This module has been tested on:
 * RedHat/CentOS 7 x86_64
 * RedHat/CentOS 8 x86_64
 * Debian 10 x86_64
+* Ubuntu 18.04 and 20.04 x86_64

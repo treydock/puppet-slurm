@@ -17,6 +17,7 @@ slurm::source_dependencies:
   - freeipmi-devel
   - python3
   - mariadb-devel
+  - libjwt-devel
   - http-parser-devel
   - json-c-devel
   - libyaml-devel
