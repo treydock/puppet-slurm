@@ -4,11 +4,11 @@ values << (@required ? "required" : "optional")
 values << @plugin
 case @arguments
 when Hash
-  @arguments.keys.sort.each do |k|
-    values << "#{k}=#{@arguments[k]}"
+  @arguments.each_pair do |k,v|
+    values << "#{k}=#{v}"
   end
 when Array
-  @arguments.sort.each do |a|
+  @arguments.each do |a|
     values << a
   end
 when String
