@@ -5,8 +5,8 @@
       - centos-7
       - centos-8
     puppet:
-      - puppet5
       - puppet6
+      - puppet7
 .gitlab-ci.yml:
   delete: true
 appveyor.yml:

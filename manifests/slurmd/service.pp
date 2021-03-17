@@ -25,9 +25,6 @@ class slurm::slurmd::service {
     hasrestart => true,
   }
 
-  include ::systemd::systemctl::daemon_reload
-  Class['systemd::systemctl::daemon_reload'] -> Service['slurmd']
-
   exec { 'slurmd reload':
     path        => '/usr/bin:/bin:/usr/sbin:/sbin',
     command     => 'systemctl reload slurmd',

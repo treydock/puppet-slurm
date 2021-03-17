@@ -30,7 +30,4 @@ class slurm::slurmrestd::service {
     hasstatus  => true,
     hasrestart => true,
   }
-
-  include ::systemd::systemctl::daemon_reload
-  Class['systemd::systemctl::daemon_reload'] -> Service['slurmrestd']
 }

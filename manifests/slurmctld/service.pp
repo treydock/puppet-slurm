@@ -59,9 +59,6 @@ class slurm::slurmctld::service {
     hasrestart => true,
   }
 
-  include ::systemd::systemctl::daemon_reload
-  Class['systemd::systemctl::daemon_reload'] -> Service['slurmctld']
-
   exec { 'scontrol reconfig':
     path        => '/usr/bin:/bin:/usr/sbin:/sbin',
     refreshonly => true,

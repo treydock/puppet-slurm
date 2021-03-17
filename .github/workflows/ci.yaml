@@ -15,12 +15,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - ruby: 2.4.9
-            puppet: 5
-            fixtures: .fixtures.yml
-            allow_failure: false
           - ruby: 2.5.7
             puppet: 6
+            fixtures: .fixtures.yml
+            allow_failure: false
+          - ruby: 2.7.0
+            puppet: 7
             fixtures: .fixtures.yml
             allow_failure: false
     env:
@@ -50,8 +50,8 @@ jobs:
           - "centos-7"
           - "centos-8"
         puppet:
-          - "puppet5"
           - "puppet6"
+          - "puppet7"
     env:
       BUNDLE_WITHOUT: development:release
       BEAKER_debug: true
