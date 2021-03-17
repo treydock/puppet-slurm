@@ -14,15 +14,15 @@
     },
     {
       "name": "puppetlabs/firewall",
-      "version_requirement": ">=1.0.0 <3.0.0"
+      "version_requirement": ">=1.0.0 <4.0.0"
     },
     {
       "name": "puppetlabs/concat",
-      "version_requirement": ">=1.0.0 <7.0.0"
+      "version_requirement": ">=1.0.0 <8.0.0"
     },
     {
       "name": "puppetlabs/mysql",
-      "version_requirement": ">=2.3.0 <11.0.0"
+      "version_requirement": ">=2.3.0 <12.0.0"
     },
     {
       "name": "puppet/epel",
@@ -34,15 +34,15 @@
     },
     {
       "name": "puppet/logrotate",
-      "version_requirement": ">= 3.4.0 <5.0.0"
+      "version_requirement": ">= 3.4.0 <6.0.0"
     },
     {
       "name": "treydock/munge",
-      "version_requirement": ">= 1.1.0 <3.0.0"
+      "version_requirement": ">= 1.1.0 <4.0.0"
     },
     {
       "name": "camptocamp/systemd",
-      "version_requirement": ">= 1.1.0 <3.0.0"
+      "version_requirement": ">= 1.1.0 <4.0.0"
     },
     {
       "name": "puppet/archive",
