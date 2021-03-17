@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'facter/util/file_read'
+require 'facter/util/slurm'
 
 describe 'slurm_processor_siblings_count Fact' do
   before :each do

@@ -16,7 +16,7 @@ class slurm::common::install::rpm {
   }
 
   Package {
-    ensure  => $slurm::version,
+    ensure  => $slurm::package_ensure,
     require => $package_require,
     notify  => $slurm::service_notify,
   }
