@@ -107,5 +107,12 @@ describe 'slurm::spank' do
                                  ])
       end
     end
+
+    context 'when ensure => absent' do
+      let(:params) { { ensure: 'absent' } }
+
+      it { is_expected.to contain_package('SLURM SPANK x11 package').with_ensure('absent') }
+      it { is_expected.not_to contain_concat__fragment('plugstack.conf-x11') }
+    end
   end
 end

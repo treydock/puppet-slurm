@@ -1,5 +1,7 @@
 # @summary Manage SLURM SPANK plugin
 #
+# @param ensure
+#   Ensure state of SPANK plugin
 # @param plugin
 #   The shared library
 # @param arguments
@@ -16,6 +18,7 @@
 #   Order in plugstack.conf
 #
 define slurm::spank (
+  Enum['present','absent'] $ensure = 'present',
   String $plugin = "${name}.so",
   Optional[Variant[Hash, Array, String]] $arguments = undef,
   Boolean $required = false,
@@ -33,10 +36,16 @@ define slurm::spank (
     $package_require = undef
   }
 
+  if $ensure == 'absent' {
+    $_package_ensure = 'absent'
+  } else {
+    $_package_ensure = $package_ensure
+  }
+
   if $manage_package {
     $fragment_require = Package["SLURM SPANK ${name} package"]
     package { "SLURM SPANK ${name} package":
-      ensure  => $package_ensure,
+      ensure  => $_package_ensure,
       name    => $package_name,
       notify  => $slurm::service_notify,
       require => $package_require,
@@ -45,7 +54,7 @@ define slurm::spank (
     $fragment_require = undef
   }
 
-  if $slurm::manage_slurm_conf and ! $slurm::configless {
+  if $ensure == 'present' and $slurm::manage_slurm_conf and ! $slurm::configless {
     concat::fragment { "plugstack.conf-${name}":
       target  => 'plugstack.conf',
       content => template('slurm/spank/plugin.conf.erb'),
