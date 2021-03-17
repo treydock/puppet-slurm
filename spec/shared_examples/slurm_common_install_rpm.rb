@@ -19,7 +19,7 @@ shared_examples_for 'slurm::common::install::rpm' do
   it { is_expected.not_to contain_package('slurm-torque') }
 
   context 'when version => "20.02.0-1.el7"' do
-    let(:param_override) { { version: '20.02.0-1.el7' } }
+    let(:param_override) { { package_ensure: '20.02.0-1.el7' } }
 
     base_packages.each do |p|
       it { is_expected.to contain_package(p).with_ensure('20.02.0-1.el7').without_require }
