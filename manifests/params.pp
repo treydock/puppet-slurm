@@ -62,6 +62,7 @@ class slurm::params {
     'JobAcctGatherFrequency' => 'task=30,energy=0,network=0,filesystem=0',
     'JobAcctGatherParams' => undef,
     'JobCompType' => 'jobcomp/none',
+    'JobContainerType' => undef,
     'JobFileAppend' => undef,
     'JobRequeue' => '1',
     'JobSubmitPlugins' => undef,
