@@ -97,6 +97,23 @@ class slurm::common::config {
       $::slurm::greses.each |$name, $gres| {
         slurm::gres { $name: * => $gres }
       }
+
+      concat { 'job_container.conf':
+        ensure => 'present',
+        path   => $slurm::job_container_conf_path,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+        notify => $slurm::service_notify,
+      }
+      concat::fragment { 'job_container.conf-header':
+        target  => 'job_container.conf',
+        content => "# File managed by Puppet - DO NOT EDIT\n",
+        order   => '00',
+      }
+      $slurm::job_containers.each |$name, $job_container| {
+        slurm::job_container { $name: * => $job_container }
+      }
     }
 
     concat { 'plugstack.conf':

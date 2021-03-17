@@ -87,6 +87,7 @@
 # @param nodesets
 # @param switches
 # @param greses
+# @param job_containers
 # @param slurmd_log_file
 # @param slurmd_spool_dir
 # @param job_checkpoint_dir
@@ -279,6 +280,7 @@ class slurm (
   $nodesets               = {},
   $switches               = {},
   $greses                 = {},
+  $job_containers         = {},
 
   # slurm.conf - node
   Optional[Stdlib::Absolutepath] $slurmd_log_file  = undef,
@@ -404,6 +406,7 @@ class slurm (
   $cgroup_conf_path                   = "${conf_dir}/cgroup.conf"
   $plugstack_conf_path                = "${conf_dir}/plugstack.conf"
   $slurmrestd_conf_path               = "${conf_dir}/slurmrestd.conf"
+  $job_container_conf_path            = "${conf_dir}/job_container.conf"
 
   if $install_prefix in ['/usr','/usr/local'] {
     $profiled_add_path = false
