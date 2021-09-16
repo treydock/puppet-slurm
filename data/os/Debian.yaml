@@ -1,0 +1,2 @@
+---
+slurm::env_dir: /etc/default

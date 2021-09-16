@@ -69,6 +69,7 @@
 # @param slurmdbd_host
 # @param conf_dir
 # @param log_dir
+# @param env_dir
 # @param spank_plugins
 # @param configless
 # @param conf_server
@@ -261,6 +262,7 @@ class slurm (
   # Managed directories
   Stdlib::Absolutepath $conf_dir = '/etc/slurm',
   Stdlib::Absolutepath $log_dir  = '/var/log/slurm',
+  Stdlib::Absolutepath $env_dir  = '/etc/sysconfig',
 
   # configless
   Boolean $configless            = false,
@@ -393,9 +395,9 @@ class slurm (
   $osfamily = $facts.dig('os', 'family')
   $osmajor = $facts.dig('os', 'release', 'major')
   $os = "${osfamily}-${osmajor}"
-  $supported = ['RedHat-7','RedHat-8']
+  $supported = ['RedHat-7','RedHat-8','Debian-10']
   if ! ($os in $supported) {
-    fail("Unsupported OS: ${os}, module ${module_name} only supports RedHat 7 and 8")
+    fail("Unsupported OS: ${os}, module ${module_name} only supports RedHat 7 and 8, Debian 10")
   }
 
   if ! ($slurmd or $slurmctld or $slurmdbd or $database or $client or $slurmrestd) {
