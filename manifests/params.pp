@@ -217,4 +217,8 @@ class slurm::params {
     'TrackSlurmctldDown' => 'no',
     'TrackWCKey' => undef,
   }
+
+  $env_dir = $::$::osfamily ? {
+    default => '/etc/sysconfig',
+  }
 }

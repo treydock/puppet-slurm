@@ -1,7 +1,7 @@
 # @api private
 class slurm::slurmctld::service {
 
-  file { '/etc/sysconfig/slurmctld':
+  file { "${slurm::params::env_dir}/slurmctld":
     ensure  => 'file',
     owner   => 'root',
     group   => 'root',
