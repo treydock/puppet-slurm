@@ -190,7 +190,7 @@ class slurm (
   Boolean $install_pam            = true,
 
   # Source install
-  String $version = '20.11.5',
+  String $version = '20.11.8',
   Array $source_dependencies = [],
   Array $configure_flags = [],
   Boolean $source_install_manage_alternatives = true,
