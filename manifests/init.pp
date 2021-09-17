@@ -47,6 +47,9 @@
 # @param slurm_user_shell
 # @param slurmd_user
 # @param slurmd_user_group
+# @param manage_munge
+# @param munge_key_source
+# @param munge_key_content
 # @param manage_slurm_conf
 # @param manage_scripts
 # @param manage_firewall
@@ -225,6 +228,11 @@ class slurm (
   $slurm_user_shell       = '/sbin/nologin',
   $slurmd_user            = 'root',
   $slurmd_user_group      = 'root',
+
+  # Munge key
+  Boolean $manage_munge                 = false,
+  Optional[String] $munge_key_source    = undef,
+  Optional[String] $munge_key_content   = undef,
 
   # Behavior overrides
   $manage_slurm_conf             = true,

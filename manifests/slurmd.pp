@@ -1,7 +1,7 @@
 # @api private
 class slurm::slurmd {
 
-  include ::munge
+  contain slurm::common::munge
   contain slurm::common::user
   contain slurm::common::install
   contain slurm::common::setup
