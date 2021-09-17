@@ -3,6 +3,8 @@ class slurm::common::install {
 
   if $slurm::osfamily == 'RedHat' {
     $package_class = 'slurm::common::install::rpm'
+  } elsif $slurm::osfamily == 'Debian' {
+    $package_class = 'slurm::common::install::apt'
   }
 
   if $slurm::repo_baseurl {
