@@ -20,7 +20,8 @@ RSpec.configure do |c|
   end
 
   slurmd_ip = find_only_one(:slurmd).ip
-  on hosts, puppet('resource', 'host', 'slurmd', "ip=#{slurmd_ip}")
+  on hosts, puppet('resource', 'host', 'slurmd', 'ensure=absent')
+  on hosts, puppet('resource', 'host', 'slurmd', "ip=#{slurmd_ip}", 'host_aliases=slurm')
 
   install_method_hiera = if RSpec.configuration.slurm_repo_baseurl.nil?
                            'slurm::install_method: source'

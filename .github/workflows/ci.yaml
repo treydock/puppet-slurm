@@ -49,6 +49,7 @@ jobs:
         set:
           - "centos-7"
           - "centos-8"
+          - "debian-10"
         puppet:
           - "puppet6"
           - "puppet7"

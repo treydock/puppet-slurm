@@ -4,6 +4,28 @@ dir = File.expand_path(File.dirname(__FILE__))
 
 Dir["#{dir}/shared_examples/*.rb"].sort.each { |f| require f }
 
+def base_packages(facts)
+  if facts[:os]['family'] == 'Debian'
+    [
+      'libslurm-dev',
+      'libslurm-perl',
+      'libpmi0',
+      'libpmi2-0',
+      'slurm-client',
+    ]
+  else
+    [
+      'slurm',
+      'slurm-contribs',
+      'slurm-devel',
+      'slurm-example-configs',
+      'slurm-perlapi',
+      'slurm-libpmi',
+      'slurm-pam_slurm',
+    ]
+  end
+end
+
 def cpuinfo_fixtures(filename)
   fixtures('cpuinfo', filename)
 end

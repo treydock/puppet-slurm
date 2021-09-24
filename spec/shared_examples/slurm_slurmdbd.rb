@@ -1,4 +1,4 @@
-shared_examples_for 'slurm::slurmdbd' do
+shared_examples_for 'slurm::slurmdbd' do |facts|
   it { is_expected.to contain_class('munge') }
   it { is_expected.to contain_class('munge::service').that_comes_before('Class[slurm::slurmdbd::service]') }
   it { is_expected.to contain_class('slurm::common::user').that_comes_before('Class[slurm::common::install]') }
@@ -9,7 +9,11 @@ shared_examples_for 'slurm::slurmdbd' do
   it { is_expected.to contain_class('slurm::slurmdbd::service') }
 
   it_behaves_like 'slurm::common::user'
-  it_behaves_like 'slurm::common::install::rpm-slurmdbd'
+  if facts[:os]['family'] == 'Debian'
+    it_behaves_like 'slurm::common::install::apt-slurmdbd'
+  else
+    it_behaves_like 'slurm::common::install::rpm-slurmdbd'
+  end
   it_behaves_like 'slurm::common::setup'
   it_behaves_like 'slurm::common::config'
   it_behaves_like 'slurm::slurmdbd::config'

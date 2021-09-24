@@ -1,17 +1,5 @@
-def base_packages
-  [
-    'slurm',
-    'slurm-contribs',
-    'slurm-devel',
-    'slurm-example-configs',
-    'slurm-perlapi',
-    'slurm-libpmi',
-    'slurm-pam_slurm',
-  ]
-end
-
-shared_examples_for 'slurm::common::install::rpm' do
-  base_packages.each do |p|
+shared_examples_for 'slurm::common::install::rpm' do |facts|
+  base_packages(facts).each do |p|
     it { is_expected.to contain_package(p).with_ensure('present').without_require }
   end
 
@@ -21,7 +9,7 @@ shared_examples_for 'slurm::common::install::rpm' do
   context 'when version => "20.02.0-1.el7"' do
     let(:param_override) { { package_ensure: '20.02.0-1.el7' } }
 
-    base_packages.each do |p|
+    base_packages(facts).each do |p|
       it { is_expected.to contain_package(p).with_ensure('20.02.0-1.el7').without_require }
     end
   end
@@ -31,7 +19,7 @@ shared_examples_for 'slurm::common::install::rpm' do
 
     it { is_expected.to contain_yumrepo('slurm').with_baseurl('http://foo') }
 
-    base_packages.each do |p|
+    base_packages(facts).each do |p|
       it { is_expected.to contain_package(p).with_ensure('present').with_require('Yumrepo[slurm]') }
     end
   end
