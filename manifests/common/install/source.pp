@@ -10,7 +10,13 @@ class slurm::common::install::source {
     $package_require = undef
   }
 
-  ensure_packages($slurm::source_dependencies, { 'require' => $package_require, 'before' => Archive[$src_file] })
+  ensure_packages($slurm::source_dependencies)
+  $slurm::source_dependencies.each |$package| {
+    if $package_require {
+      $package_require -> Package[$package]
+    }
+    Package[$package] -> Archive[$src_file]
+  }
   if ($facts['os']['family'] == 'Debian') or ($facts['os']['family'] == 'RedHat' and versioncmp($facts['os']['release']['major'], '8') >= 0) {
     if $slurm::source_install_manage_alternatives {
       if $facts['os']['family'] == 'Debian' {
@@ -27,18 +33,6 @@ class slurm::common::install::source {
         path    => '/usr/bin/python3',
         require => Package['python3'],
         before  => Exec['configure-slurm'],
-      }
-    }
-    if $facts['os']['family'] == 'RedHat' and $slurm::slurmrestd {
-      exec { 'yum -y install http://ftp.redhat.com/pub/redhat/rhel/rhel-8-beta/appstream/x86_64/Packages/http-parser-2.8.0-1.el8.x86_64.rpm':
-        path   => '/usr/bin:/bin:/usr/sbin:/sbin',
-        unless => 'rpm -q http-parser',
-        before => Exec['configure-slurm'],
-      }
-      -> exec { 'yum -y install http://ftp.redhat.com/pub/redhat/rhel/rhel-8-beta/appstream/x86_64/Packages/http-parser-devel-2.8.0-1.el8.x86_64.rpm':
-        path   => '/usr/bin:/bin:/usr/sbin:/sbin',
-        unless => 'rpm -q http-parser-devel',
-        before => Exec['configure-slurm'],
       }
     }
   }
