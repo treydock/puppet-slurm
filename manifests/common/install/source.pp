@@ -32,7 +32,7 @@ class slurm::common::install::source {
       alternatives { 'python':
         path    => '/usr/bin/python3',
         require => Package['python3'],
-        before  => Exec['configure-slurm'],
+        before  => Exec['install-slurm'],
       }
     }
   }
@@ -45,7 +45,7 @@ class slurm::common::install::source {
     cleanup      => true,
     user         => 'root',
     group        => 'root',
-    notify       => Exec['configure-slurm'],
+    notify       => Exec['install-slurm'],
   }
 
   if $slurm::slurmrestd {
@@ -60,15 +60,26 @@ class slurm::common::install::source {
     $slurmrestd_flag,
   ], ' ')
   $configure_flags = join($slurm::configure_flags, ' ')
-  $configure_command = "configure ${base_configure_flags} ${configure_flags}"
+  $configure_command = "./configure ${base_configure_flags} ${configure_flags}"
 
-  file { "${src_dir}/configure.cmd":
+  file { "${src_dir}/puppet-install.sh":
     ensure  => 'file',
     owner   => 'root',
     group   => 'root',
-    mode    => '0600',
-    content => $configure_command,
-    notify  => Exec['configure-slurm'],
+    mode    => '0755',
+    content => join([
+      '#!/bin/bash',
+      "cd ${src_dir}",
+      $configure_command,
+      '[ $? -ne 0 ] && { rm -f $0; exit 1; }',
+      "make -j${facts['processors']['count']}",
+      '[ $? -ne 0 ] && { rm -f $0; exit 1; }',
+      'make install',
+      '[ $? -ne 0 ] && { rm -f $0; exit 1; }',
+      'exit 0',
+      '',
+    ], "\n"),
+    notify  => Exec['install-slurm'],
     require => Archive[$src_file],
   }
 
@@ -79,26 +90,14 @@ class slurm::common::install::source {
       group   => 'root',
       mode    => '0644',
       content => "${slurm::install_prefix}/lib64\n",
-      require => Exec['make-install-slurm'],
+      require => Exec['install-slurm'],
       notify  => Exec['ldconfig-slurm'],
     }
   }
 
-  exec { 'configure-slurm':
+  exec { 'install-slurm':
     path        => "${src_dir}:/usr/bin:/bin:/usr/sbin:/sbin",
-    command     => "${configure_command} || rm -f configure.cmd",
-    cwd         => $src_dir,
-    refreshonly => true,
-  }
-  ~> exec { 'make-slurm':
-    path        => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command     => "make -j${facts['processors']['count']}",
-    cwd         => $src_dir,
-    refreshonly => true,
-  }
-  ~> exec { 'make-install-slurm':
-    path        => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command     => 'make install',
+    command     => "${src_dir}/puppet-install.sh",
     cwd         => $src_dir,
     refreshonly => true,
   }
@@ -111,21 +110,21 @@ class slurm::common::install::source {
   if $slurm::slurmd {
     systemd::unit_file { 'slurmd.service':
       source  => "file:///${src_dir}/etc/slurmd.service",
-      require => Exec['make-install-slurm'],
+      require => Exec['install-slurm'],
       notify  => Service['slurmd'],
     }
   }
   if $slurm::slurmctld {
     systemd::unit_file { 'slurmctld.service':
       source  => "file:///${src_dir}/etc/slurmctld.service",
-      require => Exec['make-install-slurm'],
+      require => Exec['install-slurm'],
       notify  => Service['slurmctld'],
     }
   }
   if $slurm::slurmdbd {
     systemd::unit_file { 'slurmdbd.service':
       source  => "file:///${src_dir}/etc/slurmdbd.service",
-      require => Exec['make-install-slurm'],
+      require => Exec['install-slurm'],
       notify  => Service['slurmdbd'],
     }
   }

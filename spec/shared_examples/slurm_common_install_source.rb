@@ -10,43 +10,30 @@ shared_examples_for 'slurm::common::install::source' do
       cleanup: 'true',
       user: 'root',
       group: 'root',
-      notify: 'Exec[configure-slurm]',
+      notify: 'Exec[install-slurm]',
     )
   end
 
   it do
-    is_expected.to contain_file("/usr/local/src/slurm-#{params[:version]}/configure.cmd").with(
+    is_expected.to contain_file("/usr/local/src/slurm-#{params[:version]}/puppet-install.sh").with(
       ensure: 'file',
       owner: 'root',
       group: 'root',
-      mode: '0600',
-      content: 'configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc/slurm --disable-slurmrestd ',
-      notify: 'Exec[configure-slurm]',
+      mode: '0755',
+      notify: 'Exec[install-slurm]',
     )
   end
 
   it do
-    is_expected.to contain_exec('configure-slurm').with(
+    verify_contents(catalogue, "/usr/local/src/slurm-#{params[:version]}/puppet-install.sh", [
+                      './configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc/slurm --disable-slurmrestd ',
+                    ])
+  end
+
+  it do
+    is_expected.to contain_exec('install-slurm').with(
       path: "/usr/local/src/slurm-#{params[:version]}:/usr/bin:/bin:/usr/sbin:/sbin",
-      command: 'configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc/slurm --disable-slurmrestd  || rm -f configure.cmd',
-      cwd: "/usr/local/src/slurm-#{params[:version]}",
-      refreshonly: 'true',
-      notify: ['Exec[make-slurm]'],
-    )
-  end
-  it do
-    is_expected.to contain_exec('make-slurm').with(
-      path: '/usr/bin:/bin:/usr/sbin:/sbin',
-      command: 'make -j1',
-      cwd: "/usr/local/src/slurm-#{params[:version]}",
-      refreshonly: 'true',
-      notify: ['Exec[make-install-slurm]'],
-    )
-  end
-  it do
-    is_expected.to contain_exec('make-install-slurm').with(
-      path: '/usr/bin:/bin:/usr/sbin:/sbin',
-      command: 'make install',
+      command: "/usr/local/src/slurm-#{params[:version]}/puppet-install.sh",
       cwd: "/usr/local/src/slurm-#{params[:version]}",
       refreshonly: 'true',
       notify: ['Exec[ldconfig-slurm]'],
