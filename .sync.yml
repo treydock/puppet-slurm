@@ -4,6 +4,7 @@
     set:
       - centos-7
       - centos-8
+      - debian-10
     puppet:
       - puppet6
       - puppet7
@@ -22,7 +23,7 @@ spec/acceptance/nodesets/debian-8.yml:
 spec/acceptance/nodesets/debian-9.yml:
   delete: true
 spec/acceptance/nodesets/debian-10.yml:
-  delete: true
+  unmanaged: true
 spec/acceptance/nodesets/ubuntu-1404.yml:
   delete: true
 spec/acceptance/nodesets/ubuntu-1604.yml:

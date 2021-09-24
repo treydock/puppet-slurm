@@ -1,2 +1,26 @@
 ---
+slurm::source_dependencies:
+  - bzip2
+  - gcc
+  - g++
+  - make
+  - libperl-dev
+  - libmunge-dev
+  - libreadline-dev
+  - libnuma-dev
+  - libpam0g-dev
+  - libglib2.0-dev
+  - libhwloc-dev
+  - libssl-dev
+  - libcurl4-openssl-dev
+  - libcgroup-dev
+  - liblz4-dev
+  - libfreeipmi-dev
+  - python3
+  - libmariadbd-dev
+  - libhttp-parser-dev
+  - libjson-c-dev
+  - libjwt-dev
+  - libyaml-dev
 slurm::env_dir: /etc/default
+slurm::slurmrestd_user_group: nogroup

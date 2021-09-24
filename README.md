@@ -205,32 +205,5 @@ If the majority of your configuration is done in `common.yaml` then the default 
 This module has been tested on:
 
 * RedHat/CentOS 7 x86_64
-
-## Development
-
-### Testing
-
-Testing requires the following dependencies:
-
-* rake
-* bundler
-
-Install gem dependencies
-
-    bundle install
-
-Run unit tests
-
-    bundle exec rake spec
-
-The following environment variables can be used to modify the behavior of the beaker tests:
-
-* *SLURM\_BEAKER\_repo\_baseurl* - URL to Yum repository containing SLURM RPMs. If not present will install from source
-* *SLURM\_BEAKER\_version* - Version of SLURM to install.  Defaults to **20.11.5**
-
-Example of running beaker tests using an internal repository, and leaving containers running after the tests.
-
-    export BEAKER_destroy=no
-    export BEAKER_PUPPET_COLLECTION=puppet5
-    export BEAKER_set=centos-7
-    bundle exec rake beaker
+* RedHat/CentOS 8 x86_64
+* Debian 10 x86_64
