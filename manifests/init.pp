@@ -402,10 +402,9 @@ class slurm (
 
   $osfamily = $facts.dig('os', 'family')
   $osmajor = $facts.dig('os', 'release', 'major')
-  $os = "${osfamily}-${osmajor}"
-  $supported = ['RedHat-7','RedHat-8','Debian-10']
-  if ! ($os in $supported) {
-    fail("Unsupported OS: ${os}, module ${module_name} only supports RedHat 7 and 8, Debian 10")
+  $supported = ['RedHat','Debian']
+  if ! ($osfamily in $supported) {
+    fail("Unsupported OS family: ${osfamily}, module ${module_name} only supports RedHat and Debian")
   }
 
   if ! ($slurmd or $slurmctld or $slurmdbd or $database or $client or $slurmrestd) {

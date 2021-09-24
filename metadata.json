@@ -77,6 +77,13 @@
       "operatingsystemrelease": [
         "10"
       ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "18.04",
+        "20.04"
+      ]
     }
   ],
   "requirements": [
@@ -92,5 +99,5 @@
   ],
   "pdk-version": "1.17.0",
   "template-url": "https://github.com/treydock/pdk-templates.git#master",
-  "template-ref": "heads/master-0-gad5f473"
+  "template-ref": "heads/master-0-g367250c"
 }
