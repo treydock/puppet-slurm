@@ -22,7 +22,7 @@
     },
     {
       "name": "puppetlabs/mysql",
-      "version_requirement": ">=2.3.0 <12.0.0"
+      "version_requirement": ">=2.3.0 <13.0.0"
     },
     {
       "name": "puppet/epel",
@@ -41,7 +41,7 @@
       "version_requirement": ">= 1.1.0 <4.0.0"
     },
     {
-      "name": "camptocamp/systemd",
+      "name": "puppet/systemd",
       "version_requirement": ">= 1.1.0 <4.0.0"
     },
     {

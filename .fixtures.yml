@@ -1,49 +1,41 @@
 fixtures:
-  repositories:
+  forge_modules:
     mount_core:
-      repo: https://github.com/puppetlabs/puppetlabs-mount_core.git
-      ref: 1.0.4
-      puppet_version: ">= 6.0.0"
+      repo: puppetlabs/mount_core
     yumrepo_core:
-      repo: https://github.com/puppetlabs/puppetlabs-yumrepo_core.git
-      ref: 1.0.1
-      puppet_version: ">= 6.0.0"
+      repo: puppetlabs/yumrepo_core
     stdlib:
-      repo: https://github.com/puppetlabs/puppetlabs-stdlib.git
-      ref: 4.25.1
+      repo: puppetlabs/stdlib
     firewall:
-      repo: https://github.com/puppetlabs/puppetlabs-firewall.git
-      ref: 1.0.2
+      repo: puppetlabs/firewall
     mysql:
-      repo: https://github.com/puppetlabs/puppetlabs-mysql.git
+      repo: puppetlabs/mysql
     concat:
-      repo: https://github.com/puppetlabs/puppetlabs-concat.git
+      repo: puppetlabs/concat
     augeasproviders_core:
-      repo: https://github.com/hercules-team/augeasproviders_core.git
+      repo: herculesteam/augeasproviders_core
     augeasproviders_sysctl:
-      repo: https://github.com/hercules-team/augeasproviders_sysctl.git
+      repo: herculesteam/augeasproviders_sysctl
     logrotate:
-      repo: https://github.com/voxpupuli/puppet-logrotate.git
+      repo: puppet/logrotate
     epel:
-      repo: https://github.com/stahnma/puppet-module-epel.git
+      repo: puppet/epel
     limits:
-      repo: https://github.com/saz/puppet-limits.git
+      repo: saz/limits
     munge:
-      repo: https://github.com/treydock/puppet-munge.git
+      repo: treydock/munge
     systemd:
-      repo: https://github.com/camptocamp/puppet-systemd.git
+      repo: puppet/systemd
     rsyslog:
-      repo: https://github.com/saz/puppet-rsyslog.git
+      repo: saz/rsyslog
     nhc:
-      repo: https://github.com/treydock/puppet-module-nhc
+      repo: treydock/nhc
     archive:
-      repo: https://github.com/voxpupuli/puppet-archive.git
-      ref: v1.0.0
+      repo: puppet/archive
     alternatives:
-      repo: https://github.com/voxpupuli/puppet-alternatives.git
-      ref: v2.1.0
+      repo: puppet/alternatives
     slurm_providers:
-      repo: https://github.com/treydock/puppet-slurm_providers.git
+      repo: treydock/slurm_providers
   symlinks:
     slurm: "#{source_dir}"
     site_slurm: "#{File.join(source_dir, 'spec/fixtures', 'site_slurm')}"

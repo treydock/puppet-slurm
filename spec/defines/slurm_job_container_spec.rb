@@ -17,7 +17,7 @@ describe 'slurm::job_container' do
     it do
       is_expected.to contain_concat__fragment('job_container.conf-/dev/shm').with(
         target: 'job_container.conf',
-        content: "AutoBasePath=true\nBasePath=/dev/shm/slurm\n",
+        content: "AutoBasePath=true\nBasePath=/dev/shm/slurm",
         order: '50',
       )
     end
