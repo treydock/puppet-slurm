@@ -26,7 +26,7 @@ shared_examples_for 'slurm::common::install::source' do
 
   it do
     verify_contents(catalogue, "/usr/local/src/slurm-#{params[:version]}/puppet-install.sh", [
-                      './configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc/slurm --disable-slurmrestd ',
+                      './configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc/slurm --enable-slurmrestd ',
                     ])
   end
 

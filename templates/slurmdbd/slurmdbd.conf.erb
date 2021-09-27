@@ -9,6 +9,8 @@
 <% value = slurm_conf[key] -%>
 <%- if value == :undef or ! value or value == 'UNSET' -%>
 # <%= key %>
+<%- elsif value.is_a?(Array) && value.empty? -%>
+# <%= key %>
 <%- elsif value.is_a?(Array) -%>
 <%= key %>=<%= value.join(',') %>
 <%- elsif value.is_a?(Hash) -%>

@@ -48,6 +48,22 @@ shared_examples_for 'slurm::slurmdbd::config' do
     end
   end
 
+  context 'when auth_alt_types contains auth/jwt' do
+    let :param_override do
+      {
+        auth_alt_types: ['auth/jwt'],
+        jwt_key_source: 'puppet:///dne',
+      }
+    end
+
+    it 'overrides values' do
+      verify_fragment_contents(catalogue, 'slurm.conf-config', [
+                                 'AuthAltTypes=auth/jwt',
+                                 'AuthAltParameters=jwt_key=/etc/slurm/jwt.key',
+                               ])
+    end
+  end
+
   context 'when slurmdbd_storage_pass => "foobar"' do
     let(:param_override) { { slurmdbd_storage_pass: 'foobar' } }
 

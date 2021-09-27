@@ -413,7 +413,7 @@ class slurm (
     fail("Unsupported OS family: ${osfamily}, module ${module_name} only supports RedHat and Debian")
   }
 
-  if ! ($slurmd or $slurmctld or $slurmdbd or $database or $client) {
+  if ! ($slurmd or $slurmctld or $slurmdbd or $database or $client or $slurmrestd) {
     fail("Module ${module_name}: Must select a mode of either slurmd, slurmctld, slurmrestd, slurmdbd database, or client.")
   }
 

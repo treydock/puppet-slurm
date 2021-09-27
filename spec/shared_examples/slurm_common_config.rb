@@ -236,6 +236,22 @@ shared_examples_for 'slurm::common::config' do
     end
   end
 
+  context 'when auth_alt_types contains auth/jwt' do
+    let :param_override do
+      {
+        auth_alt_types: ['auth/jwt'],
+        jwt_key_source: 'puppet:///dne',
+      }
+    end
+
+    it 'overrides values' do
+      verify_fragment_contents(catalogue, 'slurm.conf-config', [
+                                 'AuthAltTypes=auth/jwt',
+                                 'AuthAltParameters=jwt_key=/etc/slurm/jwt.key',
+                               ])
+    end
+  end
+
   context 'when multiple slurmctld hosts' do
     let :param_override do
       {
