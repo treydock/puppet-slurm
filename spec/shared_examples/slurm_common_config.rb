@@ -192,6 +192,8 @@ shared_examples_for 'slurm::common::config' do
                                ])
   end
 
+  it { is_expected.not_to contain_file('/etc/slurm/jwt.key') }
+
   it do
     is_expected.to contain_sysctl('net.core.somaxconn').with(ensure: 'present',
                                                              value: '1024')
@@ -243,12 +245,24 @@ shared_examples_for 'slurm::common::config' do
         jwt_key_source: 'puppet:///dne',
       }
     end
+    let(:slurmctld) { true }
 
-    it 'overrides values' do
+    it 'enables JWT auth' do
       verify_fragment_contents(catalogue, 'slurm.conf-config', [
                                  'AuthAltTypes=auth/jwt',
                                  'AuthAltParameters=jwt_key=/etc/slurm/jwt.key',
                                ])
+    end
+
+    it 'defines JWT key' do
+      is_expected.to contain_file('/etc/slurm/jwt.key').with(
+        ensure: 'file',
+        owner: 'slurm',
+        group: 'slurm',
+        mode: '0600',
+        content: nil,
+        source: 'puppet:///dne',
+      )
     end
   end
 

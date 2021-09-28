@@ -126,7 +126,7 @@ The behavior of this module is determined by 5 booleans that set the role for a 
 * `slurmdbd` - When true will setup a host to run slurmdbd
 * `database` - When true will setup a host to manage the slurmdbd MySQL database
 * `slurmd` - When true will setup a host to run slurmd
-* `slurmrestd` - When true will setup a host to run slurmctld
+* `slurmrestd` - When true will setup a host to run slurmrestd
 
 **NOTE:** The only role enabled by default is `client`.
 
