@@ -127,8 +127,11 @@
 # @param manage_task_prolog
 # @param task_prolog
 # @param task_prolog_source
+# @param auth_alt_types
+# @param jwt_key_content
+# @param jwt_key_source
 # @param slurmrestd_listen_address
-# @param slurmrestd_auth_type
+# @param slurmrestd_disable_token_creation
 # @param slurmrestd_user
 # @param slurmrestd_user_group
 # @param slurmrestd_service_ensure
@@ -342,8 +345,11 @@ class slurm (
   $task_prolog_source           = undef,
 
   # slurmrestd
+  Array $auth_alt_types = [],
+  Optional[String] $jwt_key_content = undef,
+  Optional[String] $jwt_key_source = undef,
   String $slurmrestd_listen_address = '0.0.0.0',
-  String $slurmrestd_auth_type = 'auth/jwt',
+  Boolean $slurmrestd_disable_token_creation = false,
   String $slurmrestd_user = 'nobody',
   String $slurmrestd_user_group = 'nobody',
   Enum['running','stopped'] $slurmrestd_service_ensure = 'running',
@@ -411,14 +417,18 @@ class slurm (
     fail("Module ${module_name}: Must select a mode of either slurmd, slurmctld, slurmrestd, slurmdbd database, or client.")
   }
 
+  if ('auth/jwt' in $auth_alt_types) and !($jwt_key_content or $jwt_key_source) {
+    fail("Module ${module_name}: Must specify either jwt_key_content or jwt_key_source when auth_alt_types includes auth/jwt")
+  }
+
   $slurm_conf_path                    = "${conf_dir}/slurm.conf"
   $topology_conf_path                 = "${conf_dir}/topology.conf"
   $gres_conf_path                     = "${conf_dir}/gres.conf"
   $slurmdbd_conf_path                 = "${conf_dir}/slurmdbd.conf"
   $cgroup_conf_path                   = "${conf_dir}/cgroup.conf"
   $plugstack_conf_path                = "${conf_dir}/plugstack.conf"
-  $slurmrestd_conf_path               = "${conf_dir}/slurmrestd.conf"
   $job_container_conf_path            = "${conf_dir}/job_container.conf"
+  $jwt_key_path                       = "${conf_dir}/jwt.key"
 
   if $install_prefix in ['/usr','/usr/local'] {
     $profiled_add_path = false
@@ -449,9 +459,24 @@ class slurm (
     $_health_check_program = $health_check_program
   }
 
+  if 'auth/jwt' in $auth_alt_types {
+    if $slurmrestd_disable_token_creation {
+      $_slurmrestd_disable_token_creation = 'disable_token_creation,'
+    } else {
+      $_slurmrestd_disable_token_creation = ''
+    }
+    $auth_alt_parameters = "${_slurmrestd_disable_token_creation}jwt_key=${jwt_key_path}"
+    $auth_alt_parameters_dbd = "jwt_key=${jwt_key_path}"
+  } else {
+    $auth_alt_parameters = undef
+    $auth_alt_parameters_dbd = undef
+  }
+
   $slurm_conf_local_defaults = {
     'AccountingStorageHost' => $slurmdbd_host,
     'AccountingStoragePort' => $slurmdbd_port,
+    'AuthAltTypes' => $auth_alt_types,
+    'AuthAltParameters' => $auth_alt_parameters,
     'ClusterName' => $cluster_name,
     'DefaultStorageHost' => $slurmdbd_host,
     'DefaultStoragePort' => $slurmdbd_port,
@@ -486,6 +511,8 @@ class slurm (
 
   $slurmdbd_conf_local_defaults = {
     'ArchiveDir' => $slurmdbd_archive_dir,
+    'AuthAltTypes' => $auth_alt_types,
+    'AuthAltParameters' => $auth_alt_parameters_dbd,
     'DbdHost' => $slurmdbd_host,
     'DbdPort' => $slurmdbd_port,
     'LogFile' => $_slurmdbd_log_file,

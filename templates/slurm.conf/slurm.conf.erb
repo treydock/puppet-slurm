@@ -9,6 +9,8 @@
 <% value = slurm_conf[key] -%>
 <%- if value == :undef or ! value or value == 'UNSET' -%>
 # <%= key %>
+<%- elsif value.is_a?(Array) && value.empty? -%>
+# <%= key %>
 <%- elsif scope['slurm::params::slurm_conf_multiple'].include?(key) -%>
 <%- value = [value] if value.is_a?(String) -%>
 <%- value.each do |v| -%>
