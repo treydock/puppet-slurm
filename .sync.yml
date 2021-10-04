@@ -16,8 +16,12 @@ appveyor.yml:
   delete: true
 spec/acceptance/nodesets/centos-7.yml:
   unmanaged: true
+  packages:
+    - crontabs
 spec/acceptance/nodesets/centos-8.yml:
   unmanaged: true
+  packages:
+    - crontabs
 spec/acceptance/nodesets/debian-9.yml:
   delete: true
 spec/acceptance/nodesets/debian-10.yml:
@@ -26,3 +30,5 @@ spec/acceptance/nodesets/ubuntu-1804.yml:
   unmanaged: true
 spec/acceptance/nodesets/ubuntu-2004.yml:
   unmanaged: true
+  packages:
+    - cron
