@@ -6,7 +6,7 @@
 <title>
   Puppet Class: slurm::params
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -307,7 +307,17 @@
 207
 208
 209
-210</pre>
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/params.pp', line 2</span>
@@ -321,21 +331,25 @@ class slurm::params {
   $slurm_conf_defaults = {
     &#39;AccountingStorageBackupHost&#39; =&gt; undef,
     &#39;AccountingStorageEnforce&#39; =&gt; undef,
+    &#39;AccountingStorageParameters&#39; =&gt; undef,
+    &#39;AccountingStoragePass&#39; =&gt; undef,
+    &#39;AccountingStoragePort&#39; =&gt; undef,
     &#39;AccountingStorageTRES&#39; =&gt; undef,
     &#39;AccountingStorageType&#39; =&gt; &#39;accounting_storage/slurmdbd&#39;,
+    &#39;AccountingStorageUser&#39; =&gt; undef,
     &#39;AccountingStoreJobComment&#39; =&gt; &#39;YES&#39;,
     &#39;AcctGatherNodeFreq&#39; =&gt; &#39;0&#39;,
     &#39;AcctGatherEnergyType&#39; =&gt; undef,
-    &#39;AcctGatherInfinibandType&#39; =&gt; undef,
+    &#39;AcctGatherInterconnectType&#39; =&gt; undef,
     &#39;AcctGatherFilesystemType&#39; =&gt; undef,
     &#39;AcctGatherProfileType&#39; =&gt; undef,
     &#39;AllowSpecResourcesUsage&#39; =&gt; &#39;NO&#39;,
     &#39;AuthAltTypes&#39; =&gt; undef,
+    &#39;AuthAltParameters&#39; =&gt; undef,
     &#39;AuthInfo&#39; =&gt; undef,
     &#39;AuthType&#39; =&gt; &#39;auth/munge&#39;,
     &#39;BatchStartTimeout&#39; =&gt; &#39;10&#39;,
     &#39;BurstBufferType&#39; =&gt; undef,
-    &#39;CheckpointType&#39; =&gt; &#39;checkpoint/none&#39;,
     &#39;CliFilterPlugins&#39; =&gt; undef,
     &#39;CommunicationParameters&#39; =&gt; undef,
     &#39;CompleteWait&#39; =&gt; &#39;0&#39;,
@@ -366,16 +380,19 @@ class slurm::params {
     &#39;HealthCheckInterval&#39; =&gt; &#39;0&#39;,
     &#39;HealthCheckNodeState&#39; =&gt; &#39;ANY&#39;,
     &#39;InactiveLimit&#39; =&gt; &#39;0&#39;,
+    &#39;InteractiveStepOptions&#39; =&gt; &#39;&quot;--interactive --preserve-env --pty $SHELL&quot;&#39;,
     &#39;JobAcctGatherType&#39; =&gt; &#39;jobacct_gather/cgroup&#39;,
     &#39;JobAcctGatherFrequency&#39; =&gt; &#39;task=30,energy=0,network=0,filesystem=0&#39;,
     &#39;JobAcctGatherParams&#39; =&gt; undef,
     &#39;JobCompType&#39; =&gt; &#39;jobcomp/none&#39;,
+    &#39;JobContainerType&#39; =&gt; undef,
     &#39;JobFileAppend&#39; =&gt; undef,
     &#39;JobRequeue&#39; =&gt; &#39;1&#39;,
     &#39;JobSubmitPlugins&#39; =&gt; undef,
     &#39;KeepAliveTime&#39; =&gt; undef,
     &#39;KillOnBadExit&#39; =&gt; &#39;0&#39;,
     &#39;KillWait&#39; =&gt; &#39;30&#39;,
+    &#39;NodeFeaturesPlugins&#39; =&gt; undef,
     &#39;LaunchParameters&#39; =&gt; undef,
     &#39;LaunchType&#39; =&gt; &#39;launch/slurm&#39;,
     &#39;Licenses&#39; =&gt; undef,
@@ -396,7 +413,6 @@ class slurm::params {
     &#39;MinJobAge&#39; =&gt; &#39;300&#39;,
     &#39;MpiDefault&#39; =&gt; &#39;none&#39;,
     &#39;MpiParams&#39; =&gt; undef,
-    &#39;MsgAggregationParams&#39; =&gt; undef,
     &#39;OverTimeLimit&#39; =&gt; &#39;0&#39;,
     &#39;PluginDir&#39; =&gt; &#39;/usr/lib64/slurm&#39;,
     &#39;PowerParameters&#39; =&gt; undef,
@@ -420,7 +436,7 @@ class slurm::params {
     &#39;PriorityWeightJobSize&#39; =&gt; &#39;0&#39;,
     &#39;PriorityWeightPartition&#39; =&gt; &#39;0&#39;,
     &#39;PriorityWeightQOS&#39; =&gt; &#39;0&#39;,
-    &#39;PriorityWeightTRES&#39; =&gt; &#39;0&#39;,
+    &#39;PriorityWeightTRES&#39; =&gt; undef,
     &#39;PrivateData&#39; =&gt; undef,
     &#39;ProctrackType&#39; =&gt; &#39;proctrack/cgroup&#39;,
     &#39;PrologEpilogTimeout&#39; =&gt; undef,
@@ -439,11 +455,11 @@ class slurm::params {
     &#39;ResvOverRun&#39; =&gt; &#39;0&#39;,
     &#39;ReturnToService&#39; =&gt; &#39;0&#39;,
     &#39;RoutePlugin&#39; =&gt; &#39;route/default&#39;,
-    &#39;SallocDefaultCommand&#39; =&gt; undef,
     &#39;SbcastParameters&#39; =&gt; undef,
     &#39;SchedulerParameters&#39; =&gt; undef,
     &#39;SchedulerTimeSlice&#39; =&gt; &#39;30&#39;,
     &#39;SchedulerType&#39; =&gt; &#39;sched/backfill&#39;,
+    &#39;ScronParameters&#39; =&gt; undef,
     &#39;SelectType&#39; =&gt; &#39;select/linear&#39;,
     &#39;SelectTypeParameters&#39; =&gt; undef,
     &#39;SlurmctldAddr&#39; =&gt; undef,
@@ -453,12 +469,12 @@ class slurm::params {
     &#39;SlurmctldPidFile&#39; =&gt; &#39;/var/run/slurmctld.pid&#39;,
     &#39;SlurmctldPrimaryOffProg&#39; =&gt; undef,
     &#39;SlurmctldPrimaryOnProg&#39; =&gt; undef,
-    &#39;SlurmctldSyslogDebug&#39; =&gt; undef,
+    &#39;SlurmctldSyslogDebug&#39; =&gt; &#39;info&#39;,
     &#39;SlurmctldTimeout&#39; =&gt; &#39;120&#39;,
     &#39;SlurmdDebug&#39; =&gt; &#39;info&#39;,
     &#39;SlurmdParameters&#39; =&gt; undef,
     &#39;SlurmdPidFile&#39; =&gt; &#39;/var/run/slurmd.pid&#39;,
-    &#39;SlurmdSyslogDebug&#39; =&gt; undef,
+    &#39;SlurmdSyslogDebug&#39; =&gt; &#39;info&#39;,
     &#39;SlurmdTimeout&#39; =&gt; &#39;300&#39;,
     &#39;SlurmSchedLogLevel&#39; =&gt; &#39;0&#39;,
     &#39;SrunPortRange&#39; =&gt; undef,
@@ -494,13 +510,16 @@ class slurm::params {
     &#39;ArchiveSuspend&#39; =&gt; &#39;no&#39;,
     &#39;ArchiveTXN&#39; =&gt; &#39;no&#39;,
     &#39;ArchiveUsage&#39; =&gt; &#39;no&#39;,
+    &#39;AuthAltTypes&#39; =&gt; undef,
+    &#39;AuthAltParameters&#39; =&gt; undef,
     &#39;AuthType&#39; =&gt; &#39;auth/munge&#39;,
     &#39;CommitDelay&#39; =&gt; undef,
+    &#39;CommunicationParameters&#39; =&gt; undef,
     &#39;DbdBackupHost&#39; =&gt; undef,
     &#39;DbdAddr&#39; =&gt; undef,
     &#39;DebugFlags&#39; =&gt; undef,
     &#39;DebugLevel&#39; =&gt; &#39;info&#39;,
-    &#39;DebugLevelSyslog&#39; =&gt; undef,
+    &#39;DebugLevelSyslog&#39; =&gt; &#39;info&#39;,
     &#39;LogTimeFormat&#39; =&gt; &#39;iso8601_ms&#39;,
     &#39;MaxQueryTimeRange&#39; =&gt; &#39;INFINITE&#39;,
     &#39;MessageTimeout&#39; =&gt; &#39;10&#39;,
@@ -516,6 +535,7 @@ class slurm::params {
     &#39;PurgeTXNAfter&#39; =&gt; undef,
     &#39;PurgeUsageAfter&#39; =&gt; undef,
     &#39;StorageBackupHost&#39; =&gt; undef,
+    &#39;StorageParameters&#39; =&gt; undef,
     &#39;TCPTimeout&#39; =&gt; &#39;2&#39;,
     &#39;TrackSlurmctldDown&#39; =&gt; &#39;no&#39;,
     &#39;TrackWCKey&#39; =&gt; undef,

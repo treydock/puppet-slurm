@@ -6,7 +6,7 @@
 <title>
   Defined Type: slurm::spank
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -83,6 +83,24 @@
 <div class="tags">
   <p class="tag_title">Parameters:</p>
 <ul class="param">
+  
+    <li>
+      
+        <span class='name'>ensure</span>
+      
+      
+        <span class='type'>(<tt>Enum['present','absent']</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;present&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Ensure state of SPANK plugin</p>
+</div>
+      
+    </li>
   
     <li>
       
@@ -221,8 +239,6 @@
         <pre class="lines">
 
 
-18
-19
 20
 21
 22
@@ -260,12 +276,22 @@
 54
 55
 56
-57</pre>
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/spank.pp', line 18</span>
+        <pre class="code"><span class="info file"># File 'manifests/spank.pp', line 20</span>
 
 define slurm::spank (
+  Enum[&#39;present&#39;,&#39;absent&#39;] $ensure = &#39;present&#39;,
   String $plugin = &quot;${name}.so&quot;,
   Optional[Variant[Hash, Array, String]] $arguments = undef,
   Boolean $required = false,
@@ -283,10 +309,16 @@ define slurm::spank (
     $package_require = undef
   }
 
+  if $ensure == &#39;absent&#39; {
+    $_package_ensure = &#39;absent&#39;
+  } else {
+    $_package_ensure = $package_ensure
+  }
+
   if $manage_package {
     $fragment_require = Package[&quot;SLURM SPANK ${name} package&quot;]
     package { &quot;SLURM SPANK ${name} package&quot;:
-      ensure  =&gt; $package_ensure,
+      ensure  =&gt; $_package_ensure,
       name    =&gt; $package_name,
       notify  =&gt; $slurm::service_notify,
       require =&gt; $package_require,
@@ -295,7 +327,7 @@ define slurm::spank (
     $fragment_require = undef
   }
 
-  if $slurm::manage_slurm_conf and ! $slurm::configless {
+  if $ensure == &#39;present&#39; and $slurm::manage_slurm_conf and ! $slurm::configless {
     concat::fragment { &quot;plugstack.conf-${name}&quot;:
       target  =&gt; &#39;plugstack.conf&#39;,
       content =&gt; template(&#39;slurm/spank/plugin.conf.erb&#39;),

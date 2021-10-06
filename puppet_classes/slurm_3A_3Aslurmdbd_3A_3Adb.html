@@ -6,7 +6,7 @@
 <title>
   Puppet Class: slurm::slurmdbd::db
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -110,13 +110,25 @@
 19
 20
 21
-22</pre>
+22
+23
+24
+25
+26
+27
+28
+29</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/slurmdbd/db.pp', line 2</span>
 
 class slurm::slurmdbd::db {
   if $slurm::manage_database {
+    if $facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] == &#39;20.04&#39; {
+      $charset = &#39;utf8mb3&#39;
+    } else {
+      $charset = &#39;utf8&#39;
+    }
     if $slurm::export_database {
       @@mysql::db { &quot;slurmdbd_${::fqdn}&quot;:
         user     =&gt; $slurm::slurmdbd_storage_user,
@@ -124,6 +136,7 @@ class slurm::slurmdbd::db {
         dbname   =&gt; $slurm::slurmdbd_storage_loc,
         host     =&gt; $::fqdn,
         grant    =&gt; [&#39;ALL&#39;],
+        charset  =&gt; $charset,
         tag      =&gt; $slurm::export_database_tag,
       }
     } else {
@@ -132,6 +145,7 @@ class slurm::slurmdbd::db {
         password =&gt; $slurm::slurmdbd_storage_pass,
         host     =&gt; $slurm::slurmdbd_storage_host,
         grant    =&gt; [&#39;ALL&#39;],
+        charset  =&gt; $charset,
       }
     }
   }

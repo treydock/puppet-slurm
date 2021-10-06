@@ -6,7 +6,7 @@
 <title>
   Puppet Class: slurm::common::config
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -233,7 +233,35 @@
 142
 143
 144
-145</pre>
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/common/config.pp', line 2</span>
@@ -336,6 +364,23 @@ class slurm::common::config {
       $::slurm::greses.each |$name, $gres| {
         slurm::gres { $name: * =&gt; $gres }
       }
+
+      concat { &#39;job_container.conf&#39;:
+        ensure =&gt; &#39;present&#39;,
+        path   =&gt; $slurm::job_container_conf_path,
+        owner  =&gt; &#39;root&#39;,
+        group  =&gt; &#39;root&#39;,
+        mode   =&gt; &#39;0644&#39;,
+        notify =&gt; $slurm::service_notify,
+      }
+      concat::fragment { &#39;job_container.conf-header&#39;:
+        target  =&gt; &#39;job_container.conf&#39;,
+        content =&gt; &quot;# File managed by Puppet - DO NOT EDIT\n&quot;,
+        order   =&gt; &#39;00&#39;,
+      }
+      $slurm::job_containers.each |$name, $job_container| {
+        slurm::job_container { $name: * =&gt; $job_container }
+      }
     }
 
     concat { &#39;plugstack.conf&#39;:
@@ -372,6 +417,17 @@ class slurm::common::config {
       mode    =&gt; &#39;0644&#39;,
       source  =&gt; $slurm::cli_filter_lua_source,
       content =&gt; $slurm::cli_filter_lua_content,
+    }
+  }
+
+  if (&#39;auth/jwt&#39; in $slurm::auth_alt_types) and ($slurm::slurmctld or $slurm::slurmdbd) {
+    file { $slurm::jwt_key_path:
+      ensure  =&gt; &#39;file&#39;,
+      owner   =&gt; $slurm::slurm_user,
+      group   =&gt; $slurm::slurm_user,
+      mode    =&gt; &#39;0600&#39;,
+      content =&gt; $slurm::jwt_key_content,
+      source  =&gt; $slurm::jwt_key_source,
     }
   }
 

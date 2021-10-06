@@ -6,7 +6,7 @@
 <title>
   Puppet Class: slurm::slurmdbd::service
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -155,17 +155,14 @@
 64
 65
 66
-67
-68
-69
-70</pre>
+67</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/slurmdbd/service.pp', line 2</span>
 
 class slurm::slurmdbd::service {
 
-  file { &#39;/etc/sysconfig/slurmdbd&#39;:
+  file { &quot;${slurm::env_dir}/slurmdbd&quot;:
     ensure  =&gt; &#39;file&#39;,
     owner   =&gt; &#39;root&#39;,
     group   =&gt; &#39;root&#39;,
@@ -221,9 +218,6 @@ class slurm::slurmdbd::service {
     hasstatus  =&gt; true,
     hasrestart =&gt; true,
   }
-
-  include ::systemd::systemctl::daemon_reload
-  Class[&#39;systemd::systemctl::daemon_reload&#39;] -&gt; Service[&#39;slurmdbd&#39;]
 
   exec { &#39;slurmdbd reload&#39;:
     path        =&gt; &#39;/usr/bin:/bin:/usr/sbin:/sbin&#39;,

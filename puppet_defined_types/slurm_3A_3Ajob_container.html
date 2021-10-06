@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>
-  Defined Type: slurm::nodeset
+  Defined Type: slurm::job_container
   
     &mdash; Documentation by YARD 0.9.26
   
@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="../css/common.css" type="text/css" />
 
 <script type="text/javascript">
-  pathId = "puppet_defined_types::slurm::nodeset";
+  pathId = "puppet_defined_types::slurm::job_container";
   relpath = '../';
 </script>
 
@@ -39,7 +39,7 @@
     <a href="../_index.html">Index (s)</a> &raquo;
     <span class='title'><span class='object_link'>Defined Types</span></span>
      &raquo; 
-    <span class="title">slurm::nodeset</span>
+    <span class="title">slurm::job_container</span>
   
 </div>
 
@@ -59,18 +59,18 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><h1>Defined Type: slurm::nodeset</h1>
+      <div id="content"><h1>Defined Type: slurm::job_container</h1>
 <div class="box_info">
   <dl>
     <dt>Defined in:</dt>
     <dd>
-      manifests/nodeset.pp
+      manifests/job_container.pp
     </dd>
   </dl>
 </div>
 
   <h2>Summary</h2>
-  Manage SLURM nodeset configuration
+  Manage SLURM job_container.conf entry
 
 <h2>Overview</h2>
 <div class="docstring">
@@ -86,7 +86,59 @@
   
     <li>
       
-        <span class='name'>feature</span>
+        <span class='name'>base_path</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>job_container.conf BasePath</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>auto_base_path</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>job_container.conf AutoBasePath</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>init_script</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Absolutepath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>job_container.conf InitScript</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>node_name</span>
       
       
         <span class='type'>(<tt>Optional[String]</tt>)</span>
@@ -95,31 +147,10 @@
         <em class="default">(defaults to: <tt>undef</tt>)</em>
       
       
-    </li>
-  
-    <li>
-      
-        <span class='name'>nodes</span>
-      
-      
-        <span class='type'>(<tt>Optional[String]</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>undef</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>node_set</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>$name</tt>)</em>
-      
+        &mdash;
+        <div class='inline'>
+<p>job_container.conf NodeName</p>
+</div>
       
     </li>
   
@@ -131,8 +162,13 @@
         <span class='type'>(<tt>Any</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;40&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;50&#39;</tt>)</em>
       
+      
+        &mdash;
+        <div class='inline'>
+<p>Order in job_container.conf</p>
+</div>
       
     </li>
   
@@ -147,9 +183,6 @@
         <pre class="lines">
 
 
-11
-12
-13
 14
 15
 16
@@ -178,39 +211,62 @@
 39
 40
 41
-42</pre>
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/nodeset.pp', line 11</span>
+        <pre class="code"><span class="info file"># File 'manifests/job_container.pp', line 14</span>
 
-define slurm::nodeset (
-  Optional[String] $feature   = undef,
-  Optional[String] $nodes     = undef,
-  String $node_set            = $name,
-  $order                      = &#39;40&#39;,
+define slurm::job_container (
+  Stdlib::Absolutepath $base_path,
+  Boolean $auto_base_path                     = false,
+  Optional[Stdlib::Absolutepath] $init_script = undef,
+  Optional[String] $node_name                 = undef,
+  $order                                      = &#39;50&#39;,
 ) {
 
-  include ::slurm
+  include slurm
 
-  if $nodes {
-    $_nodes = &quot;Nodes=${nodes}&quot;
+  $_base_path = &quot;BasePath=${base_path}&quot;
+  $_auto_base_path = &quot;AutoBasePath=${auto_base_path}&quot;
+
+  if $init_script {
+    $_init_script = &quot;InitScript=${init_script}&quot;
   } else {
-    $_nodes = undef
+    $_init_script = undef
   }
 
-  if $feature {
-    $_feature = &quot;Feature=${feature}&quot;
+  if $node_name {
+    $params = delete_undef_values([
+      &quot;NodeName=${node_name}&quot;,
+      $_auto_base_path,
+      $_base_path,
+      $_init_script,
+    ])
+    $content = &quot;${strip(join($params, &#39; &#39;))}\n&quot;
   } else {
-    $_feature = undef
+    $content = join(delete_undef_values([
+      $_auto_base_path,
+      $_base_path,
+      $_init_script,
+    ]), &quot;\n&quot;)
   }
 
-  $params = [&quot;NodeSet=${node_set}&quot;, $_nodes, $_feature].filter |$v| { $v =~ NotUndef }
-
-  $content = join($params, &#39; &#39;)
-
-  concat::fragment { &quot;slurm.conf-nodeset-${name}&quot;:
-    target  =&gt; &#39;slurm.conf&#39;,
-    content =&gt; &quot;${content}\n&quot;,
+  concat::fragment { &quot;job_container.conf-${name}&quot;:
+    target  =&gt; &#39;job_container.conf&#39;,
+    content =&gt; $content,
     order   =&gt; $order,
   }
 

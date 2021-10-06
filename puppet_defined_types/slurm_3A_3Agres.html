@@ -6,7 +6,7 @@
 <title>
   Defined Type: slurm::gres
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -331,7 +331,8 @@
 69
 70
 71
-72</pre>
+72
+73</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/gres.pp', line 30</span>
@@ -356,6 +357,7 @@ define slurm::gres (
 
   if $auto_detect {
     $conf_values = {
+      &#39;NodeName&#39;   =&gt; $node_name,
       &#39;AutoDetect&#39; =&gt; $auto_detect,
     }
   } else {

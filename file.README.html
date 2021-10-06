@@ -6,7 +6,7 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -67,34 +67,36 @@ src="https://github.com/treydock/puppet-slurm/workflows/CI/badge.svg?branch=mast
 
 <h4 id="label-Table+of+Contents">Table of Contents</h4>
 <ol><li>
-<p><a href="#label-Overview">Overview</a></p>
+<p><a href="#overview">Overview</a></p>
 <ul><li>
-<p><a href="#label-Supported+versions+of+slurm">Supported Versions of SLURM</a></p>
+<p><a href="#supported-versions-of-slurm">Supported Versions of SLURM</a></p>
 </li></ul>
 </li><li>
-<p><a href="#label-Usage">Usage - Configuration options</a></p>
+<p><a href="#usage">Usage - Configuration options</a></p>
 <ul><li>
-<p><a href="#label-Setup">Setup</a></p>
+<p><a href="#setup">Setup</a></p>
 </li><li>
-<p><a href="#label-Dependencies">Dependencies</a></p>
+<p><a href="#dependencies">Dependencies</a></p>
 </li><li>
-<p><a href="#label-Common">Common</a></p>
+<p><a href="#common">Common</a></p>
 </li><li>
-<p><a href="#label-Roles">Roles</a></p>
+<p><a href="#roles">Roles</a></p>
 </li><li>
-<p><a href="#label-Role+slurmdbd+and+database">Role: slurmdbd</a></p>
+<p><a href="#role-slurmdbd-and-database">Role: slurmdbd</a></p>
 </li><li>
-<p><a href="#label-Role+slurmctld">Role: slurmctld</a></p>
+<p><a href="#role-slurmctld">Role: slurmctld</a></p>
 </li><li>
-<p><a href="#label-Role+slurmd">Role: slurmd</a></p>
+<p><a href="#role-slurmd">Role: slurmd</a></p>
 </li><li>
-<p><a href="#label-Role+client">Role: client</a></p>
+<p><a href="#role-client">Role: client</a></p>
+</li><li>
+<p><a href="#role-slurmrestd">Role: slurmrestd</a></p>
 </li></ul>
 </li><li>
-<p><a href="#label-Reference">Reference - Parameter and detailed reference to all
+<p><a href="#reference">Reference - Parameter and detailed reference to all
 options</a></p>
 </li><li>
-<p><a href="#label-Limitations">Limitations - OS compatibility, etc.</a></p>
+<p><a href="#limitations">Limitations - OS compatibility, etc.</a></p>
 </li></ol>
 
 <h2 id="label-Overview">Overview</h2>
@@ -103,7 +105,10 @@ options</a></p>
 
 <h3 id="label-Supported+Versions+of+SLURM">Supported Versions of SLURM</h3>
 
-<p>This module is designed to work with SLURM 20.02.x.</p>
+<p>This module is designed to work with SLURM 20.11.x.</p>
+
+<p>| SLURM Version | SLURM Puppet module versions | | ————–| —————————–| |
+20.02.x | 0.x | | 20.11.x | 1.x |</p>
 
 <h2 id="label-Usage">Usage</h2>
 
@@ -231,6 +236,8 @@ for a host.</p>
 MySQL database</p>
 </li><li>
 <p><code>slurmd</code> - When true will setup a host to run slurmd</p>
+</li><li>
+<p><code>slurmrestd</code> - When true will setup a host to run slurmrestd</p>
 </li></ul>
 
 <p><strong>NOTE:</strong> The only role enabled by default is
@@ -305,6 +312,23 @@ slurm::slurmd: true
 then the default for <code>slurm::client</code> of <code>true</code> is
 sufficient to configure a host to act as a SLURM client.</p>
 
+<h3 id="label-Role-3A+slurmrestd">Role: slurmrestd</h3>
+
+<p>First the common Hiera such as <code>common.yaml</code> should have
+something like the below. Setting <code>auth_alt_types</code> to include
+<code>auth/jwt</code> will activate the Puppet code to manage JWT resources
+where appropriate.</p>
+
+<pre class="code ruby"><code class="ruby">slurm::auth_alt_types:
+  - auth/jwt
+slurm::jwt_key_source: &#39;puppet:///modules/site_slurm/jwt.key&#39;
+</code></pre>
+
+<p>For the host to run slurmrestd:</p>
+
+<pre class="code ruby"><code class="ruby">slurm::slurmrestd: true
+</code></pre>
+
 <h2 id="label-Reference">Reference</h2>
 
 <p><a
@@ -315,47 +339,13 @@ href="http://treydock.github.io/puppet-slurm/">treydock.github.io/puppet-slurm/<
 <p>This module has been tested on:</p>
 <ul><li>
 <p>RedHat/CentOS 7 x86_64</p>
-</li></ul>
-
-<h2 id="label-Development">Development</h2>
-
-<h3 id="label-Testing">Testing</h3>
-
-<p>Testing requires the following dependencies:</p>
-<ul><li>
-<p>rake</p>
 </li><li>
-<p>bundler</p>
-</li></ul>
-
-<p>Install gem dependencies</p>
-
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_install'>install</span>
-</code></pre>
-
-<p>Run unit tests</p>
-
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_rake'>rake</span> <span class='id identifier rubyid_spec'>spec</span>
-</code></pre>
-
-<p>The following environment variables can be used to modify the behavior of
-the beaker tests:</p>
-<ul><li>
-<p><em>SLURM_BEAKER_repo_baseurl</em> - URL to Yum repository containing SLURM
-RPMs. If not present will install from source</p>
+<p>RedHat/CentOS 8 x86_64</p>
 </li><li>
-<p><em>SLURM_BEAKER_version</em> - Version of SLURM to install. Defaults to
-<strong>20.02.0</strong></p>
+<p>Debian 10 x86_64</p>
+</li><li>
+<p>Ubuntu 18.04 and 20.04 x86_64</p>
 </li></ul>
-
-<p>Example of running beaker tests using an internal repository, and leaving
-VMs running after the tests.</p>
-
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_export'>export</span> <span class='const'>BEAKER_destroy</span><span class='op'>=</span><span class='id identifier rubyid_no'>no</span>
-<span class='id identifier rubyid_export'>export</span> <span class='const'>BEAKER_PUPPET_COLLECTION</span><span class='op'>=</span><span class='id identifier rubyid_puppet5'>puppet5</span>
-<span class='id identifier rubyid_export'>export</span> <span class='const'>BEAKER_set</span><span class='op'>=</span><span class='id identifier rubyid_centos'>centos</span><span class='op'>-</span><span class='int'>7</span>
-<span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_rake'>rake</span> <span class='id identifier rubyid_beaker'>beaker</span>
-</code></pre>
 </div></div>
 
       <div id="footer">

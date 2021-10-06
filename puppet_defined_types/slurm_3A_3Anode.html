@@ -6,7 +6,7 @@
 <title>
   Defined Type: slurm::node
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -113,6 +113,19 @@
     <li>
       
         <span class='name'>node_addr</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>bcast_addr</span>
       
       
         <span class='type'>(<tt>Any</tt>)</span>
@@ -381,7 +394,6 @@
         <pre class="lines">
 
 
-28
 29
 30
 31
@@ -438,15 +450,19 @@
 82
 83
 84
-85</pre>
+85
+86
+87
+88</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/node.pp', line 28</span>
+        <pre class="code"><span class="info file"># File 'manifests/node.pp', line 29</span>
 
 define slurm::node (
   $node_name        = $name,
   $node_hostname    = undef,
   $node_addr        = undef,
+  $bcast_addr       = undef,
   $boards           = undef,
   $core_spec_count  = undef,
   $cores_per_socket = undef,
@@ -474,6 +490,7 @@ define slurm::node (
     &#39;NodeName&#39; =&gt; $node_name,
     &#39;NodeHostname&#39; =&gt; $node_hostname,
     &#39;NodeAddr&#39;  =&gt; $node_addr,
+    &#39;BcastAddr&#39; =&gt; $bcast_addr,
     &#39;Boards&#39;  =&gt; $boards,
     &#39;CoreSpecCount&#39; =&gt; $core_spec_count,
     &#39;CoresPerSocket&#39; =&gt; $cores_per_socket,

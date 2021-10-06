@@ -6,7 +6,7 @@
 <title>
   Puppet Class: slurm::slurmctld
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -125,7 +125,7 @@
 
 class slurm::slurmctld {
 
-  include ::munge
+  contain slurm::common::munge
   contain slurm::common::user
   contain slurm::common::install
   contain slurm::common::setup

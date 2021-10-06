@@ -6,7 +6,7 @@
 <title>
   Puppet Class: slurm
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -212,7 +212,7 @@
   
     <li>
       
-        <span class='name'>version</span>
+        <span class='name'>package_ensure</span>
       
       
         <span class='type'>(<tt>String</tt>)</span>
@@ -245,6 +245,19 @@
       
       
         <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>version</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;20.11.8&#39;</tt>)</em>
       
       
     </li>
@@ -641,6 +654,45 @@
   
     <li>
       
+        <span class='name'>manage_munge</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>munge_key_source</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>munge_key_content</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>manage_slurm_conf</span>
       
       
@@ -927,6 +979,19 @@
   
     <li>
       
+        <span class='name'>env_dir</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/etc/sysconfig&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>spank_plugins</span>
       
       
@@ -1162,6 +1227,19 @@
     <li>
       
         <span class='name'>greses</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>job_containers</span>
       
       
         <span class='type'>(<tt>Any</tt>)</span>
@@ -1616,6 +1694,45 @@
   
     <li>
       
+        <span class='name'>auth_alt_types</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>jwt_key_content</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>jwt_key_source</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>slurmrestd_listen_address</span>
       
       
@@ -1629,13 +1746,13 @@
   
     <li>
       
-        <span class='name'>slurmrestd_auth_type</span>
+        <span class='name'>slurmrestd_disable_token_creation</span>
       
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>Boolean</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;auth/jwt&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>false</tt>)</em>
       
       
     </li>
@@ -2210,15 +2327,6 @@
         <pre class="lines">
 
 
-169
-170
-171
-172
-173
-174
-175
-176
-177
 178
 179
 180
@@ -2610,10 +2718,52 @@
 566
 567
 568
-569</pre>
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 169</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 178</span>
 
 class slurm (
   # Roles
@@ -2627,15 +2777,17 @@ class slurm (
   # Repo (optional)
   Optional[Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl, Pattern[/^file:\/\//]]] $repo_baseurl = undef,
 
+
   Optional[Enum[&#39;package&#39;,&#39;source&#39;]] $install_method = undef,
   Stdlib::Absolutepath $install_prefix = &#39;/usr&#39;,
 
   # Packages
-  String $version                 = &#39;present&#39;,
+  String $package_ensure          = &#39;present&#39;,
   Boolean $install_torque_wrapper = false,
   Boolean $install_pam            = true,
 
   # Source install
+  String $version = &#39;20.11.8&#39;,
   Array $source_dependencies = [],
   Array $configure_flags = [],
   Boolean $source_install_manage_alternatives = true,
@@ -2670,6 +2822,11 @@ class slurm (
   $slurm_user_shell       = &#39;/sbin/nologin&#39;,
   $slurmd_user            = &#39;root&#39;,
   $slurmd_user_group      = &#39;root&#39;,
+
+  # Munge key
+  Boolean $manage_munge                 = false,
+  Optional[String] $munge_key_source    = undef,
+  Optional[String] $munge_key_content   = undef,
 
   # Behavior overrides
   $manage_slurm_conf             = true,
@@ -2706,6 +2863,7 @@ class slurm (
   # Managed directories
   Stdlib::Absolutepath $conf_dir = &#39;/etc/slurm&#39;,
   Stdlib::Absolutepath $log_dir  = &#39;/var/log/slurm&#39;,
+  Stdlib::Absolutepath $env_dir  = &#39;/etc/sysconfig&#39;,
 
   # configless
   Boolean $configless            = false,
@@ -2728,6 +2886,7 @@ class slurm (
   $nodesets               = {},
   $switches               = {},
   $greses                 = {},
+  $job_containers         = {},
 
   # slurm.conf - node
   Optional[Stdlib::Absolutepath] $slurmd_log_file  = undef,
@@ -2776,8 +2935,11 @@ class slurm (
   $task_prolog_source           = undef,
 
   # slurmrestd
+  Array $auth_alt_types = [],
+  Optional[String] $jwt_key_content = undef,
+  Optional[String] $jwt_key_source = undef,
   String $slurmrestd_listen_address = &#39;0.0.0.0&#39;,
-  String $slurmrestd_auth_type = &#39;auth/jwt&#39;,
+  Boolean $slurmrestd_disable_token_creation = false,
   String $slurmrestd_user = &#39;nobody&#39;,
   String $slurmrestd_user_group = &#39;nobody&#39;,
   Enum[&#39;running&#39;,&#39;stopped&#39;] $slurmrestd_service_ensure = &#39;running&#39;,
@@ -2836,14 +2998,17 @@ class slurm (
 
   $osfamily = $facts.dig(&#39;os&#39;, &#39;family&#39;)
   $osmajor = $facts.dig(&#39;os&#39;, &#39;release&#39;, &#39;major&#39;)
-  $os = &quot;${osfamily}-${osmajor}&quot;
-  $supported = [&#39;RedHat-7&#39;,&#39;RedHat-8&#39;]
-  if ! ($os in $supported) {
-    fail(&quot;Unsupported OS: ${os}, module ${module_name} only supports RedHat 7 and 8&quot;)
+  $supported = [&#39;RedHat&#39;,&#39;Debian&#39;]
+  if ! ($osfamily in $supported) {
+    fail(&quot;Unsupported OS family: ${osfamily}, module ${module_name} only supports RedHat and Debian&quot;)
   }
 
   if ! ($slurmd or $slurmctld or $slurmdbd or $database or $client or $slurmrestd) {
     fail(&quot;Module ${module_name}: Must select a mode of either slurmd, slurmctld, slurmrestd, slurmdbd database, or client.&quot;)
+  }
+
+  if (&#39;auth/jwt&#39; in $auth_alt_types) and !($jwt_key_content or $jwt_key_source) {
+    fail(&quot;Module ${module_name}: Must specify either jwt_key_content or jwt_key_source when auth_alt_types includes auth/jwt&quot;)
   }
 
   $slurm_conf_path                    = &quot;${conf_dir}/slurm.conf&quot;
@@ -2852,7 +3017,8 @@ class slurm (
   $slurmdbd_conf_path                 = &quot;${conf_dir}/slurmdbd.conf&quot;
   $cgroup_conf_path                   = &quot;${conf_dir}/cgroup.conf&quot;
   $plugstack_conf_path                = &quot;${conf_dir}/plugstack.conf&quot;
-  $slurmrestd_conf_path               = &quot;${conf_dir}/slurmrestd.conf&quot;
+  $job_container_conf_path            = &quot;${conf_dir}/job_container.conf&quot;
+  $jwt_key_path                       = &quot;${conf_dir}/jwt.key&quot;
 
   if $install_prefix in [&#39;/usr&#39;,&#39;/usr/local&#39;] {
     $profiled_add_path = false
@@ -2883,9 +3049,24 @@ class slurm (
     $_health_check_program = $health_check_program
   }
 
+  if &#39;auth/jwt&#39; in $auth_alt_types {
+    if $slurmrestd_disable_token_creation {
+      $_slurmrestd_disable_token_creation = &#39;disable_token_creation,&#39;
+    } else {
+      $_slurmrestd_disable_token_creation = &#39;&#39;
+    }
+    $auth_alt_parameters = &quot;${_slurmrestd_disable_token_creation}jwt_key=${jwt_key_path}&quot;
+    $auth_alt_parameters_dbd = &quot;jwt_key=${jwt_key_path}&quot;
+  } else {
+    $auth_alt_parameters = undef
+    $auth_alt_parameters_dbd = undef
+  }
+
   $slurm_conf_local_defaults = {
     &#39;AccountingStorageHost&#39; =&gt; $slurmdbd_host,
     &#39;AccountingStoragePort&#39; =&gt; $slurmdbd_port,
+    &#39;AuthAltTypes&#39; =&gt; $auth_alt_types,
+    &#39;AuthAltParameters&#39; =&gt; $auth_alt_parameters,
     &#39;ClusterName&#39; =&gt; $cluster_name,
     &#39;DefaultStorageHost&#39; =&gt; $slurmdbd_host,
     &#39;DefaultStoragePort&#39; =&gt; $slurmdbd_port,
@@ -2920,6 +3101,8 @@ class slurm (
 
   $slurmdbd_conf_local_defaults = {
     &#39;ArchiveDir&#39; =&gt; $slurmdbd_archive_dir,
+    &#39;AuthAltTypes&#39; =&gt; $auth_alt_types,
+    &#39;AuthAltParameters&#39; =&gt; $auth_alt_parameters_dbd,
     &#39;DbdHost&#39; =&gt; $slurmdbd_host,
     &#39;DbdPort&#39; =&gt; $slurmdbd_port,
     &#39;LogFile&#39; =&gt; $_slurmdbd_log_file,

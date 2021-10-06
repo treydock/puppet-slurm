@@ -6,7 +6,7 @@
 <title>
   Puppet Class: slurm::common::install
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -108,7 +108,9 @@
 17
 18
 19
-20</pre>
+20
+21
+22</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/common/install.pp', line 2</span>
@@ -117,6 +119,8 @@ class slurm::common::install {
 
   if $slurm::osfamily == &#39;RedHat&#39; {
     $package_class = &#39;slurm::common::install::rpm&#39;
+  } elsif $slurm::osfamily == &#39;Debian&#39; {
+    $package_class = &#39;slurm::common::install::apt&#39;
   }
 
   if $slurm::repo_baseurl {

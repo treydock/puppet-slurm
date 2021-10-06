@@ -6,7 +6,7 @@
 <title>
   Puppet Class: slurm::slurmrestd
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -110,9 +110,7 @@
 19
 20
 21
-22
-23
-24</pre>
+22</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/slurmrestd.pp', line 2</span>
@@ -122,13 +120,11 @@ class slurm::slurmrestd {
   contain slurm::common::user
   contain slurm::common::install
   contain slurm::common::config
-  contain slurm::slurmrestd::config
   contain slurm::slurmrestd::service
 
   Class[&#39;slurm::common::user&#39;]
   -&gt; Class[&#39;slurm::common::install&#39;]
   -&gt; Class[&#39;slurm::common::config&#39;]
-  -&gt; Class[&#39;slurm::slurmrestd::config&#39;]
   -&gt; Class[&#39;slurm::slurmrestd::service&#39;]
 
   if $slurm::manage_firewall {
