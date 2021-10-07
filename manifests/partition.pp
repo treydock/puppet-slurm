@@ -30,15 +30,19 @@
 # @param min_nodes
 # @param nodes
 # @param over_subscribe
+# @param over_time_limit
 # @param preempt_mode
 # @param priority_job_factor
 # @param priority_tier
 # @param qos
 # @param req_resv
+# @param resume_timeout
 # @param root_only
 # @param select_type_parameters
 # @param shared
 # @param state
+# @param suspend_time
+# @param suspend_timeout
 # @param tres_billing_weights
 # @param order
 #
@@ -71,15 +75,19 @@ define slurm::partition (
   $min_nodes = undef,
   $nodes = undef,
   Optional[Enum['EXCLUSIVE','FORCE','YES','NO']] $over_subscribe = undef,
+  $over_time_limit = undef,
   Optional[Slurm::PreemptMode] $preempt_mode = undef,
   $priority_job_factor = undef,
   $priority_tier = undef,
   $qos = undef,
   $req_resv = undef,
+  $resume_timeout = undef,
   Optional[Enum['YES','NO']] $root_only = undef,
   Optional[Slurm::SelectTypeParameters] $select_type_parameters = undef,
   $shared = undef,
   Slurm::PartitionState $state = 'UP',
+  $suspend_time = undef,
+  $suspend_timeout = undef,
   $tres_billing_weights = undef,
   $order            = '50',
 ) {
@@ -95,13 +103,13 @@ define slurm::partition (
     'Alternate' => $alternate,
     'CpuBind' => $cpu_bind,
     'Default' => $default,
+    'DefaultTime' => $default_time,
     'DefCpuPerGPU' => $def_cpu_per_gpu,
     'DefMemPerCPU' => $def_mem_per_cpu,
     'DefMemPerGPU' => $def_mem_per_gpu,
     'DefMemPerNode' => $def_mem_per_node,
     'DenyAccounts' => $deny_accounts,
     'DenyQos' => $deny_qos,
-    'DefaultTime' => $default_time,
     'DisableRootJobs' => $disable_root_jobs,
     'ExclusiveUser' => $exclusive_user,
     'GraceTime' => $grace_time,
@@ -115,15 +123,19 @@ define slurm::partition (
     'MinNodes' => $min_nodes,
     'Nodes' => $nodes,
     'OverSubscribe' => $over_subscribe,
+    'OverTimeLimit' => $over_time_limit,
     'PreemptMode' => $preempt_mode,
     'PriorityJobFactor' => $priority_job_factor,
     'PriorityTier' => $priority_tier,
     'QOS' => $qos,
     'ReqResv' => $req_resv,
+    'ResumeTimeout' => $resume_timeout,
     'RootOnly' => $root_only,
     'SelectTypeParameters' => $select_type_parameters,
     'Shared' => $shared,
     'State' => $state,
+    'SuspendTime' => $suspend_time,
+    'SuspendTimeout' => $suspend_timeout,
     'TRESBillingWeights' => $tres_billing_weights,
   }
 

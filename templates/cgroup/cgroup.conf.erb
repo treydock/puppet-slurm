@@ -8,6 +8,7 @@
 #--
 CgroupAutomount=<%= scope['slurm::cgroup_automount'] ? "yes" : "no" %>
 CgroupMountpoint=<%= scope['slurm::cgroup_mountpoint'] %>
+CgroupPlugin=<%= scope['slurm::cgroup_plugin'] %>
 # task/cgroup plugin
 <%- if scope['slurm::cgroup_allowed_kmem_space'] -%>
 AllowedKmemSpace=<%= scope['slurm::cgroup_allowed_kmem_space'] %>
@@ -27,4 +28,3 @@ MemorySwappiness=<%= scope['slurm::cgroup_memory_swappiness'] %>
 <%- end -%>
 MinKmemSpace=<%= scope['slurm::cgroup_min_kmem_space'] %>
 MinRAMSpace=<%= scope['slurm::cgroup_min_ram_space'] %>
-TaskAffinity=<%= scope['slurm::cgroup_task_affinity'] ? "yes" : "no" %>

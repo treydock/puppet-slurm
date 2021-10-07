@@ -18,7 +18,7 @@ class slurm::slurmctld::service {
     }
   }
 
-  if $slurm::state_dir_systemd or $slurm::checkpoint_dir_systemd {
+  if $slurm::state_dir_systemd {
     $systemd_mounts = 'present'
   } else {
     $systemd_mounts = 'absent'
@@ -30,7 +30,6 @@ class slurm::slurmctld::service {
       '# File managed by Puppet',
       '[Unit]',
       $slurm::state_dir_systemd,
-      $slurm::checkpoint_dir_systemd,
     ]), "\n"),
     notify  => Service['slurmctld'],
   }

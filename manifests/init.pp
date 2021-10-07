@@ -63,8 +63,6 @@
 # @param cli_filter_lua_content
 # @param state_dir_nfs_device
 # @param state_dir_nfs_options
-# @param job_checkpoint_dir_nfs_device
-# @param job_checkpoint_dir_nfs_options
 # @param job_submit_lua_source
 # @param job_submit_lua_content
 # @param cluster_name
@@ -95,7 +93,6 @@
 # @param job_containers
 # @param slurmd_log_file
 # @param slurmd_spool_dir
-# @param job_checkpoint_dir
 # @param slurmctld_log_file
 # @param state_save_location
 # @param slurmdbd_archive_dir
@@ -143,6 +140,7 @@
 # @param cgroup_conf_source
 # @param cgroup_automount
 # @param cgroup_mountpoint
+# @param cgroup_plugin
 # @param cgroup_allowed_kmem_space
 # @param cgroup_allowed_ram_space
 # @param cgroup_allowed_swap_space
@@ -157,7 +155,6 @@
 # @param cgroup_memory_swappiness
 # @param cgroup_min_kmem_space
 # @param cgroup_min_ram_space
-# @param cgroup_task_affinity
 # @param slurm_sh_template
 # @param slurm_csh_template
 # @param profile_d_env_vars
@@ -197,7 +194,7 @@ class slurm (
   Boolean $install_pam            = true,
 
   # Source install
-  String $version = '20.11.8',
+  String $version = '21.08.2',
   Array $source_dependencies = [],
   Array $configure_flags = [],
   Boolean $source_install_manage_alternatives = true,
@@ -260,8 +257,6 @@ class slurm (
   # Config - controller
   $state_dir_nfs_device           = undef,
   $state_dir_nfs_options          = 'rw,sync,noexec,nolock,auto',
-  $job_checkpoint_dir_nfs_device  = undef,
-  $job_checkpoint_dir_nfs_options = 'rw,sync,noexec,nolock,auto',
   $job_submit_lua_source          = undef,
   $job_submit_lua_content         = undef,
 
@@ -303,7 +298,6 @@ class slurm (
   $slurmd_spool_dir = '/var/spool/slurmd',
 
   # slurm.conf - controller
-  $job_checkpoint_dir     = '/var/spool/slurmctld.checkpoint',
   Optional[Stdlib::Absolutepath] $slurmctld_log_file     = undef,
   $state_save_location    = '/var/spool/slurmctld.state',
 
@@ -363,6 +357,7 @@ class slurm (
   Optional[String] $cgroup_conf_source               = undef,
   Boolean $cgroup_automount                 = true,
   Stdlib::Absolutepath $cgroup_mountpoint                = '/sys/fs/cgroup',
+  String $cgroup_plugin = 'autodetect',
   Optional[Integer] $cgroup_allowed_kmem_space = undef,
   Integer $cgroup_allowed_ram_space         = 100,
   Integer $cgroup_allowed_swap_space        = 0,
@@ -377,7 +372,6 @@ class slurm (
   Optional[Integer[0,100]] $cgroup_memory_swappiness = undef,
   Integer $cgroup_min_kmem_space             = 30,
   Integer $cgroup_min_ram_space             = 30,
-  Boolean $cgroup_task_affinity             = false,
 
   # profile.d
   $slurm_sh_template  = 'slurm/profile.d/slurm.sh.erb',
@@ -478,12 +472,9 @@ class slurm (
     'AuthAltTypes' => $auth_alt_types,
     'AuthAltParameters' => $auth_alt_parameters,
     'ClusterName' => $cluster_name,
-    'DefaultStorageHost' => $slurmdbd_host,
-    'DefaultStoragePort' => $slurmdbd_port,
     'Epilog' => $epilog,
     'EpilogSlurmctld' => undef, #TODO
     'HealthCheckProgram' => $_health_check_program,
-    'JobCheckpointDir' => $job_checkpoint_dir,
     # Must remained undefined to support configless, we save to same directory as slurm.conf
     'PlugStackConfig' => undef,
     'Prolog' => $prolog,
@@ -567,12 +558,6 @@ class slurm (
     $state_dir_systemd = "RequiresMountsFor=${slurm::state_save_location}"
   } else {
     $state_dir_systemd = undef
-  }
-
-  if $job_checkpoint_dir_nfs_device {
-    $checkpoint_dir_systemd = "RequiresMountsFor=${slurm::job_checkpoint_dir}"
-  } else {
-    $checkpoint_dir_systemd = undef
   }
 
   if $slurmdbd_archive_dir_nfs_device {

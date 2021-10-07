@@ -23,7 +23,6 @@ shared_examples_for 'slurm::common::config' do
                                      'AccountingStorageHost=slurmdbd',
                                      'AccountingStoragePort=6819',
                                      'AccountingStorageType=accounting_storage/slurmdbd',
-                                     'AccountingStoreJobComment=YES',
                                      'AcctGatherNodeFreq=0',
                                      'AllowSpecResourcesUsage=NO',
                                      'AuthType=auth/munge',
@@ -33,8 +32,6 @@ shared_examples_for 'slurm::common::config' do
                                      'CoreSpecPlugin=core_spec/none',
                                      'CpuFreqGovernors=OnDemand,Performance,UserSpace',
                                      'CredType=cred/munge',
-                                     'DefaultStorageHost=slurmdbd',
-                                     'DefaultStoragePort=6819',
                                      'DisableRootJobs=NO',
                                      'EioTimeout=60',
                                      'EnforcePartLimits=NO',
@@ -51,7 +48,6 @@ shared_examples_for 'slurm::common::config' do
                                      'InteractiveStepOptions="--interactive --preserve-env --pty $SHELL"',
                                      'JobAcctGatherType=jobacct_gather/cgroup',
                                      'JobAcctGatherFrequency=task=30,energy=0,network=0,filesystem=0',
-                                     'JobCheckpointDir=/var/spool/slurmctld.checkpoint',
                                      'JobCompType=jobcomp/none',
                                      'JobRequeue=1',
                                      'KillOnBadExit=0',
@@ -176,6 +172,7 @@ shared_examples_for 'slurm::common::config' do
     verify_exact_file_contents(catalogue, 'slurm-cgroup.conf', [
                                  'CgroupAutomount=yes',
                                  'CgroupMountpoint=/sys/fs/cgroup',
+                                 'CgroupPlugin=autodetect',
                                  'AllowedRAMSpace=100',
                                  'AllowedSwapSpace=0',
                                  'ConstrainCores=no',
@@ -188,7 +185,6 @@ shared_examples_for 'slurm::common::config' do
                                  'MaxKmemPercent=100',
                                  'MinKmemSpace=30',
                                  'MinRAMSpace=30',
-                                 'TaskAffinity=no',
                                ])
   end
 

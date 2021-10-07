@@ -32,6 +32,7 @@ This module is designed to work with SLURM 20.11.x.
 | --------------| -----------------------------|
 | 20.02.x       | 0.x                          |
 | 20.11.x       | 1.x                          |
+| 21.08.x       | 2.x                          |
 
 ## Usage
 
