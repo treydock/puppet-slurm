@@ -8,7 +8,9 @@
 #--
 CgroupAutomount=<%= scope['slurm::cgroup_automount'] ? "yes" : "no" %>
 CgroupMountpoint=<%= scope['slurm::cgroup_mountpoint'] %>
+<%- if scope['slurm::cgroup_plugin'] -%>
 CgroupPlugin=<%= scope['slurm::cgroup_plugin'] %>
+<%- end -%>
 # task/cgroup plugin
 <%- if scope['slurm::cgroup_allowed_kmem_space'] -%>
 AllowedKmemSpace=<%= scope['slurm::cgroup_allowed_kmem_space'] %>

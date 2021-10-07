@@ -357,7 +357,7 @@ class slurm (
   Optional[String] $cgroup_conf_source               = undef,
   Boolean $cgroup_automount                 = true,
   Stdlib::Absolutepath $cgroup_mountpoint                = '/sys/fs/cgroup',
-  String $cgroup_plugin = 'autodetect',
+  Optional[String] $cgroup_plugin = undef,
   Optional[Integer] $cgroup_allowed_kmem_space = undef,
   Integer $cgroup_allowed_ram_space         = 100,
   Integer $cgroup_allowed_swap_space        = 0,

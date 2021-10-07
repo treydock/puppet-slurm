@@ -172,7 +172,6 @@ shared_examples_for 'slurm::common::config' do
     verify_exact_file_contents(catalogue, 'slurm-cgroup.conf', [
                                  'CgroupAutomount=yes',
                                  'CgroupMountpoint=/sys/fs/cgroup',
-                                 'CgroupPlugin=autodetect',
                                  'AllowedRAMSpace=100',
                                  'AllowedSwapSpace=0',
                                  'ConstrainCores=no',
