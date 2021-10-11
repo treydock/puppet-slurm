@@ -142,7 +142,7 @@ class slurm::common::config {
     }
   }
 
-  if $slurm::client and ($slurm::cli_filter_lua_source or $slurm::cli_filter_lua_content) {
+  if ($slurm::client or $slurm::slurmctld) and ($slurm::cli_filter_lua_source or $slurm::cli_filter_lua_content) {
     file { "${slurm::conf_dir}/cli_filter.lua":
       ensure  => 'file',
       owner   => 'root',
@@ -150,6 +150,10 @@ class slurm::common::config {
       mode    => '0644',
       source  => $slurm::cli_filter_lua_source,
       content => $slurm::cli_filter_lua_content,
+    }
+
+    if $slurm::slurmctld and $slurm::enable_configless {
+      File["${slurm::conf_dir}/cli_filter.lua"] ~> Exec['scontrol reconfig']
     }
   }
 

@@ -72,6 +72,7 @@
 # @param log_dir
 # @param env_dir
 # @param spank_plugins
+# @param enable_configless
 # @param configless
 # @param conf_server
 # @param slurm_conf_override
@@ -214,8 +215,8 @@ class slurm (
   String $slurmdbd_options                            = '',
   Boolean $slurmctld_restart_on_failure               = true,
   Boolean $slurmdbd_restart_on_failure                = true,
-  Boolean $reload_services                            = true,
-  Boolean $restart_services                           = false,
+  Boolean $reload_services                            = false,
+  Boolean $restart_services                           = true,
 
   # User and group management
   $manage_slurm_user      = true,
@@ -271,6 +272,7 @@ class slurm (
   Stdlib::Absolutepath $env_dir  = '/etc/sysconfig',
 
   # configless
+  Boolean $enable_configless     = false,
   Boolean $configless            = false,
   Optional[String] $conf_server  = undef,
 
@@ -466,6 +468,22 @@ class slurm (
     $auth_alt_parameters_dbd = undef
   }
 
+  if $enable_configless {
+    if 'SlurmctldParameters' in $slurm_conf_override and !('enable_configless' in $slurm_conf_override['SlurmctldParameters']) {
+      if $slurm_conf_override['SlurmctldParameters'] =~ Array {
+        $slurmctld_parameters = $slurm_conf_override['SlurmctldParameters'] + ['enable_configless']
+      } else {
+        $slurmctld_parameters = "${slurm_conf_override['SlurmctldParameters']},enable_configless"
+      }
+    } elsif 'SlurmctldParameters' in $slurm_conf_override {
+      $slurmctld_parameters = $slurm_conf_override['SlurmctldParameters']
+    } else {
+      $slurmctld_parameters = 'enable_configless'
+    }
+  } else {
+    $slurmctld_parameters = $slurm_conf_override['SlurmctldParameters']
+  }
+
   $slurm_conf_local_defaults = {
     'AccountingStorageHost' => $slurmdbd_host,
     'AccountingStoragePort' => $slurmdbd_port,
@@ -489,6 +507,7 @@ class slurm (
     'SlurmdPort' => $slurmd_port,
     'SlurmdSpoolDir' => $slurmd_spool_dir,
     'SlurmSchedLogFile' => "${log_dir}/slurmsched.log",
+    'SlurmctldParameters' => $slurmctld_parameters,
     'SlurmdUser' => $slurmd_user,
     'SrunEpilog' => undef, #TODO
     'SrunProlog' => undef, #TODO
@@ -497,8 +516,9 @@ class slurm (
     'TaskProlog' => $task_prolog,
   }
 
+  $_slurm_conf_override = $slurm_conf_override - ['SlurmctldParameters']
   $slurm_conf_defaults  = merge($::slurm::params::slurm_conf_defaults, $slurm_conf_local_defaults)
-  $slurm_conf           = merge($slurm_conf_defaults, $slurm_conf_override)
+  $slurm_conf           = merge($slurm_conf_defaults, $_slurm_conf_override)
 
   $slurmdbd_conf_local_defaults = {
     'ArchiveDir' => $slurmdbd_archive_dir,
@@ -564,6 +584,18 @@ class slurm (
     $slurmdbd_archive_dir_systemd = "RequiresMountsFor=${slurm::slurmdbd_archive_dir}"
   } else {
     $slurmdbd_archive_dir_systemd = undef
+  }
+
+  if $slurmctld and $restart_services {
+    slurmctld_conn_validator { 'puppet':
+      ensure  => 'present',
+      timeout => 480,
+      before  => Exec['scontrol reconfig'],
+      require => Service['slurmctld'],
+    }
+    if $enable_configless {
+      Service['slurmctld'] ~> Exec['scontrol reconfig']
+    }
   }
 
   if $database {

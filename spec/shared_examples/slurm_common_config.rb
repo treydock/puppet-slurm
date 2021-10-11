@@ -194,6 +194,38 @@ shared_examples_for 'slurm::common::config' do
                                                              value: '1024')
   end
 
+  context 'when enable_configless => true' do
+    let(:param_override) { { enable_configless: true } }
+
+    it do
+      is_expected.to contain_concat__fragment('slurm.conf-config').with_content(%r{SlurmctldParameters=enable_configless})
+    end
+
+    context 'when values already defined' do
+      let(:param_override) { { enable_configless: true, slurm_conf_override: { SlurmctldParameters: ['enable_configless'] } } }
+
+      it do
+        is_expected.to contain_concat__fragment('slurm.conf-config').with_content(%r{SlurmctldParameters=enable_configless})
+      end
+    end
+
+    context 'when values already defined as string' do
+      let(:param_override) { { enable_configless: true, slurm_conf_override: { SlurmctldParameters: 'foo' } } }
+
+      it do
+        is_expected.to contain_concat__fragment('slurm.conf-config').with_content(%r{SlurmctldParameters=foo,enable_configless})
+      end
+    end
+
+    context 'when values already defined as array' do
+      let(:param_override) { { enable_configless: true, slurm_conf_override: { SlurmctldParameters: ['foo'] } } }
+
+      it do
+        is_expected.to contain_concat__fragment('slurm.conf-config').with_content(%r{SlurmctldParameters=foo,enable_configless})
+      end
+    end
+  end
+
   context 'when use_syslog => true' do
     let(:param_override) { { use_syslog: true } }
 

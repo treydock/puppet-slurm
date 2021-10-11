@@ -183,6 +183,12 @@ slurm::database: false
 slurm::slurmctld: true
 ```
 
+If you wish to enable configless SLURM:
+
+```yaml
+slurm::enable_configless: true
+```
+
 ### Role: slurmd
 
 The following enables a host to act as a slurmd compute node
@@ -193,6 +199,12 @@ slurm::slurmdbd: false
 slurm::database: false
 slurm::slurmctld: false
 slurm::slurmd: true
+```
+
+To have slurmd pull configs via configless SLURM:
+
+```yaml
+slurm::configless: true
 ```
 
 ### Role: client
