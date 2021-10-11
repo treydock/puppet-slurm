@@ -36,6 +36,7 @@
 # @param slurmdbd_restart_on_failure
 # @param reload_services
 # @param restart_services
+# @param slurmctld_conn_validator_timeout
 # @param manage_slurm_user
 # @param slurm_user_group
 # @param slurm_group_gid
@@ -217,6 +218,7 @@ class slurm (
   Boolean $slurmdbd_restart_on_failure                = true,
   Boolean $reload_services                            = false,
   Boolean $restart_services                           = true,
+  Integer $slurmctld_conn_validator_timeout           = 60,
 
   # User and group management
   $manage_slurm_user      = true,
@@ -589,7 +591,7 @@ class slurm (
   if $slurmctld and $restart_services {
     slurmctld_conn_validator { 'puppet':
       ensure  => 'present',
-      timeout => 480,
+      timeout => $slurmctld_conn_validator_timeout,
       before  => Exec['scontrol reconfig'],
       require => Service['slurmctld'],
     }
