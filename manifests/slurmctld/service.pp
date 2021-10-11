@@ -61,6 +61,20 @@ class slurm::slurmctld::service {
   exec { 'scontrol reconfig':
     path        => '/usr/bin:/bin:/usr/sbin:/sbin',
     refreshonly => true,
-    require     => Service['slurmctld'],
+  }
+
+  if $slurm::enable_configless {
+    Service['slurmctld'] ~> Exec['scontrol reconfig']
+  } else {
+    Service['slurmctld'] -> Exec['scontrol reconfig']
+  }
+
+  if $slurm::restart_services {
+    slurmctld_conn_validator { 'puppet':
+      ensure  => 'present',
+      timeout => $slurm::slurmctld_conn_validator_timeout,
+      before  => Exec['scontrol reconfig'],
+      require => Service['slurmctld'],
+    }
   }
 }

@@ -588,18 +588,6 @@ class slurm (
     $slurmdbd_archive_dir_systemd = undef
   }
 
-  if $slurmctld and $restart_services {
-    slurmctld_conn_validator { 'puppet':
-      ensure  => 'present',
-      timeout => $slurmctld_conn_validator_timeout,
-      before  => Exec['scontrol reconfig'],
-      require => Service['slurmctld'],
-    }
-    if $enable_configless {
-      Service['slurmctld'] ~> Exec['scontrol reconfig']
-    }
-  }
-
   if $database {
     contain slurm::slurmdbd::db
   }
