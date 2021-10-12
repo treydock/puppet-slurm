@@ -6,6 +6,7 @@ ConditionPathExists=<%= scope['slurm::slurm_conf_path'] %>
 [Service]
 User=<%= scope['slurm::slurmrestd_user'] %>
 Group=<%= scope['slurm::slurmrestd_user_group'] %>
+EnvironmentFile=-<%= scope['slurm::env_dir'] %>/slurmrestd
 Environment=SLURM_JWT=daemon
 ExecStart=/usr/sbin/slurmrestd $SLURMRESTD_OPTIONS <%= scope['slurm::slurmrestd_listen_address'] %>:<%= scope['slurm::slurmrestd_port'] %>
 <%- if scope['slurm::slurmrestd_restart_on_failure'] %>
