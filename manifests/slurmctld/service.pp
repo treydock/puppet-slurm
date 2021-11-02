@@ -51,6 +51,18 @@ class slurm::slurmctld::service {
     notify  => Service['slurmctld'],
   }
 
+  systemd::dropin_file { 'slurmctld-logging.conf':
+    ensure  => $slurm::logging_systemd_override,
+    unit    => 'slurmctld.service',
+    content => join([
+      '# File managed by Puppet',
+      '[Service]',
+      'StandardOutput=null',
+      'StandardError=null',
+    ], "\n"),
+    notify  => Service['slurmctld'],
+  }
+
   service { 'slurmctld':
     ensure     => $slurm::slurmctld_service_ensure,
     enable     => $slurm::slurmctld_service_enable,

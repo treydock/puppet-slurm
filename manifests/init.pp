@@ -588,6 +588,12 @@ class slurm (
     $slurmdbd_archive_dir_systemd = undef
   }
 
+  if $use_syslog {
+    $logging_systemd_override = 'present'
+  } else {
+    $logging_systemd_override = 'absent'
+  }
+
   if $database {
     contain slurm::slurmdbd::db
   }
