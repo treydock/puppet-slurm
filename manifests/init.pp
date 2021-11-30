@@ -346,7 +346,7 @@ class slurm (
   Array $auth_alt_types = [],
   Optional[String] $jwt_key_content = undef,
   Optional[String] $jwt_key_source = undef,
-  String $slurmrestd_listen_address = '0.0.0.0',
+  String $slurmrestd_listen_address = $facts['networking']['ip'],
   Boolean $slurmrestd_disable_token_creation = false,
   String $slurmrestd_user = 'nobody',
   String $slurmrestd_user_group = 'nobody',

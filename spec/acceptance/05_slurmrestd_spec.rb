@@ -35,7 +35,7 @@ describe 'slurmrestd' do
       it_behaves_like 'slurmrestd::service', node
 
       describe port(6820) do
-        it { is_expected.to be_listening.on('0.0.0.0').with('tcp') }
+        it { is_expected.to be_listening }
       end
     end
   end
