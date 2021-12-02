@@ -12,11 +12,12 @@
 # @param cpu_bind
 # @param cpus
 # @param cpu_spec_list
-# @param feature
+# @param features
 # @param gres
 # @param mem_spec_limit
 # @param port
 # @param real_memory
+# @param reason
 # @param sockets
 # @param sockets_per_board
 # @param state
@@ -37,11 +38,12 @@ define slurm::node (
   $cpu_bind         = undef,
   $cpus             = undef,
   $cpu_spec_list    = undef,
-  $feature          = undef,
+  $features         = undef,
   $gres             = undef,
   $mem_spec_limit   = undef,
   $port             = undef,
   $real_memory      = undef,
+  $reason           = undef,
   $sockets          = undef,
   $sockets_per_board = undef,
   Slurm::NodeState $state = 'UNKNOWN',
@@ -65,11 +67,12 @@ define slurm::node (
     'CpuBind' => $cpu_bind,
     'CPUs'  => $cpus,
     'CpuSpecList' => $cpu_spec_list,
-    'Feature' => $feature,
+    'Features' => $features,
     'Gres'  => $gres,
     'MemSpecLimit'  => $mem_spec_limit,
     'Port'  => $port,
     'RealMemory'  => $real_memory,
+    'Reason' => $reason,
     'Sockets' => $sockets,
     'SocketsPerBoard' => $sockets_per_board,
     'State' => $state,

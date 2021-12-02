@@ -23,7 +23,6 @@ shared_examples_for 'slurm::common::config' do
                                      'AccountingStorageHost=slurmdbd',
                                      'AccountingStoragePort=6819',
                                      'AccountingStorageType=accounting_storage/slurmdbd',
-                                     'AccountingStoreJobComment=YES',
                                      'AcctGatherNodeFreq=0',
                                      'AllowSpecResourcesUsage=NO',
                                      'AuthType=auth/munge',
@@ -33,8 +32,6 @@ shared_examples_for 'slurm::common::config' do
                                      'CoreSpecPlugin=core_spec/none',
                                      'CpuFreqGovernors=OnDemand,Performance,UserSpace',
                                      'CredType=cred/munge',
-                                     'DefaultStorageHost=slurmdbd',
-                                     'DefaultStoragePort=6819',
                                      'DisableRootJobs=NO',
                                      'EioTimeout=60',
                                      'EnforcePartLimits=NO',
@@ -51,7 +48,6 @@ shared_examples_for 'slurm::common::config' do
                                      'InteractiveStepOptions="--interactive --preserve-env --pty $SHELL"',
                                      'JobAcctGatherType=jobacct_gather/cgroup',
                                      'JobAcctGatherFrequency=task=30,energy=0,network=0,filesystem=0',
-                                     'JobCheckpointDir=/var/spool/slurmctld.checkpoint',
                                      'JobCompType=jobcomp/none',
                                      'JobRequeue=1',
                                      'KillOnBadExit=0',
@@ -188,7 +184,6 @@ shared_examples_for 'slurm::common::config' do
                                  'MaxKmemPercent=100',
                                  'MinKmemSpace=30',
                                  'MinRAMSpace=30',
-                                 'TaskAffinity=no',
                                ])
   end
 
@@ -197,6 +192,38 @@ shared_examples_for 'slurm::common::config' do
   it do
     is_expected.to contain_sysctl('net.core.somaxconn').with(ensure: 'present',
                                                              value: '1024')
+  end
+
+  context 'when enable_configless => true' do
+    let(:param_override) { { enable_configless: true } }
+
+    it do
+      is_expected.to contain_concat__fragment('slurm.conf-config').with_content(%r{SlurmctldParameters=enable_configless})
+    end
+
+    context 'when values already defined' do
+      let(:param_override) { { enable_configless: true, slurm_conf_override: { SlurmctldParameters: ['enable_configless'] } } }
+
+      it do
+        is_expected.to contain_concat__fragment('slurm.conf-config').with_content(%r{SlurmctldParameters=enable_configless})
+      end
+    end
+
+    context 'when values already defined as string' do
+      let(:param_override) { { enable_configless: true, slurm_conf_override: { SlurmctldParameters: 'foo' } } }
+
+      it do
+        is_expected.to contain_concat__fragment('slurm.conf-config').with_content(%r{SlurmctldParameters=foo,enable_configless})
+      end
+    end
+
+    context 'when values already defined as array' do
+      let(:param_override) { { enable_configless: true, slurm_conf_override: { SlurmctldParameters: ['foo'] } } }
+
+      it do
+        is_expected.to contain_concat__fragment('slurm.conf-config').with_content(%r{SlurmctldParameters=foo,enable_configless})
+      end
+    end
   end
 
   context 'when use_syslog => true' do

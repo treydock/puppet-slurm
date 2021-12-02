@@ -8,14 +8,6 @@ class slurm::slurmctld::config {
     mode   => '0700',
   }
 
-  file { 'JobCheckpointDir':
-    ensure => 'directory',
-    path   => $slurm::job_checkpoint_dir,
-    owner  => $slurm::slurm_user,
-    group  => $slurm::slurm_user_group,
-    mode   => '0700',
-  }
-
   if $slurm::state_dir_nfs_device {
     exec { 'mkdir-StateSaveLocation':
       path    => '/bin:/usr/bin',
@@ -31,24 +23,6 @@ class slurm::slurmctld::config {
       fstype  => 'nfs',
       options => $slurm::state_dir_nfs_options,
       before  => File['StateSaveLocation'],
-    }
-  }
-
-  if $slurm::job_checkpoint_dir_nfs_device {
-    exec { 'mkdir-JobCheckpointDir':
-      path    => '/bin:/usr/bin',
-      command => "mkdir -p ${slurm::job_checkpoint_dir}",
-      creates => $slurm::job_checkpoint_dir,
-      before  => Mount['JobCheckpointDir'],
-    }
-    mount { 'JobCheckpointDir':
-      ensure  => 'mounted',
-      name    => $slurm::job_checkpoint_dir,
-      atboot  => true,
-      device  => $slurm::job_checkpoint_dir_nfs_device,
-      fstype  => 'nfs',
-      options => $slurm::job_checkpoint_dir_nfs_options,
-      before  => File['JobCheckpointDir'],
     }
   }
 

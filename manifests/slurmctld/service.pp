@@ -18,7 +18,7 @@ class slurm::slurmctld::service {
     }
   }
 
-  if $slurm::state_dir_systemd or $slurm::checkpoint_dir_systemd {
+  if $slurm::state_dir_systemd {
     $systemd_mounts = 'present'
   } else {
     $systemd_mounts = 'absent'
@@ -30,7 +30,6 @@ class slurm::slurmctld::service {
       '# File managed by Puppet',
       '[Unit]',
       $slurm::state_dir_systemd,
-      $slurm::checkpoint_dir_systemd,
     ]), "\n"),
     notify  => Service['slurmctld'],
   }
@@ -52,6 +51,18 @@ class slurm::slurmctld::service {
     notify  => Service['slurmctld'],
   }
 
+  systemd::dropin_file { 'slurmctld-logging.conf':
+    ensure  => $slurm::logging_systemd_override,
+    unit    => 'slurmctld.service',
+    content => join([
+      '# File managed by Puppet',
+      '[Service]',
+      'StandardOutput=null',
+      'StandardError=null',
+    ], "\n"),
+    notify  => Service['slurmctld'],
+  }
+
   service { 'slurmctld':
     ensure     => $slurm::slurmctld_service_ensure,
     enable     => $slurm::slurmctld_service_enable,
@@ -62,6 +73,20 @@ class slurm::slurmctld::service {
   exec { 'scontrol reconfig':
     path        => '/usr/bin:/bin:/usr/sbin:/sbin',
     refreshonly => true,
-    require     => Service['slurmctld'],
+  }
+
+  if $slurm::enable_configless {
+    Service['slurmctld'] ~> Exec['scontrol reconfig']
+  } else {
+    Service['slurmctld'] -> Exec['scontrol reconfig']
+  }
+
+  if $slurm::restart_services {
+    slurmctld_conn_validator { 'puppet':
+      ensure  => 'present',
+      timeout => $slurm::slurmctld_conn_validator_timeout,
+      before  => Exec['scontrol reconfig'],
+      require => Service['slurmctld'],
+    }
   }
 }
