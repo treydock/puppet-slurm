@@ -3,7 +3,7 @@
   acceptance_matrix:
     set:
       - centos-7
-      - centos-8
+      - rocky-8
       - debian-10
       - ubuntu-1804
       - ubuntu-2004
@@ -18,7 +18,7 @@ spec/acceptance/nodesets/centos-7.yml:
   unmanaged: true
   packages:
     - crontabs
-spec/acceptance/nodesets/centos-8.yml:
+spec/acceptance/nodesets/rocky-8.yml:
   unmanaged: true
   packages:
     - crontabs
