@@ -257,7 +257,7 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;20.11.8&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;21.08.4&#39;</tt>)</em>
       
       
     </li>
@@ -491,7 +491,7 @@
         <span class='type'>(<tt>Boolean</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>true</tt>)</em>
+        <em class="default">(defaults to: <tt>false</tt>)</em>
       
       
     </li>
@@ -504,7 +504,20 @@
         <span class='type'>(<tt>Boolean</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>false</tt>)</em>
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>slurmctld_conn_validator_timeout</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>60</tt>)</em>
       
       
     </li>
@@ -862,32 +875,6 @@
   
     <li>
       
-        <span class='name'>job_checkpoint_dir_nfs_device</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>undef</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>job_checkpoint_dir_nfs_options</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;rw,sync,noexec,nolock,auto&#39;</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
         <span class='name'>job_submit_lua_source</span>
       
       
@@ -999,6 +986,19 @@
       
       
         <em class="default">(defaults to: <tt>{}</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>enable_configless</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
       
       
     </li>
@@ -1272,19 +1272,6 @@
       
       
         <em class="default">(defaults to: <tt>&#39;/var/spool/slurmd&#39;</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>job_checkpoint_dir</span>
-      
-      
-        <span class='type'>(<tt>Any</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>&#39;/var/spool/slurmctld.checkpoint&#39;</tt>)</em>
       
       
     </li>
@@ -1739,7 +1726,7 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;0.0.0.0&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>$facts[&#39;networking&#39;][&#39;ip&#39;]</tt>)</em>
       
       
     </li>
@@ -1896,6 +1883,19 @@
       
       
         <em class="default">(defaults to: <tt>&#39;/sys/fs/cgroup&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>cgroup_plugin</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
       
       
     </li>
@@ -2078,19 +2078,6 @@
       
       
         <em class="default">(defaults to: <tt>30</tt>)</em>
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>cgroup_task_affinity</span>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-        <em class="default">(defaults to: <tt>false</tt>)</em>
       
       
     </li>
@@ -2327,6 +2314,7 @@
         <pre class="lines">
 
 
+177
 178
 179
 180
@@ -2760,10 +2748,23 @@
 608
 609
 610
-611</pre>
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 178</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 177</span>
 
 class slurm (
   # Roles
@@ -2787,7 +2788,7 @@ class slurm (
   Boolean $install_pam            = true,
 
   # Source install
-  String $version = &#39;20.11.8&#39;,
+  String $version = &#39;21.08.4&#39;,
   Array $source_dependencies = [],
   Array $configure_flags = [],
   Boolean $source_install_manage_alternatives = true,
@@ -2807,8 +2808,9 @@ class slurm (
   String $slurmdbd_options                            = &#39;&#39;,
   Boolean $slurmctld_restart_on_failure               = true,
   Boolean $slurmdbd_restart_on_failure                = true,
-  Boolean $reload_services                            = true,
-  Boolean $restart_services                           = false,
+  Boolean $reload_services                            = false,
+  Boolean $restart_services                           = true,
+  Integer $slurmctld_conn_validator_timeout           = 60,
 
   # User and group management
   $manage_slurm_user      = true,
@@ -2850,8 +2852,6 @@ class slurm (
   # Config - controller
   $state_dir_nfs_device           = undef,
   $state_dir_nfs_options          = &#39;rw,sync,noexec,nolock,auto&#39;,
-  $job_checkpoint_dir_nfs_device  = undef,
-  $job_checkpoint_dir_nfs_options = &#39;rw,sync,noexec,nolock,auto&#39;,
   $job_submit_lua_source          = undef,
   $job_submit_lua_content         = undef,
 
@@ -2866,6 +2866,7 @@ class slurm (
   Stdlib::Absolutepath $env_dir  = &#39;/etc/sysconfig&#39;,
 
   # configless
+  Boolean $enable_configless     = false,
   Boolean $configless            = false,
   Optional[String] $conf_server  = undef,
 
@@ -2893,7 +2894,6 @@ class slurm (
   $slurmd_spool_dir = &#39;/var/spool/slurmd&#39;,
 
   # slurm.conf - controller
-  $job_checkpoint_dir     = &#39;/var/spool/slurmctld.checkpoint&#39;,
   Optional[Stdlib::Absolutepath] $slurmctld_log_file     = undef,
   $state_save_location    = &#39;/var/spool/slurmctld.state&#39;,
 
@@ -2938,7 +2938,7 @@ class slurm (
   Array $auth_alt_types = [],
   Optional[String] $jwt_key_content = undef,
   Optional[String] $jwt_key_source = undef,
-  String $slurmrestd_listen_address = &#39;0.0.0.0&#39;,
+  String $slurmrestd_listen_address = $facts[&#39;networking&#39;][&#39;ip&#39;],
   Boolean $slurmrestd_disable_token_creation = false,
   String $slurmrestd_user = &#39;nobody&#39;,
   String $slurmrestd_user_group = &#39;nobody&#39;,
@@ -2953,6 +2953,7 @@ class slurm (
   Optional[String] $cgroup_conf_source               = undef,
   Boolean $cgroup_automount                 = true,
   Stdlib::Absolutepath $cgroup_mountpoint                = &#39;/sys/fs/cgroup&#39;,
+  Optional[String] $cgroup_plugin = undef,
   Optional[Integer] $cgroup_allowed_kmem_space = undef,
   Integer $cgroup_allowed_ram_space         = 100,
   Integer $cgroup_allowed_swap_space        = 0,
@@ -2967,7 +2968,6 @@ class slurm (
   Optional[Integer[0,100]] $cgroup_memory_swappiness = undef,
   Integer $cgroup_min_kmem_space             = 30,
   Integer $cgroup_min_ram_space             = 30,
-  Boolean $cgroup_task_affinity             = false,
 
   # profile.d
   $slurm_sh_template  = &#39;slurm/profile.d/slurm.sh.erb&#39;,
@@ -3062,18 +3062,31 @@ class slurm (
     $auth_alt_parameters_dbd = undef
   }
 
+  if $enable_configless {
+    if &#39;SlurmctldParameters&#39; in $slurm_conf_override and !(&#39;enable_configless&#39; in $slurm_conf_override[&#39;SlurmctldParameters&#39;]) {
+      if $slurm_conf_override[&#39;SlurmctldParameters&#39;] =~ Array {
+        $slurmctld_parameters = $slurm_conf_override[&#39;SlurmctldParameters&#39;] + [&#39;enable_configless&#39;]
+      } else {
+        $slurmctld_parameters = &quot;${slurm_conf_override[&#39;SlurmctldParameters&#39;]},enable_configless&quot;
+      }
+    } elsif &#39;SlurmctldParameters&#39; in $slurm_conf_override {
+      $slurmctld_parameters = $slurm_conf_override[&#39;SlurmctldParameters&#39;]
+    } else {
+      $slurmctld_parameters = &#39;enable_configless&#39;
+    }
+  } else {
+    $slurmctld_parameters = $slurm_conf_override[&#39;SlurmctldParameters&#39;]
+  }
+
   $slurm_conf_local_defaults = {
     &#39;AccountingStorageHost&#39; =&gt; $slurmdbd_host,
     &#39;AccountingStoragePort&#39; =&gt; $slurmdbd_port,
     &#39;AuthAltTypes&#39; =&gt; $auth_alt_types,
     &#39;AuthAltParameters&#39; =&gt; $auth_alt_parameters,
     &#39;ClusterName&#39; =&gt; $cluster_name,
-    &#39;DefaultStorageHost&#39; =&gt; $slurmdbd_host,
-    &#39;DefaultStoragePort&#39; =&gt; $slurmdbd_port,
     &#39;Epilog&#39; =&gt; $epilog,
     &#39;EpilogSlurmctld&#39; =&gt; undef, #TODO
     &#39;HealthCheckProgram&#39; =&gt; $_health_check_program,
-    &#39;JobCheckpointDir&#39; =&gt; $job_checkpoint_dir,
     # Must remained undefined to support configless, we save to same directory as slurm.conf
     &#39;PlugStackConfig&#39; =&gt; undef,
     &#39;Prolog&#39; =&gt; $prolog,
@@ -3088,6 +3101,7 @@ class slurm (
     &#39;SlurmdPort&#39; =&gt; $slurmd_port,
     &#39;SlurmdSpoolDir&#39; =&gt; $slurmd_spool_dir,
     &#39;SlurmSchedLogFile&#39; =&gt; &quot;${log_dir}/slurmsched.log&quot;,
+    &#39;SlurmctldParameters&#39; =&gt; $slurmctld_parameters,
     &#39;SlurmdUser&#39; =&gt; $slurmd_user,
     &#39;SrunEpilog&#39; =&gt; undef, #TODO
     &#39;SrunProlog&#39; =&gt; undef, #TODO
@@ -3096,8 +3110,9 @@ class slurm (
     &#39;TaskProlog&#39; =&gt; $task_prolog,
   }
 
+  $_slurm_conf_override = $slurm_conf_override - [&#39;SlurmctldParameters&#39;]
   $slurm_conf_defaults  = merge($::slurm::params::slurm_conf_defaults, $slurm_conf_local_defaults)
-  $slurm_conf           = merge($slurm_conf_defaults, $slurm_conf_override)
+  $slurm_conf           = merge($slurm_conf_defaults, $_slurm_conf_override)
 
   $slurmdbd_conf_local_defaults = {
     &#39;ArchiveDir&#39; =&gt; $slurmdbd_archive_dir,
@@ -3159,16 +3174,16 @@ class slurm (
     $state_dir_systemd = undef
   }
 
-  if $job_checkpoint_dir_nfs_device {
-    $checkpoint_dir_systemd = &quot;RequiresMountsFor=${slurm::job_checkpoint_dir}&quot;
-  } else {
-    $checkpoint_dir_systemd = undef
-  }
-
   if $slurmdbd_archive_dir_nfs_device {
     $slurmdbd_archive_dir_systemd = &quot;RequiresMountsFor=${slurm::slurmdbd_archive_dir}&quot;
   } else {
     $slurmdbd_archive_dir_systemd = undef
+  }
+
+  if $use_syslog {
+    $logging_systemd_override = &#39;present&#39;
+  } else {
+    $logging_systemd_override = &#39;absent&#39;
   }
 
   if $database {

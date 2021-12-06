@@ -261,7 +261,11 @@
 170
 171
 172
-173</pre>
+173
+174
+175
+176
+177</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/common/config.pp', line 2</span>
@@ -409,7 +413,7 @@ class slurm::common::config {
     }
   }
 
-  if $slurm::client and ($slurm::cli_filter_lua_source or $slurm::cli_filter_lua_content) {
+  if ($slurm::client or $slurm::slurmctld) and ($slurm::cli_filter_lua_source or $slurm::cli_filter_lua_content) {
     file { &quot;${slurm::conf_dir}/cli_filter.lua&quot;:
       ensure  =&gt; &#39;file&#39;,
       owner   =&gt; &#39;root&#39;,
@@ -417,6 +421,10 @@ class slurm::common::config {
       mode    =&gt; &#39;0644&#39;,
       source  =&gt; $slurm::cli_filter_lua_source,
       content =&gt; $slurm::cli_filter_lua_content,
+    }
+
+    if $slurm::slurmctld and $slurm::enable_configless {
+      File[&quot;${slurm::conf_dir}/cli_filter.lua&quot;] ~&gt; Exec[&#39;scontrol reconfig&#39;]
     }
   }
 

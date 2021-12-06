@@ -141,33 +141,7 @@
 50
 51
 52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79</pre>
+53</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/slurmctld/config.pp', line 2</span>
@@ -176,14 +150,6 @@ class slurm::slurmctld::config {
   file { &#39;StateSaveLocation&#39;:
     ensure =&gt; &#39;directory&#39;,
     path   =&gt; $slurm::state_save_location,
-    owner  =&gt; $slurm::slurm_user,
-    group  =&gt; $slurm::slurm_user_group,
-    mode   =&gt; &#39;0700&#39;,
-  }
-
-  file { &#39;JobCheckpointDir&#39;:
-    ensure =&gt; &#39;directory&#39;,
-    path   =&gt; $slurm::job_checkpoint_dir,
     owner  =&gt; $slurm::slurm_user,
     group  =&gt; $slurm::slurm_user_group,
     mode   =&gt; &#39;0700&#39;,
@@ -204,24 +170,6 @@ class slurm::slurmctld::config {
       fstype  =&gt; &#39;nfs&#39;,
       options =&gt; $slurm::state_dir_nfs_options,
       before  =&gt; File[&#39;StateSaveLocation&#39;],
-    }
-  }
-
-  if $slurm::job_checkpoint_dir_nfs_device {
-    exec { &#39;mkdir-JobCheckpointDir&#39;:
-      path    =&gt; &#39;/bin:/usr/bin&#39;,
-      command =&gt; &quot;mkdir -p ${slurm::job_checkpoint_dir}&quot;,
-      creates =&gt; $slurm::job_checkpoint_dir,
-      before  =&gt; Mount[&#39;JobCheckpointDir&#39;],
-    }
-    mount { &#39;JobCheckpointDir&#39;:
-      ensure  =&gt; &#39;mounted&#39;,
-      name    =&gt; $slurm::job_checkpoint_dir,
-      atboot  =&gt; true,
-      device  =&gt; $slurm::job_checkpoint_dir_nfs_device,
-      fstype  =&gt; &#39;nfs&#39;,
-      options =&gt; $slurm::job_checkpoint_dir_nfs_options,
-      before  =&gt; File[&#39;JobCheckpointDir&#39;],
     }
   }
 

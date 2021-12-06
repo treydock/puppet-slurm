@@ -216,7 +216,7 @@
   
     <li>
       
-        <span class='name'>feature</span>
+        <span class='name'>features</span>
       
       
         <span class='type'>(<tt>Any</tt>)</span>
@@ -269,6 +269,19 @@
     <li>
       
         <span class='name'>real_memory</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>reason</span>
       
       
         <span class='type'>(<tt>Any</tt>)</span>
@@ -394,7 +407,6 @@
         <pre class="lines">
 
 
-29
 30
 31
 32
@@ -453,10 +465,13 @@
 85
 86
 87
-88</pre>
+88
+89
+90
+91</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/node.pp', line 29</span>
+        <pre class="code"><span class="info file"># File 'manifests/node.pp', line 30</span>
 
 define slurm::node (
   $node_name        = $name,
@@ -469,11 +484,12 @@ define slurm::node (
   $cpu_bind         = undef,
   $cpus             = undef,
   $cpu_spec_list    = undef,
-  $feature          = undef,
+  $features         = undef,
   $gres             = undef,
   $mem_spec_limit   = undef,
   $port             = undef,
   $real_memory      = undef,
+  $reason           = undef,
   $sockets          = undef,
   $sockets_per_board = undef,
   Slurm::NodeState $state = &#39;UNKNOWN&#39;,
@@ -497,11 +513,12 @@ define slurm::node (
     &#39;CpuBind&#39; =&gt; $cpu_bind,
     &#39;CPUs&#39;  =&gt; $cpus,
     &#39;CpuSpecList&#39; =&gt; $cpu_spec_list,
-    &#39;Feature&#39; =&gt; $feature,
+    &#39;Features&#39; =&gt; $features,
     &#39;Gres&#39;  =&gt; $gres,
     &#39;MemSpecLimit&#39;  =&gt; $mem_spec_limit,
     &#39;Port&#39;  =&gt; $port,
     &#39;RealMemory&#39;  =&gt; $real_memory,
+    &#39;Reason&#39; =&gt; $reason,
     &#39;Sockets&#39; =&gt; $sockets,
     &#39;SocketsPerBoard&#39; =&gt; $sockets_per_board,
     &#39;State&#39; =&gt; $state,

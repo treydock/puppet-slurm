@@ -155,7 +155,19 @@
 64
 65
 66
-67</pre>
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/slurmdbd/service.pp', line 2</span>
@@ -208,6 +220,18 @@ class slurm::slurmdbd::service {
       &#39;# File managed by Puppet&#39;,
       &#39;[Service]&#39;,
       &#39;Restart=on-failure&#39;,
+    ], &quot;\n&quot;),
+    notify  =&gt; Service[&#39;slurmdbd&#39;],
+  }
+
+  systemd::dropin_file { &#39;slurmdbd-logging.conf&#39;:
+    ensure  =&gt; $slurm::logging_systemd_override,
+    unit    =&gt; &#39;slurmdbd.service&#39;,
+    content =&gt; join([
+      &#39;# File managed by Puppet&#39;,
+      &#39;[Service]&#39;,
+      &#39;StandardOutput=null&#39;,
+      &#39;StandardError=null&#39;,
     ], &quot;\n&quot;),
     notify  =&gt; Service[&#39;slurmdbd&#39;],
   }

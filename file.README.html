@@ -108,7 +108,7 @@ options</a></p>
 <p>This module is designed to work with SLURM 20.11.x.</p>
 
 <p>| SLURM Version | SLURM Puppet module versions | | ————–| —————————–| |
-20.02.x | 0.x | | 20.11.x | 1.x |</p>
+20.02.x | 0.x | | 20.11.x | 1.x | | 21.08.x | 2.x |</p>
 
 <h2 id="label-Usage">Usage</h2>
 
@@ -295,6 +295,11 @@ slurm::database: false
 slurm::slurmctld: true
 </code></pre>
 
+<p>If you wish to enable configless SLURM:</p>
+
+<pre class="code ruby"><code class="ruby">slurm::enable_configless: true
+</code></pre>
+
 <h3 id="label-Role-3A+slurmd">Role: slurmd</h3>
 
 <p>The following enables a host to act as a slurmd compute node</p>
@@ -304,6 +309,11 @@ slurm::slurmdbd: false
 slurm::database: false
 slurm::slurmctld: false
 slurm::slurmd: true
+</code></pre>
+
+<p>To have slurmd pull configs via configless SLURM:</p>
+
+<pre class="code ruby"><code class="ruby">slurm::configless: true
 </code></pre>
 
 <h3 id="label-Role-3A+client">Role: client</h3>
@@ -340,7 +350,7 @@ href="http://treydock.github.io/puppet-slurm/">treydock.github.io/puppet-slurm/<
 <ul><li>
 <p>RedHat/CentOS 7 x86_64</p>
 </li><li>
-<p>RedHat/CentOS 8 x86_64</p>
+<p>RedHat/Rocky 8 x86_64</p>
 </li><li>
 <p>Debian 10 x86_64</p>
 </li><li>

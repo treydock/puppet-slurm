@@ -121,7 +121,19 @@
 30
 31
 32
-33</pre>
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/slurmrestd/service.pp', line 2</span>
@@ -143,6 +155,18 @@ class slurm::slurmrestd::service {
       restart_service =&gt; false,
       notify          =&gt; Service[&#39;slurmrestd&#39;],
     }
+  }
+
+  systemd::dropin_file { &#39;slurmrestd-logging.conf&#39;:
+    ensure  =&gt; $slurm::logging_systemd_override,
+    unit    =&gt; &#39;slurmrestd.service&#39;,
+    content =&gt; join([
+      &#39;# File managed by Puppet&#39;,
+      &#39;[Service]&#39;,
+      &#39;StandardOutput=null&#39;,
+      &#39;StandardError=null&#39;,
+    ], &quot;\n&quot;),
+    notify  =&gt; Service[&#39;slurmrestd&#39;],
   }
 
   systemd::unit_file { &#39;slurmrestd.service&#39;:

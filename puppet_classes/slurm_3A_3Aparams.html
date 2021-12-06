@@ -317,7 +317,10 @@
 217
 218
 219
-220</pre>
+220
+221
+222
+223</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/params.pp', line 2</span>
@@ -331,13 +334,14 @@ class slurm::params {
   $slurm_conf_defaults = {
     &#39;AccountingStorageBackupHost&#39; =&gt; undef,
     &#39;AccountingStorageEnforce&#39; =&gt; undef,
+    &#39;AccountingStorageExternalHost&#39; =&gt; undef,
     &#39;AccountingStorageParameters&#39; =&gt; undef,
     &#39;AccountingStoragePass&#39; =&gt; undef,
     &#39;AccountingStoragePort&#39; =&gt; undef,
     &#39;AccountingStorageTRES&#39; =&gt; undef,
     &#39;AccountingStorageType&#39; =&gt; &#39;accounting_storage/slurmdbd&#39;,
     &#39;AccountingStorageUser&#39; =&gt; undef,
-    &#39;AccountingStoreJobComment&#39; =&gt; &#39;YES&#39;,
+    &#39;AccountingStoreFlags&#39; =&gt; undef,
     &#39;AcctGatherNodeFreq&#39; =&gt; &#39;0&#39;,
     &#39;AcctGatherEnergyType&#39; =&gt; undef,
     &#39;AcctGatherInterconnectType&#39; =&gt; undef,
@@ -349,6 +353,8 @@ class slurm::params {
     &#39;AuthInfo&#39; =&gt; undef,
     &#39;AuthType&#39; =&gt; &#39;auth/munge&#39;,
     &#39;BatchStartTimeout&#39; =&gt; &#39;10&#39;,
+    &#39;BcastExclude&#39; =&gt; undef,
+    &#39;BcastParameters&#39; =&gt; undef,
     &#39;BurstBufferType&#39; =&gt; undef,
     &#39;CliFilterPlugins&#39; =&gt; undef,
     &#39;CommunicationParameters&#39; =&gt; undef,
@@ -455,7 +461,6 @@ class slurm::params {
     &#39;ResvOverRun&#39; =&gt; &#39;0&#39;,
     &#39;ReturnToService&#39; =&gt; &#39;0&#39;,
     &#39;RoutePlugin&#39; =&gt; &#39;route/default&#39;,
-    &#39;SbcastParameters&#39; =&gt; undef,
     &#39;SchedulerParameters&#39; =&gt; undef,
     &#39;SchedulerTimeSlice&#39; =&gt; &#39;30&#39;,
     &#39;SchedulerType&#39; =&gt; &#39;sched/backfill&#39;,
@@ -520,6 +525,7 @@ class slurm::params {
     &#39;DebugFlags&#39; =&gt; undef,
     &#39;DebugLevel&#39; =&gt; &#39;info&#39;,
     &#39;DebugLevelSyslog&#39; =&gt; &#39;info&#39;,
+    &#39;DefaultQOS&#39; =&gt; undef,
     &#39;LogTimeFormat&#39; =&gt; &#39;iso8601_ms&#39;,
     &#39;MaxQueryTimeRange&#39; =&gt; &#39;INFINITE&#39;,
     &#39;MessageTimeout&#39; =&gt; &#39;10&#39;,

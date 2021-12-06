@@ -155,7 +155,32 @@
 64
 65
 66
-67</pre>
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/slurmctld/service.pp', line 2</span>
@@ -179,7 +204,7 @@ class slurm::slurmctld::service {
     }
   }
 
-  if $slurm::state_dir_systemd or $slurm::checkpoint_dir_systemd {
+  if $slurm::state_dir_systemd {
     $systemd_mounts = &#39;present&#39;
   } else {
     $systemd_mounts = &#39;absent&#39;
@@ -191,7 +216,6 @@ class slurm::slurmctld::service {
       &#39;# File managed by Puppet&#39;,
       &#39;[Unit]&#39;,
       $slurm::state_dir_systemd,
-      $slurm::checkpoint_dir_systemd,
     ]), &quot;\n&quot;),
     notify  =&gt; Service[&#39;slurmctld&#39;],
   }
@@ -213,6 +237,18 @@ class slurm::slurmctld::service {
     notify  =&gt; Service[&#39;slurmctld&#39;],
   }
 
+  systemd::dropin_file { &#39;slurmctld-logging.conf&#39;:
+    ensure  =&gt; $slurm::logging_systemd_override,
+    unit    =&gt; &#39;slurmctld.service&#39;,
+    content =&gt; join([
+      &#39;# File managed by Puppet&#39;,
+      &#39;[Service]&#39;,
+      &#39;StandardOutput=null&#39;,
+      &#39;StandardError=null&#39;,
+    ], &quot;\n&quot;),
+    notify  =&gt; Service[&#39;slurmctld&#39;],
+  }
+
   service { &#39;slurmctld&#39;:
     ensure     =&gt; $slurm::slurmctld_service_ensure,
     enable     =&gt; $slurm::slurmctld_service_enable,
@@ -223,7 +259,21 @@ class slurm::slurmctld::service {
   exec { &#39;scontrol reconfig&#39;:
     path        =&gt; &#39;/usr/bin:/bin:/usr/sbin:/sbin&#39;,
     refreshonly =&gt; true,
-    require     =&gt; Service[&#39;slurmctld&#39;],
+  }
+
+  if $slurm::enable_configless {
+    Service[&#39;slurmctld&#39;] ~&gt; Exec[&#39;scontrol reconfig&#39;]
+  } else {
+    Service[&#39;slurmctld&#39;] -&gt; Exec[&#39;scontrol reconfig&#39;]
+  }
+
+  if $slurm::restart_services {
+    slurmctld_conn_validator { &#39;puppet&#39;:
+      ensure  =&gt; &#39;present&#39;,
+      timeout =&gt; $slurm::slurmctld_conn_validator_timeout,
+      before  =&gt; Exec[&#39;scontrol reconfig&#39;],
+      require =&gt; Service[&#39;slurmctld&#39;],
+    }
   }
 }</pre>
       </td>

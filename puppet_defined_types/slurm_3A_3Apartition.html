@@ -450,6 +450,19 @@
   
     <li>
       
+        <span class='name'>over_time_limit</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>preempt_mode</span>
       
       
@@ -515,6 +528,19 @@
   
     <li>
       
+        <span class='name'>resume_timeout</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>root_only</span>
       
       
@@ -567,6 +593,32 @@
   
     <li>
       
+        <span class='name'>suspend_time</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>suspend_timeout</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>tres_billing_weights</span>
       
       
@@ -602,10 +654,6 @@
         <pre class="lines">
 
 
-45
-46
-47
-48
 49
 50
 51
@@ -694,10 +742,22 @@
 134
 135
 136
-137</pre>
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/partition.pp', line 45</span>
+        <pre class="code"><span class="info file"># File 'manifests/partition.pp', line 49</span>
 
 define slurm::partition (
   $partition_name = $name,
@@ -728,15 +788,19 @@ define slurm::partition (
   $min_nodes = undef,
   $nodes = undef,
   Optional[Enum[&#39;EXCLUSIVE&#39;,&#39;FORCE&#39;,&#39;YES&#39;,&#39;NO&#39;]] $over_subscribe = undef,
+  $over_time_limit = undef,
   Optional[Slurm::PreemptMode] $preempt_mode = undef,
   $priority_job_factor = undef,
   $priority_tier = undef,
   $qos = undef,
   $req_resv = undef,
+  $resume_timeout = undef,
   Optional[Enum[&#39;YES&#39;,&#39;NO&#39;]] $root_only = undef,
   Optional[Slurm::SelectTypeParameters] $select_type_parameters = undef,
   $shared = undef,
   Slurm::PartitionState $state = &#39;UP&#39;,
+  $suspend_time = undef,
+  $suspend_timeout = undef,
   $tres_billing_weights = undef,
   $order            = &#39;50&#39;,
 ) {
@@ -752,13 +816,13 @@ define slurm::partition (
     &#39;Alternate&#39; =&gt; $alternate,
     &#39;CpuBind&#39; =&gt; $cpu_bind,
     &#39;Default&#39; =&gt; $default,
+    &#39;DefaultTime&#39; =&gt; $default_time,
     &#39;DefCpuPerGPU&#39; =&gt; $def_cpu_per_gpu,
     &#39;DefMemPerCPU&#39; =&gt; $def_mem_per_cpu,
     &#39;DefMemPerGPU&#39; =&gt; $def_mem_per_gpu,
     &#39;DefMemPerNode&#39; =&gt; $def_mem_per_node,
     &#39;DenyAccounts&#39; =&gt; $deny_accounts,
     &#39;DenyQos&#39; =&gt; $deny_qos,
-    &#39;DefaultTime&#39; =&gt; $default_time,
     &#39;DisableRootJobs&#39; =&gt; $disable_root_jobs,
     &#39;ExclusiveUser&#39; =&gt; $exclusive_user,
     &#39;GraceTime&#39; =&gt; $grace_time,
@@ -772,15 +836,19 @@ define slurm::partition (
     &#39;MinNodes&#39; =&gt; $min_nodes,
     &#39;Nodes&#39; =&gt; $nodes,
     &#39;OverSubscribe&#39; =&gt; $over_subscribe,
+    &#39;OverTimeLimit&#39; =&gt; $over_time_limit,
     &#39;PreemptMode&#39; =&gt; $preempt_mode,
     &#39;PriorityJobFactor&#39; =&gt; $priority_job_factor,
     &#39;PriorityTier&#39; =&gt; $priority_tier,
     &#39;QOS&#39; =&gt; $qos,
     &#39;ReqResv&#39; =&gt; $req_resv,
+    &#39;ResumeTimeout&#39; =&gt; $resume_timeout,
     &#39;RootOnly&#39; =&gt; $root_only,
     &#39;SelectTypeParameters&#39; =&gt; $select_type_parameters,
     &#39;Shared&#39; =&gt; $shared,
     &#39;State&#39; =&gt; $state,
+    &#39;SuspendTime&#39; =&gt; $suspend_time,
+    &#39;SuspendTimeout&#39; =&gt; $suspend_timeout,
     &#39;TRESBillingWeights&#39; =&gt; $tres_billing_weights,
   }
 
