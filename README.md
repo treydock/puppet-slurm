@@ -26,7 +26,7 @@ Manage SLURM.
 
 ### Supported Versions of SLURM
 
-This module is designed to work with SLURM 20.11.x.
+This module is designed to work with SLURM 21.08.x.
 
 | SLURM Version | SLURM Puppet module versions |
 | --------------| -----------------------------|
