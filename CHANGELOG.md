@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v2.0.0](https://github.com/treydock/puppet-slurm/tree/v2.0.0) (2021-12-06)
+
+[Full Changelog](https://github.com/treydock/puppet-slurm/compare/v1.0.0...v2.0.0)
+
+### Changed
+
+- Replace CentOS 8 support with Rocky 8 [\#33](https://github.com/treydock/puppet-slurm/pull/33) ([treydock](https://github.com/treydock))
+- BREAKING: Support SLURM 21.08 and breaking changes \(see description\) [\#32](https://github.com/treydock/puppet-slurm/pull/32) ([treydock](https://github.com/treydock))
+
 ## [v1.0.0](https://github.com/treydock/puppet-slurm/tree/v1.0.0) (2021-10-06)
 
 [Full Changelog](https://github.com/treydock/puppet-slurm/compare/v0.7.0...v1.0.0)

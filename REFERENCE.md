@@ -101,6 +101,7 @@ The following parameters are available in the `slurm` class:
 * [`slurmdbd_restart_on_failure`](#slurmdbd_restart_on_failure)
 * [`reload_services`](#reload_services)
 * [`restart_services`](#restart_services)
+* [`slurmctld_conn_validator_timeout`](#slurmctld_conn_validator_timeout)
 * [`manage_slurm_user`](#manage_slurm_user)
 * [`slurm_user_group`](#slurm_user_group)
 * [`slurm_group_gid`](#slurm_group_gid)
@@ -128,8 +129,6 @@ The following parameters are available in the `slurm` class:
 * [`cli_filter_lua_content`](#cli_filter_lua_content)
 * [`state_dir_nfs_device`](#state_dir_nfs_device)
 * [`state_dir_nfs_options`](#state_dir_nfs_options)
-* [`job_checkpoint_dir_nfs_device`](#job_checkpoint_dir_nfs_device)
-* [`job_checkpoint_dir_nfs_options`](#job_checkpoint_dir_nfs_options)
 * [`job_submit_lua_source`](#job_submit_lua_source)
 * [`job_submit_lua_content`](#job_submit_lua_content)
 * [`cluster_name`](#cluster_name)
@@ -139,6 +138,7 @@ The following parameters are available in the `slurm` class:
 * [`log_dir`](#log_dir)
 * [`env_dir`](#env_dir)
 * [`spank_plugins`](#spank_plugins)
+* [`enable_configless`](#enable_configless)
 * [`configless`](#configless)
 * [`conf_server`](#conf_server)
 * [`slurm_conf_override`](#slurm_conf_override)
@@ -160,7 +160,6 @@ The following parameters are available in the `slurm` class:
 * [`job_containers`](#job_containers)
 * [`slurmd_log_file`](#slurmd_log_file)
 * [`slurmd_spool_dir`](#slurmd_spool_dir)
-* [`job_checkpoint_dir`](#job_checkpoint_dir)
 * [`slurmctld_log_file`](#slurmctld_log_file)
 * [`state_save_location`](#state_save_location)
 * [`slurmdbd_archive_dir`](#slurmdbd_archive_dir)
@@ -208,6 +207,7 @@ The following parameters are available in the `slurm` class:
 * [`cgroup_conf_source`](#cgroup_conf_source)
 * [`cgroup_automount`](#cgroup_automount)
 * [`cgroup_mountpoint`](#cgroup_mountpoint)
+* [`cgroup_plugin`](#cgroup_plugin)
 * [`cgroup_allowed_kmem_space`](#cgroup_allowed_kmem_space)
 * [`cgroup_allowed_ram_space`](#cgroup_allowed_ram_space)
 * [`cgroup_allowed_swap_space`](#cgroup_allowed_swap_space)
@@ -222,7 +222,6 @@ The following parameters are available in the `slurm` class:
 * [`cgroup_memory_swappiness`](#cgroup_memory_swappiness)
 * [`cgroup_min_kmem_space`](#cgroup_min_kmem_space)
 * [`cgroup_min_ram_space`](#cgroup_min_ram_space)
-* [`cgroup_task_affinity`](#cgroup_task_affinity)
 * [`slurm_sh_template`](#slurm_sh_template)
 * [`slurm_csh_template`](#slurm_csh_template)
 * [`profile_d_env_vars`](#profile_d_env_vars)
@@ -343,7 +342,7 @@ Data type: `String`
 
 
 
-Default value: `'20.11.8'`
+Default value: `'21.08.4'`
 
 ##### <a name="source_dependencies"></a>`source_dependencies`
 
@@ -487,7 +486,7 @@ Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: ``false``
 
 ##### <a name="restart_services"></a>`restart_services`
 
@@ -495,7 +494,15 @@ Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: ``true``
+
+##### <a name="slurmctld_conn_validator_timeout"></a>`slurmctld_conn_validator_timeout`
+
+Data type: `Integer`
+
+
+
+Default value: `60`
 
 ##### <a name="manage_slurm_user"></a>`manage_slurm_user`
 
@@ -713,22 +720,6 @@ Data type: `Any`
 
 Default value: `'rw,sync,noexec,nolock,auto'`
 
-##### <a name="job_checkpoint_dir_nfs_device"></a>`job_checkpoint_dir_nfs_device`
-
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="job_checkpoint_dir_nfs_options"></a>`job_checkpoint_dir_nfs_options`
-
-Data type: `Any`
-
-
-
-Default value: `'rw,sync,noexec,nolock,auto'`
-
 ##### <a name="job_submit_lua_source"></a>`job_submit_lua_source`
 
 Data type: `Any`
@@ -800,6 +791,14 @@ Data type: `Hash`
 
 
 Default value: `{}`
+
+##### <a name="enable_configless"></a>`enable_configless`
+
+Data type: `Boolean`
+
+
+
+Default value: ``false``
 
 ##### <a name="configless"></a>`configless`
 
@@ -968,14 +967,6 @@ Data type: `Any`
 
 
 Default value: `'/var/spool/slurmd'`
-
-##### <a name="job_checkpoint_dir"></a>`job_checkpoint_dir`
-
-Data type: `Any`
-
-
-
-Default value: `'/var/spool/slurmctld.checkpoint'`
 
 ##### <a name="slurmctld_log_file"></a>`slurmctld_log_file`
 
@@ -1255,7 +1246,7 @@ Data type: `String`
 
 
 
-Default value: `'0.0.0.0'`
+Default value: `$facts['networking']['ip']`
 
 ##### <a name="slurmrestd_disable_token_creation"></a>`slurmrestd_disable_token_creation`
 
@@ -1352,6 +1343,14 @@ Data type: `Stdlib::Absolutepath`
 
 
 Default value: `'/sys/fs/cgroup'`
+
+##### <a name="cgroup_plugin"></a>`cgroup_plugin`
+
+Data type: `Optional[String]`
+
+
+
+Default value: ``undef``
 
 ##### <a name="cgroup_allowed_kmem_space"></a>`cgroup_allowed_kmem_space`
 
@@ -1464,14 +1463,6 @@ Data type: `Integer`
 
 
 Default value: `30`
-
-##### <a name="cgroup_task_affinity"></a>`cgroup_task_affinity`
-
-Data type: `Boolean`
-
-
-
-Default value: ``false``
 
 ##### <a name="slurm_sh_template"></a>`slurm_sh_template`
 
@@ -1872,11 +1863,12 @@ The following parameters are available in the `slurm::node` defined type:
 * [`cpu_bind`](#cpu_bind)
 * [`cpus`](#cpus)
 * [`cpu_spec_list`](#cpu_spec_list)
-* [`feature`](#feature)
+* [`features`](#features)
 * [`gres`](#gres)
 * [`mem_spec_limit`](#mem_spec_limit)
 * [`port`](#port)
 * [`real_memory`](#real_memory)
+* [`reason`](#reason)
 * [`sockets`](#sockets)
 * [`sockets_per_board`](#sockets_per_board)
 * [`state`](#state)
@@ -1966,7 +1958,7 @@ Data type: `Any`
 
 Default value: ``undef``
 
-##### <a name="feature"></a>`feature`
+##### <a name="features"></a>`features`
 
 Data type: `Any`
 
@@ -1999,6 +1991,14 @@ Data type: `Any`
 Default value: ``undef``
 
 ##### <a name="real_memory"></a>`real_memory`
+
+Data type: `Any`
+
+
+
+Default value: ``undef``
+
+##### <a name="reason"></a>`reason`
 
 Data type: `Any`
 
@@ -2151,15 +2151,19 @@ The following parameters are available in the `slurm::partition` defined type:
 * [`min_nodes`](#min_nodes)
 * [`nodes`](#nodes)
 * [`over_subscribe`](#over_subscribe)
+* [`over_time_limit`](#over_time_limit)
 * [`preempt_mode`](#preempt_mode)
 * [`priority_job_factor`](#priority_job_factor)
 * [`priority_tier`](#priority_tier)
 * [`qos`](#qos)
 * [`req_resv`](#req_resv)
+* [`resume_timeout`](#resume_timeout)
 * [`root_only`](#root_only)
 * [`select_type_parameters`](#select_type_parameters)
 * [`shared`](#shared)
 * [`state`](#state)
+* [`suspend_time`](#suspend_time)
+* [`suspend_timeout`](#suspend_timeout)
 * [`tres_billing_weights`](#tres_billing_weights)
 * [`order`](#order)
 
@@ -2387,6 +2391,14 @@ Data type: `Optional[Enum['EXCLUSIVE','FORCE','YES','NO']]`
 
 Default value: ``undef``
 
+##### <a name="over_time_limit"></a>`over_time_limit`
+
+Data type: `Any`
+
+
+
+Default value: ``undef``
+
 ##### <a name="preempt_mode"></a>`preempt_mode`
 
 Data type: `Optional[Slurm::PreemptMode]`
@@ -2427,6 +2439,14 @@ Data type: `Any`
 
 Default value: ``undef``
 
+##### <a name="resume_timeout"></a>`resume_timeout`
+
+Data type: `Any`
+
+
+
+Default value: ``undef``
+
 ##### <a name="root_only"></a>`root_only`
 
 Data type: `Optional[Enum['YES','NO']]`
@@ -2458,6 +2478,22 @@ Data type: `Slurm::PartitionState`
 
 
 Default value: `'UP'`
+
+##### <a name="suspend_time"></a>`suspend_time`
+
+Data type: `Any`
+
+
+
+Default value: ``undef``
+
+##### <a name="suspend_timeout"></a>`suspend_timeout`
+
+Data type: `Any`
+
+
+
+Default value: ``undef``
 
 ##### <a name="tres_billing_weights"></a>`tres_billing_weights`
 
