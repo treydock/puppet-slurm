@@ -48,7 +48,7 @@ jobs:
       matrix:
         set:
           - "centos-7"
-          - "centos-8"
+          - "rocky-8"
           - "debian-10"
           - "ubuntu-1804"
           - "ubuntu-2004"

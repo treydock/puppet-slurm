@@ -236,6 +236,6 @@ slurm::slurmrestd: true
 This module has been tested on:
 
 * RedHat/CentOS 7 x86_64
-* RedHat/CentOS 8 x86_64
+* RedHat/Rocky 8 x86_64
 * Debian 10 x86_64
 * Ubuntu 18.04 and 20.04 x86_64
