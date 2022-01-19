@@ -11,6 +11,6 @@ shared_examples_for 'slurm::client' do |facts|
   else
     it_behaves_like 'slurm::common::install::rpm', facts
   end
-  it_behaves_like 'slurm::common::setup'
+  it_behaves_like 'slurm::common::setup', facts
   it_behaves_like 'slurm::common::config'
 end

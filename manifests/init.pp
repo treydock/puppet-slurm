@@ -56,6 +56,7 @@
 # @param manage_firewall
 # @param use_syslog
 # @param manage_logrotate
+# @param logrotate_syslog_pid_path
 # @param manage_rsyslog
 # @param manage_database
 # @param export_database
@@ -246,6 +247,7 @@ class slurm (
   # Logging
   $use_syslog                    = false,
   $manage_logrotate              = true,
+  $logrotate_syslog_pid_path     = '/var/run/syslogd.pid',
   $manage_rsyslog                = true,
 
   # Behavior overrides - slurmdbd
@@ -438,7 +440,16 @@ class slurm (
     $_slurmctld_log_file = 'UNSET'
     $_slurmdbd_log_file = 'UNSET'
     $_slurmd_log_file = 'UNSET'
-    $_logrotate_postrotate = '/bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true'
+    if $slurmctld and String($slurm_conf_override['SlurmSchedLogLevel']) == '1' {
+      $_logrotate_slurmctld = 'pkill -x --signal SIGUSR2 slurmctld'
+    } else {
+      $_logrotate_slurmctld = undef
+    }
+    $_logrotate_postrotate = [
+      "/bin/kill -HUP `cat ${logrotate_syslog_pid_path} 2> /dev/null` 2> /dev/null || true",
+      $_logrotate_slurmctld,
+      'exit 0',
+    ].filter |$v| { $v =~ NotUndef }
   } else {
     $_slurmctld_log_file = pick($slurmctld_log_file, "${log_dir}/slurmctld.log")
     $_slurmdbd_log_file = pick($slurmdbd_log_file, "${log_dir}/slurmdbd.log")

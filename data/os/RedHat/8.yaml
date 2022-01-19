@@ -21,3 +21,4 @@ slurm::source_dependencies:
   - http-parser-devel
   - json-c-devel
   - libyaml-devel
+slurm::logrotate_syslog_pid_path: /var/run/rsyslogd.pid
