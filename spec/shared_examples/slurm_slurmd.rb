@@ -16,7 +16,7 @@ shared_examples_for 'slurm::slurmd' do |facts|
     it_behaves_like 'slurm::common::install::rpm', facts
     it_behaves_like 'slurm::common::install::rpm-slurmd'
   end
-  it_behaves_like 'slurm::common::setup'
+  it_behaves_like 'slurm::common::setup', facts
   it_behaves_like 'slurm::common::config'
   it_behaves_like 'slurm::slurmd::config'
   it_behaves_like 'slurm::slurmd::service'
