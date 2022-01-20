@@ -771,6 +771,19 @@
   
     <li>
       
+        <span class='name'>logrotate_syslog_pid_path</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/var/run/syslogd.pid&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>manage_rsyslog</span>
       
       
@@ -2314,7 +2327,6 @@
         <pre class="lines">
 
 
-177
 178
 179
 180
@@ -2761,10 +2773,21 @@
 621
 622
 623
-624</pre>
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 177</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 178</span>
 
 class slurm (
   # Roles
@@ -2838,6 +2861,7 @@ class slurm (
   # Logging
   $use_syslog                    = false,
   $manage_logrotate              = true,
+  $logrotate_syslog_pid_path     = &#39;/var/run/syslogd.pid&#39;,
   $manage_rsyslog                = true,
 
   # Behavior overrides - slurmdbd
@@ -3030,7 +3054,16 @@ class slurm (
     $_slurmctld_log_file = &#39;UNSET&#39;
     $_slurmdbd_log_file = &#39;UNSET&#39;
     $_slurmd_log_file = &#39;UNSET&#39;
-    $_logrotate_postrotate = &#39;/bin/kill -HUP `cat /var/run/syslogd.pid 2&gt; /dev/null` 2&gt; /dev/null || true&#39;
+    if $slurmctld and String($slurm_conf_override[&#39;SlurmSchedLogLevel&#39;]) == &#39;1&#39; {
+      $_logrotate_slurmctld = &#39;pkill -x --signal SIGUSR2 slurmctld&#39;
+    } else {
+      $_logrotate_slurmctld = undef
+    }
+    $_logrotate_postrotate = [
+      &quot;/bin/kill -HUP `cat ${logrotate_syslog_pid_path} 2&gt; /dev/null` 2&gt; /dev/null || true&quot;,
+      $_logrotate_slurmctld,
+      &#39;exit 0&#39;,
+    ].filter |$v| { $v =~ NotUndef }
   } else {
     $_slurmctld_log_file = pick($slurmctld_log_file, &quot;${log_dir}/slurmctld.log&quot;)
     $_slurmdbd_log_file = pick($slurmdbd_log_file, &quot;${log_dir}/slurmdbd.log&quot;)
