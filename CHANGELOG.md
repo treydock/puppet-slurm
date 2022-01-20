@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v2.0.2](https://github.com/treydock/puppet-slurm/tree/v2.0.2) (2022-01-20)
+
+[Full Changelog](https://github.com/treydock/puppet-slurm/compare/v2.0.1...v2.0.2)
+
+### Fixed
+
+- Fix how logrotate when scheduler logs are enabled when using syslog [\#35](https://github.com/treydock/puppet-slurm/pull/35) ([treydock](https://github.com/treydock))
+
 ## [v2.0.1](https://github.com/treydock/puppet-slurm/tree/v2.0.1) (2021-12-06)
 
 [Full Changelog](https://github.com/treydock/puppet-slurm/compare/v2.0.0...v2.0.1)

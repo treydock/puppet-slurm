@@ -121,6 +121,7 @@ The following parameters are available in the `slurm` class:
 * [`manage_firewall`](#manage_firewall)
 * [`use_syslog`](#use_syslog)
 * [`manage_logrotate`](#manage_logrotate)
+* [`logrotate_syslog_pid_path`](#logrotate_syslog_pid_path)
 * [`manage_rsyslog`](#manage_rsyslog)
 * [`manage_database`](#manage_database)
 * [`export_database`](#export_database)
@@ -655,6 +656,14 @@ Data type: `Any`
 
 
 Default value: ``true``
+
+##### <a name="logrotate_syslog_pid_path"></a>`logrotate_syslog_pid_path`
+
+Data type: `Any`
+
+
+
+Default value: `'/var/run/syslogd.pid'`
 
 ##### <a name="manage_rsyslog"></a>`manage_rsyslog`
 
