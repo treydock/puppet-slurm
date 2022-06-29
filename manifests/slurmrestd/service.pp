@@ -19,15 +19,16 @@ class slurm::slurmrestd::service {
   }
 
   systemd::dropin_file { 'slurmrestd-logging.conf':
-    ensure  => $slurm::logging_systemd_override,
-    unit    => 'slurmrestd.service',
-    content => join([
+    ensure         => $slurm::logging_systemd_override,
+    unit           => 'slurmrestd.service',
+    content        => join([
       '# File managed by Puppet',
       '[Service]',
       'StandardOutput=null',
       'StandardError=null',
     ], "\n"),
-    notify  => Service['slurmrestd'],
+    notify_service => false,
+    notify         => Service['slurmrestd'],
   }
 
   systemd::unit_file { 'slurmrestd.service':
