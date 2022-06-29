@@ -31,7 +31,7 @@ define slurm::gres (
   $gres_name = $name,
   $type = undef,
   $node_name = undef,
-  Optional[Enum['nvml']] $auto_detect = undef,
+  Optional[Enum['nvml','rsmi']] $auto_detect = undef,
   $count = undef,
   $cores = undef,
   $file = undef,
