@@ -24,14 +24,15 @@ class slurm::slurmdbd::service {
     $systemd_mounts = 'absent'
   }
   systemd::dropin_file { 'slurmdbd-mounts.conf':
-    ensure  => $systemd_mounts,
-    unit    => 'slurmctld.service',
-    content => join(delete_undef_values([
+    ensure         => $systemd_mounts,
+    unit           => 'slurmctld.service',
+    content        => join(delete_undef_values([
       '# File managed by Puppet',
       '[Unit]',
       $slurm::slurmdbd_archive_dir_systemd,
     ]), "\n"),
-    notify  => Service['slurmdbd'],
+    notify_service => false,
+    notify         => Service['slurmdbd'],
   }
 
   if $slurm::slurmdbd_restart_on_failure {
@@ -41,26 +42,36 @@ class slurm::slurmdbd::service {
   }
 
   systemd::dropin_file { 'slurmdbd-restart.conf':
-    ensure  => $slurmdbd_systemd_restart,
-    unit    => 'slurmdbd.service',
-    content => join([
+    ensure         => $slurmdbd_systemd_restart,
+    unit           => 'slurmdbd.service',
+    content        => join([
       '# File managed by Puppet',
       '[Service]',
       'Restart=on-failure',
     ], "\n"),
-    notify  => Service['slurmdbd'],
+    notify_service => false,
+    notify         => Service['slurmdbd'],
   }
 
   systemd::dropin_file { 'slurmdbd-logging.conf':
-    ensure  => $slurm::logging_systemd_override,
-    unit    => 'slurmdbd.service',
-    content => join([
+    ensure         => $slurm::logging_systemd_override,
+    unit           => 'slurmdbd.service',
+    content        => join([
       '# File managed by Puppet',
       '[Service]',
       'StandardOutput=null',
       'StandardError=null',
     ], "\n"),
-    notify  => Service['slurmdbd'],
+    notify_service => false,
+    notify         => Service['slurmdbd'],
+  }
+
+  if $slurm::install_method == 'source' {
+    systemd::unit_file { 'slurmdbd.service':
+      source  => "file:///${slurm::src_dir}/etc/slurmdbd.service",
+      require => Exec['install-slurm'],
+      notify  => Service['slurmdbd'],
+    }
   }
 
   service { 'slurmdbd':

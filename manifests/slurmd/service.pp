@@ -19,15 +19,24 @@ class slurm::slurmd::service {
   }
 
   systemd::dropin_file { 'slurmd-logging.conf':
-    ensure  => $slurm::logging_systemd_override,
-    unit    => 'slurmd.service',
-    content => join([
+    ensure         => $slurm::logging_systemd_override,
+    unit           => 'slurmd.service',
+    content        => join([
       '# File managed by Puppet',
       '[Service]',
       'StandardOutput=null',
       'StandardError=null',
     ], "\n"),
-    notify  => Service['slurmd'],
+    notify_service => false,
+    notify         => Service['slurmd'],
+  }
+
+  if $slurm::install_method == 'source' {
+    systemd::unit_file { 'slurmd.service':
+      source  => "file:///${slurm::src_dir}/etc/slurmd.service",
+      require => Exec['install-slurm'],
+      notify  => Service['slurmd'],
+    }
   }
 
   service { 'slurmd':

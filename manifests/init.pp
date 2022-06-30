@@ -197,7 +197,7 @@ class slurm (
   Boolean $install_pam            = true,
 
   # Source install
-  String $version = '21.08.4',
+  String $version = '21.08.8',
   Array $source_dependencies = [],
   Array $configure_flags = [],
   Boolean $source_install_manage_alternatives = true,
@@ -429,6 +429,8 @@ class slurm (
   $plugstack_conf_path                = "${conf_dir}/plugstack.conf"
   $job_container_conf_path            = "${conf_dir}/job_container.conf"
   $jwt_key_path                       = "${conf_dir}/jwt.key"
+  $src_file                           = "/usr/local/src/slurm-${slurm::version}.tar.bz2"
+  $src_dir                            = "/usr/local/src/slurm-${slurm::version}"
 
   if $install_prefix in ['/usr','/usr/local'] {
     $profiled_add_path = false

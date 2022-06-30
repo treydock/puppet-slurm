@@ -1,8 +1,5 @@
 # @api private
 class slurm::common::install::source {
-  $src_file = "/usr/local/src/slurm-${slurm::version}.tar.bz2"
-  $src_dir = "/usr/local/src/slurm-${slurm::version}"
-
   if $slurm::osfamily == 'RedHat' {
     include epel
     $package_require = Yumrepo['epel']
@@ -15,7 +12,7 @@ class slurm::common::install::source {
     if $package_require {
       $package_require -> Package[$package]
     }
-    Package[$package] -> Archive[$src_file]
+    Package[$package] -> Archive[$slurm::src_file]
   }
   if ($facts['os']['family'] == 'Debian') or ($facts['os']['family'] == 'RedHat' and versioncmp($facts['os']['release']['major'], '8') >= 0) {
     if $slurm::source_install_manage_alternatives {
@@ -37,11 +34,11 @@ class slurm::common::install::source {
     }
   }
 
-  archive { $src_file:
+  archive { $slurm::src_file:
     source       => "https://download.schedmd.com/slurm/slurm-${slurm::version}.tar.bz2",
     extract      => true,
     extract_path => '/usr/local/src',
-    creates      => $src_dir,
+    creates      => $slurm::src_dir,
     cleanup      => true,
     user         => 'root',
     group        => 'root',
@@ -57,14 +54,14 @@ class slurm::common::install::source {
   $configure_flags = join($slurm::configure_flags, ' ')
   $configure_command = "./configure ${base_configure_flags} ${configure_flags}"
 
-  file { "${src_dir}/puppet-install.sh":
+  file { "${slurm::src_dir}/puppet-install.sh":
     ensure  => 'file',
     owner   => 'root',
     group   => 'root',
     mode    => '0755',
     content => join([
       '#!/bin/bash',
-      "cd ${src_dir}",
+      "cd ${slurm::src_dir}",
       $configure_command,
       '[ $? -ne 0 ] && { rm -f $0; exit 1; }',
       "make -j${facts['processors']['count']}",
@@ -75,7 +72,7 @@ class slurm::common::install::source {
       '',
     ], "\n"),
     notify  => Exec['install-slurm'],
-    require => Archive[$src_file],
+    require => Archive[$slurm::src_file],
   }
 
   if $slurm::install_prefix != '/usr' {
@@ -91,36 +88,14 @@ class slurm::common::install::source {
   }
 
   exec { 'install-slurm':
-    path        => "${src_dir}:/usr/bin:/bin:/usr/sbin:/sbin",
-    command     => "${src_dir}/puppet-install.sh",
-    cwd         => $src_dir,
+    path        => "${slurm::src_dir}:/usr/bin:/bin:/usr/sbin:/sbin",
+    command     => "${slurm::src_dir}/puppet-install.sh",
+    cwd         => $slurm::src_dir,
     refreshonly => true,
   }
   ~> exec { 'ldconfig-slurm':
     path        => '/usr/bin:/bin:/usr/sbin:/sbin',
     command     => 'ldconfig',
     refreshonly => true,
-  }
-
-  if $slurm::slurmd {
-    systemd::unit_file { 'slurmd.service':
-      source  => "file:///${src_dir}/etc/slurmd.service",
-      require => Exec['install-slurm'],
-      notify  => Service['slurmd'],
-    }
-  }
-  if $slurm::slurmctld {
-    systemd::unit_file { 'slurmctld.service':
-      source  => "file:///${src_dir}/etc/slurmctld.service",
-      require => Exec['install-slurm'],
-      notify  => Service['slurmctld'],
-    }
-  }
-  if $slurm::slurmdbd {
-    systemd::unit_file { 'slurmdbd.service':
-      source  => "file:///${src_dir}/etc/slurmdbd.service",
-      require => Exec['install-slurm'],
-      notify  => Service['slurmdbd'],
-    }
   }
 }

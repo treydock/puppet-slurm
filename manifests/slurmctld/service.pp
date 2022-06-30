@@ -24,14 +24,15 @@ class slurm::slurmctld::service {
     $systemd_mounts = 'absent'
   }
   systemd::dropin_file { 'slurmctld-mounts.conf':
-    ensure  => $systemd_mounts,
-    unit    => 'slurmctld.service',
-    content => join(delete_undef_values([
+    ensure         => $systemd_mounts,
+    unit           => 'slurmctld.service',
+    content        => join(delete_undef_values([
       '# File managed by Puppet',
       '[Unit]',
       $slurm::state_dir_systemd,
     ]), "\n"),
-    notify  => Service['slurmctld'],
+    notify_service => false,
+    notify         => Service['slurmctld'],
   }
 
   if $slurm::slurmctld_restart_on_failure {
@@ -41,26 +42,36 @@ class slurm::slurmctld::service {
   }
 
   systemd::dropin_file { 'slurmctld-restart.conf':
-    ensure  => $slurmctld_systemd_restart,
-    unit    => 'slurmctld.service',
-    content => join([
+    ensure         => $slurmctld_systemd_restart,
+    unit           => 'slurmctld.service',
+    content        => join([
       '# File managed by Puppet',
       '[Service]',
       'Restart=on-failure',
     ], "\n"),
-    notify  => Service['slurmctld'],
+    notify_service => false,
+    notify         => Service['slurmctld'],
   }
 
   systemd::dropin_file { 'slurmctld-logging.conf':
-    ensure  => $slurm::logging_systemd_override,
-    unit    => 'slurmctld.service',
-    content => join([
+    ensure         => $slurm::logging_systemd_override,
+    unit           => 'slurmctld.service',
+    content        => join([
       '# File managed by Puppet',
       '[Service]',
       'StandardOutput=null',
       'StandardError=null',
     ], "\n"),
-    notify  => Service['slurmctld'],
+    notify_service => false,
+    notify         => Service['slurmctld'],
+  }
+
+  if $slurm::install_method == 'source' {
+    systemd::unit_file { 'slurmctld.service':
+      source  => "file:///${slurm::src_dir}/etc/slurmctld.service",
+      require => Exec['install-slurm'],
+      notify  => Service['slurmctld'],
+    }
   }
 
   service { 'slurmctld':
