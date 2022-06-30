@@ -257,7 +257,7 @@
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;21.08.4&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>&#39;21.08.8&#39;</tt>)</em>
       
       
     </li>
@@ -2784,7 +2784,9 @@
 632
 633
 634
-635</pre>
+635
+636
+637</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/init.pp', line 178</span>
@@ -2811,7 +2813,7 @@ class slurm (
   Boolean $install_pam            = true,
 
   # Source install
-  String $version = &#39;21.08.4&#39;,
+  String $version = &#39;21.08.8&#39;,
   Array $source_dependencies = [],
   Array $configure_flags = [],
   Boolean $source_install_manage_alternatives = true,
@@ -3043,6 +3045,8 @@ class slurm (
   $plugstack_conf_path                = &quot;${conf_dir}/plugstack.conf&quot;
   $job_container_conf_path            = &quot;${conf_dir}/job_container.conf&quot;
   $jwt_key_path                       = &quot;${conf_dir}/jwt.key&quot;
+  $src_file                           = &quot;/usr/local/src/slurm-${slurm::version}.tar.bz2&quot;
+  $src_dir                            = &quot;/usr/local/src/slurm-${slurm::version}&quot;
 
   if $install_prefix in [&#39;/usr&#39;,&#39;/usr/local&#39;] {
     $profiled_add_path = false

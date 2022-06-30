@@ -153,7 +153,7 @@
         <span class='name'>auto_detect</span>
       
       
-        <span class='type'>(<tt>Optional[Enum['nvml']]</tt>)</span>
+        <span class='type'>(<tt>Optional[Enum['nvml','rsmi']]</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>undef</tt>)</em>
@@ -341,7 +341,7 @@ define slurm::gres (
   $gres_name = $name,
   $type = undef,
   $node_name = undef,
-  Optional[Enum[&#39;nvml&#39;]] $auto_detect = undef,
+  Optional[Enum[&#39;nvml&#39;,&#39;rsmi&#39;]] $auto_detect = undef,
   $count = undef,
   $cores = undef,
   $file = undef,
