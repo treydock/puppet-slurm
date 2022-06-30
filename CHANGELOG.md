@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v2.1.0](https://github.com/treydock/puppet-slurm/tree/v2.1.0) (2022-06-30)
+
+[Full Changelog](https://github.com/treydock/puppet-slurm/compare/v2.0.2...v2.1.0)
+
+### Added
+
+- Bump default version to 21.08.8 [\#39](https://github.com/treydock/puppet-slurm/pull/39) ([treydock](https://github.com/treydock))
+- add the ability to enable AMD GPUs [\#38](https://github.com/treydock/puppet-slurm/pull/38) ([v1peractual](https://github.com/v1peractual))
+
 ## [v2.0.2](https://github.com/treydock/puppet-slurm/tree/v2.0.2) (2022-01-20)
 
 [Full Changelog](https://github.com/treydock/puppet-slurm/compare/v2.0.1...v2.0.2)

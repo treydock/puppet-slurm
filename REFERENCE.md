@@ -343,7 +343,7 @@ Data type: `String`
 
 
 
-Default value: `'21.08.4'`
+Default value: `'21.08.8'`
 
 ##### <a name="source_dependencies"></a>`source_dependencies`
 
@@ -1724,7 +1724,7 @@ Default value: ``undef``
 
 ##### <a name="auto_detect"></a>`auto_detect`
 
-Data type: `Optional[Enum['nvml']]`
+Data type: `Optional[Enum['nvml','rsmi']]`
 
 
 
