@@ -125,6 +125,19 @@
   
     <li>
       
+        <span class='name'>target</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;slurm.conf&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>order</span>
       
       
@@ -147,7 +160,6 @@
         <pre class="lines">
 
 
-11
 12
 13
 14
@@ -178,15 +190,18 @@
 39
 40
 41
-42</pre>
+42
+43
+44</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/nodeset.pp', line 11</span>
+        <pre class="code"><span class="info file"># File 'manifests/nodeset.pp', line 12</span>
 
 define slurm::nodeset (
   Optional[String] $feature   = undef,
   Optional[String] $nodes     = undef,
   String $node_set            = $name,
+  $target                     = &#39;slurm.conf&#39;,
   $order                      = &#39;40&#39;,
 ) {
 
@@ -208,8 +223,8 @@ define slurm::nodeset (
 
   $content = join($params, &#39; &#39;)
 
-  concat::fragment { &quot;slurm.conf-nodeset-${name}&quot;:
-    target  =&gt; &#39;slurm.conf&#39;,
+  concat::fragment { &quot;${target}-nodeset-${name}&quot;:
+    target  =&gt; $target,
     content =&gt; &quot;${content}\n&quot;,
     order   =&gt; $order,
   }

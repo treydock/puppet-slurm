@@ -256,16 +256,7 @@
 165
 166
 167
-168
-169
-170
-171
-172
-173
-174
-175
-176
-177</pre>
+168</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/common/config.pp', line 2</span>
@@ -275,20 +266,11 @@ class slurm::common::config {
   create_resources(&#39;slurm::spank&#39;, $slurm::spank_plugins)
 
   if $slurm::manage_slurm_conf and ! $slurm::configless {
-    concat { &#39;slurm.conf&#39;:
-      ensure =&gt; &#39;present&#39;,
-      path   =&gt; $slurm::slurm_conf_path,
-      owner  =&gt; &#39;root&#39;,
-      group  =&gt; &#39;root&#39;,
-      mode   =&gt; &#39;0644&#39;,
-      notify =&gt; $slurm::service_notify,
-    }
-
-    concat::fragment { &#39;slurm.conf-config&#39;:
-      target  =&gt; &#39;slurm.conf&#39;,
-      content =&gt; $slurm::slurm_conf_content,
-      source  =&gt; $slurm::slurm_conf_source,
-      order   =&gt; &#39;00&#39;,
+    slurm::conf { &#39;slurm.conf&#39;:
+      configs     =&gt; $slurm::slurm_conf,
+      template    =&gt; $slurm::slurm_conf_template,
+      source      =&gt; $slurm::slurm_conf_source,
+      config_name =&gt; &#39;slurm.conf&#39;,
     }
 
     if $slurm::partition_source {

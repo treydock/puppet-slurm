@@ -385,6 +385,19 @@
   
     <li>
       
+        <span class='name'>target</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;slurm.conf&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>order</span>
       
       
@@ -407,7 +420,6 @@
         <pre class="lines">
 
 
-30
 31
 32
 33
@@ -468,10 +480,12 @@
 88
 89
 90
-91</pre>
+91
+92
+93</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/node.pp', line 30</span>
+        <pre class="code"><span class="info file"># File 'manifests/node.pp', line 31</span>
 
 define slurm::node (
   $node_name        = $name,
@@ -497,6 +511,7 @@ define slurm::node (
   Optional[Integer] $tmp_disk = undef,
   $tres_weights     = undef,
   Optional[Integer] $weight = undef,
+  $target           = &#39;slurm.conf&#39;,
   $order            = &#39;90&#39;,
 ) {
 
@@ -528,8 +543,8 @@ define slurm::node (
     &#39;Weight&#39; =&gt; $weight,
   }
 
-  concat::fragment { &quot;slurm.conf-node-${name}&quot;:
-    target  =&gt; &#39;slurm.conf&#39;,
+  concat::fragment { &quot;${target}-node-${name}&quot;:
+    target  =&gt; $target,
     content =&gt; template($::slurm::node_template),
     order   =&gt; $order,
   }

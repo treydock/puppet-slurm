@@ -125,6 +125,19 @@
   
     <li>
       
+        <span class='name'>target</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;slurm.conf&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>order</span>
       
       
@@ -147,7 +160,6 @@
         <pre class="lines">
 
 
-11
 12
 13
 14
@@ -164,15 +176,18 @@
 25
 26
 27
-28</pre>
+28
+29
+30</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/down_node.pp', line 11</span>
+        <pre class="code"><span class="info file"># File 'manifests/down_node.pp', line 12</span>
 
 define slurm::down_node (
   String $down_nodes          = $name,
   Optional[String] $reason    = undef,
   Slurm::DownNodeState $state = &#39;UNKNOWN&#39;,
+  String $target              = &#39;slurm.conf&#39;,
   $order                      = &#39;75&#39;,
 ) {
 
@@ -180,8 +195,8 @@ define slurm::down_node (
 
   $content = &quot;DownNodes=${down_nodes} State=${state} Reason=\&quot;${reason}\&quot;\n&quot;
 
-  concat::fragment { &quot;slurm.conf-downnode-${name}&quot;:
-    target  =&gt; &#39;slurm.conf&#39;,
+  concat::fragment { &quot;${target}-downnode-${name}&quot;:
+    target  =&gt; $target,
     content =&gt; $content,
     order   =&gt; $order,
   }

@@ -632,6 +632,19 @@
   
     <li>
       
+        <span class='name'>target</span>
+      
+      
+        <span class='type'>(<tt>Any</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;slurm.conf&#39;</tt>)</em>
+      
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>order</span>
       
       
@@ -654,7 +667,6 @@
         <pre class="lines">
 
 
-49
 50
 51
 52
@@ -754,10 +766,12 @@
 146
 147
 148
-149</pre>
+149
+150
+151</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/partition.pp', line 49</span>
+        <pre class="code"><span class="info file"># File 'manifests/partition.pp', line 50</span>
 
 define slurm::partition (
   $partition_name = $name,
@@ -802,6 +816,7 @@ define slurm::partition (
   $suspend_time = undef,
   $suspend_timeout = undef,
   $tres_billing_weights = undef,
+  $target           = &#39;slurm.conf&#39;,
   $order            = &#39;50&#39;,
 ) {
 
@@ -853,8 +868,8 @@ define slurm::partition (
   }
 
 
-  concat::fragment { &quot;slurm.conf-partition-${name}&quot;:
-    target  =&gt; &#39;slurm.conf&#39;,
+  concat::fragment { &quot;${target}-partition-${name}&quot;:
+    target  =&gt; $target,
     content =&gt; template($::slurm::partition_template),
     order   =&gt; $order,
   }

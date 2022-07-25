@@ -91,6 +91,8 @@ src="https://github.com/treydock/puppet-slurm/workflows/CI/badge.svg?branch=mast
 <p><a href="#role-client">Role: client</a></p>
 </li><li>
 <p><a href="#role-slurmrestd">Role: slurmrestd</a></p>
+</li><li>
+<p><a href="#slurmconf-usage">slurm::conf usage</a></p>
 </li></ul>
 </li><li>
 <p><a href="#reference">Reference - Parameter and detailed reference to all
@@ -337,6 +339,23 @@ slurm::jwt_key_source: &#39;puppet:///modules/site_slurm/jwt.key&#39;
 <p>For the host to run slurmrestd:</p>
 
 <pre class="code ruby"><code class="ruby">slurm::slurmrestd: true
+</code></pre>
+
+<h3 id="label-slurm-3A-3Aconf+usage">slurm::conf usage</h3>
+
+<p>It&#39;s possible to deploy multiple slurm.conf files using this module.</p>
+
+<p>The following example will deploy <code>/etc/slurm/slurm-ascend.conf</code>
+with only ClusterName and SlurmctldHost changed.</p>
+
+<pre class="code ruby"><code class="ruby">include slurm
+$cluster_conf = {
+  &#39;ClusterName&#39;   =&gt; &#39;ascend&#39;,
+  &#39;SlurmctldHost&#39; =&gt; &#39;ascend-slurm01.example.com&#39;,
+}
+slurm::conf { &#39;ascend&#39;:
+  configs =&gt; $slurm::slurm_conf + $cluster_conf,
+}
 </code></pre>
 
 <h2 id="label-Reference">Reference</h2>
