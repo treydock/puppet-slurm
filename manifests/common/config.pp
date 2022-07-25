@@ -4,20 +4,10 @@ class slurm::common::config {
   create_resources('slurm::spank', $slurm::spank_plugins)
 
   if $slurm::manage_slurm_conf and ! $slurm::configless {
-    concat { 'slurm.conf':
-      ensure => 'present',
-      path   => $slurm::slurm_conf_path,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
-      notify => $slurm::service_notify,
-    }
-
-    concat::fragment { 'slurm.conf-config':
-      target  => 'slurm.conf',
-      content => $slurm::slurm_conf_content,
-      source  => $slurm::slurm_conf_source,
-      order   => '00',
+    slurm::conf { 'slurm.conf':
+      configs     => $slurm::slurm_conf,
+      source      => $slurm::slurm_conf_source,
+      config_name => 'slurm.conf',
     }
 
     if $slurm::partition_source {

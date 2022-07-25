@@ -554,12 +554,6 @@ class slurm (
   $slurmdbd_conf_defaults = merge($::slurm::params::slurmdbd_conf_defaults, $slurmdbd_conf_local_defaults)
   $slurmdbd_conf          = merge($slurmdbd_conf_defaults, $slurmdbd_conf_override)
 
-  if $slurm_conf_source {
-    $slurm_conf_content = undef
-  } else {
-    $slurm_conf_content = template($slurm_conf_template)
-  }
-
   if $cgroup_conf_source {
     $cgroup_conf_content = undef
   } else {
