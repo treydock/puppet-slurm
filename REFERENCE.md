@@ -38,6 +38,7 @@
 
 ### Defined types
 
+* [`slurm::conf`](#slurmconf): Manage Slurm main configuration
 * [`slurm::down_node`](#slurmdown_node): Manage SLURM down node configuration
 * [`slurm::gres`](#slurmgres): Manage SLURM GRES configuration
 * [`slurm::job_container`](#slurmjob_container): Manage SLURM job_container.conf entry
@@ -1611,6 +1612,67 @@ Default value: `30`
 
 ## Defined types
 
+### <a name="slurmconf"></a>`slurm::conf`
+
+Manage Slurm main configuration
+
+#### Examples
+
+##### Create /etc/slurm/slurm-ascend.conf
+
+```puppet
+
+include slurm
+$cluster_conf = {
+  'ClusterName'   => 'ascend',
+  'SlurmctldHost' => 'ascend-slurm01.example.com',
+}
+slurm::conf { 'ascend':
+  configs => $slurm::slurm_conf + $cluster_conf,
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `slurm::conf` defined type:
+
+* [`configs`](#configs)
+* [`template`](#template)
+* [`source`](#source)
+* [`config_name`](#config_name)
+
+##### <a name="configs"></a>`configs`
+
+Data type: `Hash`
+
+Hash of Slurm configs
+
+Default value: `{}`
+
+##### <a name="template"></a>`template`
+
+Data type: `Optional[String]`
+
+Template to use to generate slurm.conf contents
+
+Default value: ``undef``
+
+##### <a name="source"></a>`source`
+
+Data type: `Optional[String]`
+
+Source of configuration instead of templated configs
+
+Default value: ``undef``
+
+##### <a name="config_name"></a>`config_name`
+
+Data type: `String`
+
+Name of configuration file
+
+Default value: `"slurm-${name}.conf"`
+
 ### <a name="slurmdown_node"></a>`slurm::down_node`
 
 Manage SLURM down node configuration
@@ -1622,6 +1684,7 @@ The following parameters are available in the `slurm::down_node` defined type:
 * [`down_nodes`](#down_nodes)
 * [`reason`](#reason)
 * [`state`](#state)
+* [`target`](#target)
 * [`order`](#order)
 
 ##### <a name="down_nodes"></a>`down_nodes`
@@ -1647,6 +1710,14 @@ Data type: `Slurm::DownNodeState`
 
 
 Default value: `'UNKNOWN'`
+
+##### <a name="target"></a>`target`
+
+Data type: `String`
+
+
+
+Default value: `'slurm.conf'`
 
 ##### <a name="order"></a>`order`
 
@@ -1885,6 +1956,7 @@ The following parameters are available in the `slurm::node` defined type:
 * [`tmp_disk`](#tmp_disk)
 * [`tres_weights`](#tres_weights)
 * [`weight`](#weight)
+* [`target`](#target)
 * [`order`](#order)
 
 ##### <a name="node_name"></a>`node_name`
@@ -2071,6 +2143,14 @@ Data type: `Optional[Integer]`
 
 Default value: ``undef``
 
+##### <a name="target"></a>`target`
+
+Data type: `Any`
+
+
+
+Default value: `'slurm.conf'`
+
 ##### <a name="order"></a>`order`
 
 Data type: `Any`
@@ -2090,6 +2170,7 @@ The following parameters are available in the `slurm::nodeset` defined type:
 * [`feature`](#feature)
 * [`nodes`](#nodes)
 * [`node_set`](#node_set)
+* [`target`](#target)
 * [`order`](#order)
 
 ##### <a name="feature"></a>`feature`
@@ -2115,6 +2196,14 @@ Data type: `String`
 
 
 Default value: `$name`
+
+##### <a name="target"></a>`target`
+
+Data type: `Any`
+
+
+
+Default value: `'slurm.conf'`
 
 ##### <a name="order"></a>`order`
 
@@ -2174,6 +2263,7 @@ The following parameters are available in the `slurm::partition` defined type:
 * [`suspend_time`](#suspend_time)
 * [`suspend_timeout`](#suspend_timeout)
 * [`tres_billing_weights`](#tres_billing_weights)
+* [`target`](#target)
 * [`order`](#order)
 
 ##### <a name="partition_name"></a>`partition_name`
@@ -2511,6 +2601,14 @@ Data type: `Any`
 
 
 Default value: ``undef``
+
+##### <a name="target"></a>`target`
+
+Data type: `Any`
+
+
+
+Default value: `'slurm.conf'`
 
 ##### <a name="order"></a>`order`
 
