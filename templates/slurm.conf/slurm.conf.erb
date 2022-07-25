@@ -4,7 +4,7 @@
 # See the slurm.conf man page for more information.
 #
 
-<% slurm_conf = scope['slurm::slurm_conf'] -%>
+<% slurm_conf = @configs -%>
 <% slurm_conf.keys.sort.each do |key| -%>
 <% value = slurm_conf[key] -%>
 <%- if value == :undef or ! value or value == 'UNSET' -%>
