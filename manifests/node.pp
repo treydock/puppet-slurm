@@ -25,6 +25,7 @@
 # @param tmp_disk
 # @param tres_weights
 # @param weight
+# @param target
 # @param order
 #
 define slurm::node (
@@ -51,6 +52,7 @@ define slurm::node (
   Optional[Integer] $tmp_disk = undef,
   $tres_weights     = undef,
   Optional[Integer] $weight = undef,
+  $target           = 'slurm.conf',
   $order            = '90',
 ) {
 
@@ -82,8 +84,8 @@ define slurm::node (
     'Weight' => $weight,
   }
 
-  concat::fragment { "slurm.conf-node-${name}":
-    target  => 'slurm.conf',
+  concat::fragment { "${target}-node-${name}":
+    target  => $target,
     content => template($::slurm::node_template),
     order   => $order,
   }

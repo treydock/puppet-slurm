@@ -6,6 +6,7 @@ class slurm::common::config {
   if $slurm::manage_slurm_conf and ! $slurm::configless {
     slurm::conf { 'slurm.conf':
       configs     => $slurm::slurm_conf,
+      template    => $slurm::slurm_conf_template,
       source      => $slurm::slurm_conf_source,
       config_name => 'slurm.conf',
     }
