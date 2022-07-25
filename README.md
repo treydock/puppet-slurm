@@ -17,6 +17,7 @@
     * [Role: slurmd](#role-slurmd)
     * [Role: client](#role-client)
     * [Role: slurmrestd](#role-slurmrestd)
+    * [slurm::conf usage](#slurmconf-usage)
 3. [Reference - Parameter and detailed reference to all options](#reference)
 4. [Limitations - OS compatibility, etc.](#limitations)
 
@@ -225,6 +226,23 @@ For the host to run slurmrestd:
 
 ```yaml
 slurm::slurmrestd: true
+```
+
+### slurm::conf usage
+
+It's possible to deploy multiple slurm.conf files using this module.
+
+The following example will deploy `/etc/slurm/slurm-ascend.conf` with only ClusterName and SlurmctldHost changed.
+
+```puppet
+include slurm
+$cluster_conf = {
+  'ClusterName'   => 'ascend',
+  'SlurmctldHost' => 'ascend-slurm01.example.com',
+}
+slurm::conf { 'ascend':
+  configs => $slurm::slurm_conf + $cluster_conf,
+}
 ```
 
 ## Reference

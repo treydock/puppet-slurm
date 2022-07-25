@@ -6,12 +6,14 @@
 # @param feature
 # @param nodes
 # @param node_set
+# @param target
 # @param order
 #
 define slurm::nodeset (
   Optional[String] $feature   = undef,
   Optional[String] $nodes     = undef,
   String $node_set            = $name,
+  $target                     = 'slurm.conf',
   $order                      = '40',
 ) {
 
@@ -33,8 +35,8 @@ define slurm::nodeset (
 
   $content = join($params, ' ')
 
-  concat::fragment { "slurm.conf-nodeset-${name}":
-    target  => 'slurm.conf',
+  concat::fragment { "${target}-nodeset-${name}":
+    target  => $target,
     content => "${content}\n",
     order   => $order,
   }

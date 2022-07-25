@@ -44,6 +44,7 @@
 # @param suspend_time
 # @param suspend_timeout
 # @param tres_billing_weights
+# @param target
 # @param order
 #
 define slurm::partition (
@@ -89,6 +90,7 @@ define slurm::partition (
   $suspend_time = undef,
   $suspend_timeout = undef,
   $tres_billing_weights = undef,
+  $target           = 'slurm.conf',
   $order            = '50',
 ) {
 
@@ -140,8 +142,8 @@ define slurm::partition (
   }
 
 
-  concat::fragment { "slurm.conf-partition-${name}":
-    target  => 'slurm.conf',
+  concat::fragment { "${target}-partition-${name}":
+    target  => $target,
     content => template($::slurm::partition_template),
     order   => $order,
   }
