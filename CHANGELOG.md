@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v2.3.0](https://github.com/treydock/puppet-slurm/tree/v2.3.0) (2022-08-09)
+
+[Full Changelog](https://github.com/treydock/puppet-slurm/compare/v2.2.0...v2.3.0)
+
+### Added
+
+- Allow newer munge module [\#42](https://github.com/treydock/puppet-slurm/pull/42) ([treydock](https://github.com/treydock))
+- Set allowed puppet-epel version to \< 5.0.0 [\#41](https://github.com/treydock/puppet-slurm/pull/41) ([yorickps](https://github.com/yorickps))
+
 ## [v2.2.0](https://github.com/treydock/puppet-slurm/tree/v2.2.0) (2022-07-25)
 
 [Full Changelog](https://github.com/treydock/puppet-slurm/compare/v2.1.0...v2.2.0)
