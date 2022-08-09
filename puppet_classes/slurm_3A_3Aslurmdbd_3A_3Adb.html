@@ -117,7 +117,11 @@
 26
 27
 28
-29</pre>
+29
+30
+31
+32
+33</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/slurmdbd/db.pp', line 2</span>
@@ -126,8 +130,10 @@ class slurm::slurmdbd::db {
   if $slurm::manage_database {
     if $facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] == &#39;20.04&#39; {
       $charset = &#39;utf8mb3&#39;
+      $collate = &#39;utf8mb3_general_ci&#39;
     } else {
       $charset = &#39;utf8&#39;
+      $collate = &#39;utf8_general_ci&#39;
     }
     if $slurm::export_database {
       @@mysql::db { &quot;slurmdbd_${::fqdn}&quot;:
@@ -137,6 +143,7 @@ class slurm::slurmdbd::db {
         host     =&gt; $::fqdn,
         grant    =&gt; [&#39;ALL&#39;],
         charset  =&gt; $charset,
+        collate  =&gt; $collate,
         tag      =&gt; $slurm::export_database_tag,
       }
     } else {
@@ -146,6 +153,7 @@ class slurm::slurmdbd::db {
         host     =&gt; $slurm::slurmdbd_storage_host,
         grant    =&gt; [&#39;ALL&#39;],
         charset  =&gt; $charset,
+        collate  =&gt; $collate,
       }
     }
   }
