@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v2.4.0](https://github.com/treydock/puppet-slurm/tree/v2.4.0) (2022-08-11)
+
+[Full Changelog](https://github.com/treydock/puppet-slurm/compare/v2.3.0...v2.4.0)
+
+### Added
+
+- Add slurm\_nodes fact [\#43](https://github.com/treydock/puppet-slurm/pull/43) ([treydock](https://github.com/treydock))
+
 ## [v2.3.0](https://github.com/treydock/puppet-slurm/tree/v2.3.0) (2022-08-09)
 
 [Full Changelog](https://github.com/treydock/puppet-slurm/compare/v2.2.0...v2.3.0)
