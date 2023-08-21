@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'slurmd::config' do |node|
   describe file('/var/log/slurm'), node: node do
     it { is_expected.to be_directory }
@@ -5,6 +7,7 @@ shared_examples_for 'slurmd::config' do |node|
     it { is_expected.to be_owned_by slurm_user }
     it { is_expected.to be_grouped_into slurm_user }
   end
+
   describe file('/var/spool/slurmd'), node: node do
     it { is_expected.to be_directory }
     it { is_expected.to be_mode 755 }

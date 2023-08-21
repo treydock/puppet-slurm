@@ -14,7 +14,9 @@ class slurm::common::install::source {
     }
     Package[$package] -> Archive[$slurm::src_file]
   }
-  if ($facts['os']['family'] == 'Debian') or ($facts['os']['family'] == 'RedHat' and versioncmp($facts['os']['release']['major'], '8') >= 0) {
+  if ($facts['os']['family'] == 'Debian') or
+  ($facts['os']['family'] == 'RedHat' and
+  versioncmp($facts['os']['release']['major'], '8') >= 0) {
     if $slurm::source_install_manage_alternatives {
       if $facts['os']['family'] == 'Debian' {
         alternative_entry { '/usr/bin/python3':
@@ -46,10 +48,10 @@ class slurm::common::install::source {
   }
 
   $base_configure_flags = join([
-    "--prefix=${slurm::install_prefix}",
-    "--libdir=${slurm::install_prefix}/lib64",
-    "--sysconfdir=${slurm::conf_dir}",
-    '--enable-slurmrestd',
+      "--prefix=${slurm::install_prefix}",
+      "--libdir=${slurm::install_prefix}/lib64",
+      "--sysconfdir=${slurm::conf_dir}",
+      '--enable-slurmrestd',
   ], ' ')
   $configure_flags = join($slurm::configure_flags, ' ')
   $configure_command = "./configure ${base_configure_flags} ${configure_flags}"
@@ -60,16 +62,16 @@ class slurm::common::install::source {
     group   => 'root',
     mode    => '0755',
     content => join([
-      '#!/bin/bash',
-      "cd ${slurm::src_dir}",
-      $configure_command,
-      '[ $? -ne 0 ] && { rm -f $0; exit 1; }',
-      "make -j${facts['processors']['count']}",
-      '[ $? -ne 0 ] && { rm -f $0; exit 1; }',
-      'make install',
-      '[ $? -ne 0 ] && { rm -f $0; exit 1; }',
-      'exit 0',
-      '',
+        '#!/bin/bash',
+        "cd ${slurm::src_dir}",
+        $configure_command,
+        '[ $? -ne 0 ] && { rm -f $0; exit 1; }',
+        "make -j${facts['processors']['count']}",
+        '[ $? -ne 0 ] && { rm -f $0; exit 1; }',
+        'make install',
+        '[ $? -ne 0 ] && { rm -f $0; exit 1; }',
+        'exit 0',
+        '',
     ], "\n"),
     notify  => Exec['install-slurm'],
     require => Archive[$slurm::src_file],

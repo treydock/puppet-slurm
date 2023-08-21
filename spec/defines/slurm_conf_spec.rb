@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'slurm::conf' do
   on_supported_os(supported_os: [
                     {
-                      'operatingsystem'        => 'RedHat',
-                      'operatingsystemrelease' => ['7'],
-                    },
+                      'operatingsystem' => 'RedHat',
+                      'operatingsystemrelease' => ['7']
+                    }
                   ]).each do |_os, os_facts|
     let(:facts) { os_facts }
     let(:title) { 'ascend' }
@@ -13,8 +15,8 @@ describe 'slurm::conf' do
       {
         configs: {
           'ClusterName' => 'ascend',
-          'SlurmctldHost' => 'ascend-slurm01.example.com',
-        },
+          'SlurmctldHost' => 'ascend-slurm01.example.com'
+        }
       }
     end
 

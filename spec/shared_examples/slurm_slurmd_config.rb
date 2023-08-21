@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'slurm::slurmd::config' do
   context 'when manage_scripts => false' do
     let(:param_override) {  { manage_scripts: false } }
@@ -13,7 +15,7 @@ shared_examples_for 'slurm::slurmd::config' do
 
     it 'sets the Epilog option' do
       verify_fragment_contents(catalogue, 'slurm.conf-config', [
-                                 'Epilog=/tmp/foo',
+                                 'Epilog=/tmp/foo'
                                ])
     end
 
@@ -32,7 +34,7 @@ shared_examples_for 'slurm::slurmd::config' do
 
     it 'sets the Epilog option' do
       verify_fragment_contents(catalogue, 'slurm.conf-config', [
-                                 'Epilog=/tmp/foo.d/*',
+                                 'Epilog=/tmp/foo.d/*'
                                ])
     end
 
@@ -54,7 +56,7 @@ shared_examples_for 'slurm::slurmd::config' do
 
     it 'sets the HealthCheckProgram option' do
       verify_fragment_contents(catalogue, 'slurm.conf-config', [
-                                 'HealthCheckProgram=/usr/sbin/nhc',
+                                 'HealthCheckProgram=/usr/sbin/nhc'
                                ])
     end
   end
@@ -64,7 +66,7 @@ shared_examples_for 'slurm::slurmd::config' do
 
     it 'sets the Prolog option' do
       verify_fragment_contents(catalogue, 'slurm.conf-config', [
-                                 'Prolog=/tmp/bar',
+                                 'Prolog=/tmp/bar'
                                ])
     end
 
@@ -83,7 +85,7 @@ shared_examples_for 'slurm::slurmd::config' do
 
     it 'sets the Prolog option' do
       verify_fragment_contents(catalogue, 'slurm.conf-config', [
-                                 'Prolog=/tmp/bar.d/*',
+                                 'Prolog=/tmp/bar.d/*'
                                ])
     end
 
@@ -105,7 +107,7 @@ shared_examples_for 'slurm::slurmd::config' do
 
     it 'sets the TaskEpilog option' do
       verify_fragment_contents(catalogue, 'slurm.conf-config', [
-                                 'TaskEpilog=/tmp/epilog',
+                                 'TaskEpilog=/tmp/epilog'
                                ])
     end
 
@@ -124,7 +126,7 @@ shared_examples_for 'slurm::slurmd::config' do
 
     it 'sets the TaskProlog option' do
       verify_fragment_contents(catalogue, 'slurm.conf-config', [
-                                 'TaskProlog=/tmp/foobar',
+                                 'TaskProlog=/tmp/foobar'
                                ])
     end
 

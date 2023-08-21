@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # slurmctld_nodes.rb
 
 Facter.add(:slurm_nodes) do

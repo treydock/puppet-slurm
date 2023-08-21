@@ -2,4 +2,8 @@
 # File managed by Puppet!
 #
 
-SLURMDBD_OPTIONS="<%= scope['slurm::slurmdbd_options'] %>"
+<% if scope['slurm::slurmdbd_options'] -%>
+SLURMCTLD_OPTIONS="<%= scope['slurm::slurmdbd_options'] %>"
+<% else -%>
+SLURMCTLD_OPTIONS=""
+<% end -%>

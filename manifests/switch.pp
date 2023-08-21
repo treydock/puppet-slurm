@@ -20,18 +20,17 @@
 #   Order inside topology.conf
 #
 define slurm::switch (
-  $switch_name = $name,
-  $switches = undef,
-  $nodes = undef,
-  $link_speed = undef,
-  $order = '50',
+  String[1] $switch_name = $name,
+  Optional[String[1]] $switches = undef,
+  Optional[String[1]] $nodes = undef,
+  Optional[String[1]] $link_speed = undef,
+  String[1] $order = '50',
 ) {
-
   if ! $nodes and ! $switches {
     fail('slurm::switch: Must define either nodes or switches')
   }
 
-  include ::slurm
+  include slurm
 
   $conf_values = {
     'SwitchName' => $switch_name,
@@ -42,8 +41,7 @@ define slurm::switch (
 
   concat::fragment { "slurm-topology.conf-${name}":
     target  => 'slurm-topology.conf',
-    content => template($::slurm::switch_template),
+    content => template($slurm::switch_template),
     order   => $order,
   }
-
 }

@@ -6,13 +6,20 @@
       - el8
       - ---el9
       - debian-10
-      - ubuntu-1804
       - ubuntu-2004
     puppet:
-      - puppet6
       - puppet7
+      - puppet8
 .gitlab-ci.yml:
   delete: true
+.rubocop.yml:
+  profiles:
+    strict:
+      configs:
+        RSpec/MultipleMemoizedHelpers:
+          Enabled: false
+        RSpec/RepeatedExampleGroupBody:
+          Enabled: false
 appveyor.yml:
   delete: true
 spec/acceptance/nodesets/el7.yml:
@@ -31,9 +38,9 @@ spec/acceptance/nodesets/debian-10.yml:
   unmanaged: true
 spec/acceptance/nodesets/debian-11.yml:
   delete: true
-spec/acceptance/nodesets/ubuntu-1804.yml:
-  unmanaged: true
 spec/acceptance/nodesets/ubuntu-2004.yml:
   unmanaged: true
   packages:
     - cron
+spec/acceptance/nodesets/ubuntu-2204.yml:
+  delete: true

@@ -10,14 +10,13 @@
 # @param order
 #
 define slurm::down_node (
-  String $down_nodes          = $name,
-  Optional[String] $reason    = undef,
+  String $down_nodes = $name,
+  Optional[String] $reason = undef,
   Slurm::DownNodeState $state = 'UNKNOWN',
-  String $target              = 'slurm.conf',
-  $order                      = '75',
+  String $target = 'slurm.conf',
+  String[1] $order = '75',
 ) {
-
-  include ::slurm
+  include slurm
 
   $content = "DownNodes=${down_nodes} State=${state} Reason=\"${reason}\"\n"
 
@@ -26,5 +25,4 @@ define slurm::down_node (
     content => $content,
     order   => $order,
   }
-
 }

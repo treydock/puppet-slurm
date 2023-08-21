@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Fact: slurm_core_count_per_cpu
 #
 # Purpose: Return the number of cores per physical processor

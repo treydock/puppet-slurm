@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'slurmd' do
@@ -7,16 +9,16 @@ describe 'slurmd' do
     let(:slurm_user) { 'slurm' }
   end
 
-  context 'default parameters' do
+  context 'with default parameters' do
     nodes = hosts_as('slurmd')
 
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PP
       class { 'slurm':
         client => false,
         slurmd => true,
       }
-      EOS
+      PP
 
       apply_manifest_on(nodes, pp, catch_failures: true)
       if ['docker', 'hyperv'].include?(fact('virtual'))

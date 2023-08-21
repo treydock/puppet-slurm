@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'slurmctld_version fact' do
@@ -7,7 +9,7 @@ describe 'slurmctld_version fact' do
   end
 
   let(:nodes) do
-    <<~EOS
+    <<~NODES
     p0005
     p0001
     p0001
@@ -15,14 +17,14 @@ describe 'slurmctld_version fact' do
     p0003
     p0004
     p0004
-    EOS
+    NODES
   end
 
   it 'returns list of nodes' do
     allow(Facter::Util::Resolution).to receive(:which).with('slurmctld').and_return('/usr/sbin/slurmctld')
     allow(Facter::Util::Resolution).to receive(:which).with('sinfo').and_return('/usr/bin/sinfo')
     allow(Facter::Util::Resolution).to receive(:exec).with('timeout 5 /usr/bin/sinfo -a -h -N -o \'%N\' 2>/dev/null').and_return(nodes)
-    expect(Facter.fact(:slurm_nodes).value).to eq(['p0001','p0002','p0003','p0004','p0005'])
+    expect(Facter.fact(:slurm_nodes).value).to eq(['p0001', 'p0002', 'p0003', 'p0004', 'p0005'])
   end
 
   it 'is nil if sinfo returns unexpected output' do

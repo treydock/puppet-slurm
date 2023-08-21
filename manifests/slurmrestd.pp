@@ -1,6 +1,5 @@
 # @api private
 class slurm::slurmrestd {
-
   contain slurm::common::user
   contain slurm::common::install
   contain slurm::common::config
@@ -15,8 +14,7 @@ class slurm::slurmrestd {
     firewall { '100 allow access to slurmrestd':
       proto  => 'tcp',
       dport  => $slurm::slurmrestd_port,
-      action => 'accept'
+      action => 'accept',
     }
   }
-
 }

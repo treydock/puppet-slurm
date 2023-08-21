@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'slurm::common::install::apt' do |facts|
   base_packages(facts).each do |p|
     it { is_expected.to contain_package(p).with_ensure('present').without_require }

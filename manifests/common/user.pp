@@ -1,6 +1,5 @@
 # @api private
 class slurm::common::user {
-
   if $slurm::manage_slurm_user {
     group { 'slurm':
       ensure     => present,
@@ -23,5 +22,4 @@ class slurm::common::user {
       system     => true,
     }
   }
-
 }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'slurmdbd' do
@@ -7,18 +9,18 @@ describe 'slurmdbd' do
     let(:slurm_user) { 'slurm' }
   end
 
-  context 'default parameters' do
+  context 'with default parameters' do
     nodes = hosts_as('slurmdbd')
 
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PP
       include mysql::server
       class { 'slurm':
         client => false,
         slurmdbd => true,
         database => true,
       }
-      EOS
+      PP
 
       apply_manifest_on(nodes, pp, catch_failures: true)
       if fact('virtual') == 'docker'

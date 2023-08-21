@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'slurm::client class:' do
-  context 'default parameters' do
+  context 'with default parameters' do
     nodes = hosts_as('slurm-client')
 
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PP
       include slurm
-      EOS
+      PP
 
       apply_manifest_on(nodes, pp, catch_failures: true)
       if ['docker', 'hyperv'].include?(fact('virtual'))

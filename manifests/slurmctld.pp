@@ -1,6 +1,5 @@
 # @api private
 class slurm::slurmctld {
-
   contain slurm::common::munge
   contain slurm::common::user
   contain slurm::common::install
@@ -9,7 +8,7 @@ class slurm::slurmctld {
   contain slurm::slurmctld::config
   contain slurm::slurmctld::service
 
-  Class['::munge::service']
+  Class['munge::service']
   -> Class['slurm::slurmctld::service']
 
   Class['slurm::common::user']
@@ -23,8 +22,7 @@ class slurm::slurmctld {
     firewall { '100 allow access to slurmctld':
       proto  => 'tcp',
       dport  => $slurm::slurmctld_port,
-      action => 'accept'
+      action => 'accept',
     }
   }
-
 }

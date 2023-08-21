@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # slurm_version.rb
 
 Facter.add(:slurm_version) do

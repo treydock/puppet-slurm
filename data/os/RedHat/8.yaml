@@ -13,6 +13,7 @@ slurm::source_dependencies:
   - openssl-devel
   - curl-devel
   - libcgroup
+  - dbus-devel
   - lz4-devel
   - freeipmi-devel
   - python3

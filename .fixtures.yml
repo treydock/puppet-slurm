@@ -13,9 +13,9 @@ fixtures:
     concat:
       repo: puppetlabs/concat
     augeasproviders_core:
-      repo: herculesteam/augeasproviders_core
+      repo: puppet/augeasproviders_core
     augeasproviders_sysctl:
-      repo: herculesteam/augeasproviders_sysctl
+      repo: puppet/augeasproviders_sysctl
     logrotate:
       repo: puppet/logrotate
     epel:

@@ -1,6 +1,5 @@
 # @api private
 class slurm::common::install::rpm {
-
   if $slurm::repo_baseurl {
     $package_require = Yumrepo['slurm']
     yumrepo { 'slurm':
@@ -46,6 +45,6 @@ class slurm::common::install::rpm {
     package { 'slurm-slurmrestd': }
   }
 
-  if $slurm::install_pam            { package { 'slurm-pam_slurm': } }
+  if $slurm::install_pam { package { 'slurm-pam_slurm': } }
   if $slurm::install_torque_wrapper { package { 'slurm-torque': } }
 }

@@ -1,8 +1,7 @@
 # @api private
 class slurm::params {
-
   $slurm_conf_multiple = [
-    'SlurmctldHost'
+    'SlurmctldHost',
   ]
 
   $slurm_conf_defaults = {

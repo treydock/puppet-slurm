@@ -25,9 +25,8 @@ define slurm::spank (
   Boolean $manage_package = true,
   String $package_name = "slurm-spank-${name}",
   String $package_ensure = 'installed',
-  $order = '50',
+  String[1] $order = '50',
 ) {
-
   include slurm
 
   if $slurm::repo_baseurl {
@@ -62,5 +61,4 @@ define slurm::spank (
       require => $fragment_require,
     }
   }
-
 }

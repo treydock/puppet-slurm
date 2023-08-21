@@ -23,40 +23,37 @@
 # @param state
 # @param threads_per_core
 # @param tmp_disk
-# @param tres_weights
 # @param weight
 # @param target
 # @param order
 #
 define slurm::node (
-  $node_name        = $name,
-  $node_hostname    = undef,
-  $node_addr        = undef,
-  $bcast_addr       = undef,
-  $boards           = undef,
-  $core_spec_count  = undef,
-  $cores_per_socket = undef,
-  $cpu_bind         = undef,
-  $cpus             = undef,
-  $cpu_spec_list    = undef,
-  $features         = undef,
-  $gres             = undef,
-  $mem_spec_limit   = undef,
-  $port             = undef,
-  $real_memory      = undef,
-  $reason           = undef,
-  $sockets          = undef,
-  $sockets_per_board = undef,
+  String[1] $node_name = $name,
+  Optional[Stdlib::Host] $node_hostname = undef,
+  Optional[Stdlib::IP::Address] $node_addr = undef,
+  Optional[Stdlib::IP::Address] $bcast_addr = undef,
+  Optional[Variant[String[1], Integer]] $boards = undef,
+  Optional[Variant[String[1], Integer]] $core_spec_count  = undef,
+  Optional[Variant[String[1], Integer]] $cores_per_socket = undef,
+  Optional[Slurm::CPUBind] $cpu_bind = undef,
+  Optional[Variant[String[1], Integer]] $cpus = undef,
+  Optional[Variant[String[1], Array[String[1]]]] $cpu_spec_list = undef,
+  Optional[Variant[String[1], Array[String[1]]]] $features = undef,
+  Optional[Variant[String[1], Array[String[1]]]] $gres = undef,
+  Optional[Variant[String[1], Integer]] $mem_spec_limit = undef,
+  Optional[Stdlib::Port] $port = undef,
+  Optional[Variant[String[1], Integer]] $real_memory = undef,
+  Optional[String[1]] $reason = undef,
+  Optional[Variant[String[1], Integer]] $sockets = undef,
+  Optional[Variant[String[1], Integer]] $sockets_per_board = undef,
   Slurm::NodeState $state = 'UNKNOWN',
-  $threads_per_core = undef,
+  Optional[Variant[String[1], Integer]] $threads_per_core = undef,
   Optional[Integer] $tmp_disk = undef,
-  $tres_weights     = undef,
   Optional[Integer] $weight = undef,
-  $target           = 'slurm.conf',
-  $order            = '90',
+  String[1] $target = 'slurm.conf',
+  String[1] $order = '90',
 ) {
-
-  include ::slurm
+  include slurm
 
   $conf_values = {
     'NodeName' => $node_name,
@@ -80,14 +77,12 @@ define slurm::node (
     'State' => $state,
     'ThreadsPerCore'  => $threads_per_core,
     'TmpDisk' => $tmp_disk,
-    'TRESWeights' => $tres_weights,
     'Weight' => $weight,
   }
 
   concat::fragment { "${target}-node-${name}":
     target  => $target,
-    content => template($::slurm::node_template),
+    content => template($slurm::node_template),
     order   => $order,
   }
-
 }

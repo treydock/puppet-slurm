@@ -1,5 +1,17 @@
 # @api private
 class slurm::slurmd::service {
+  if $slurm::conf_server {
+    $conf_option = "--conf-server ${slurm::conf_server}"
+  } elsif $slurm::configless {
+    $conf_option = undef
+  } else {
+    $conf_option = "-f ${slurm::slurm_conf_path}"
+  }
+  $slurmd_options = [
+    $conf_option,
+    '-M',
+    $slurm::slurmd_options,
+  ].filter |$c| { $c =~ NotUndef }.join(' ')
 
   file { "${slurm::env_dir}/slurmd":
     ensure  => 'file',
@@ -22,10 +34,10 @@ class slurm::slurmd::service {
     ensure         => $slurm::logging_systemd_override,
     unit           => 'slurmd.service',
     content        => join([
-      '# File managed by Puppet',
-      '[Service]',
-      'StandardOutput=null',
-      'StandardError=null',
+        '# File managed by Puppet',
+        '[Service]',
+        'StandardOutput=null',
+        'StandardError=null',
     ], "\n"),
     notify_service => false,
     notify         => Service['slurmd'],

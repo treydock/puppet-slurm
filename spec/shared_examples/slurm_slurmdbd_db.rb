@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'slurm::slurmdbd::db' do
   it do
     is_expected.to contain_mysql__db('slurm_acct_db').with(user: 'slurmdbd',

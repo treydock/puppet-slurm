@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Fact: slurm_processor_siblings_count
 #
 # Purpose: Return the number of siblings per physical processor

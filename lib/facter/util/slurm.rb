@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # SLURM fact util class
 class Facter::Util::Slurm
   # Reads the contents of path in procfs
@@ -9,6 +11,7 @@ class Facter::Util::Slurm
     output = nil
     output = Facter::Util::Resolution.exec(['cat ', path].join) if File.exist?(path)
     return nil if output.nil?
+
     output.strip
   end
 

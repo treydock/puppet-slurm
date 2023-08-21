@@ -20,6 +20,7 @@ HOSTS:
       - LANG=en_US.UTF-8
       - LANGUAGE=en_US.UTF-8
       - LC_ALL=en_US.UTF-8
+    ip: 192.168.4.2
     docker_container_name: 'slurm-ubuntu2004'
 CONFIG:
   log_level: debug
