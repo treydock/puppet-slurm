@@ -73,6 +73,7 @@ slurm::slurm_user_group: root
 slurm::auth_alt_types:
   - auth/jwt
 slurm::jwt_key_source: 'puppet:///modules/site_slurm/jwt.key'
+slurm::cgroup_plugin: 'cgroup/v1'
 slurm::partitions:
   general:
     default: 'YES'
