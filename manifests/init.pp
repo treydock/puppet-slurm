@@ -333,18 +333,18 @@ class slurm (
   # slurm.conf - epilog/prolog
   Boolean $manage_epilog = true,
   Optional[String[1]] $epilog = undef,
-  Optional[String[1]] $epilog_source = undef,
+  Optional[Variant[String[1], Array[String[1]]]] $epilog_source = undef,
   Optional[String[1]] $epilog_sourceselect = undef,
   Boolean $manage_prolog = true,
   Optional[String[1]] $prolog = undef,
-  Optional[String[1]] $prolog_source = undef,
+  Optional[Variant[String[1], Array[String[1]]]] $prolog_source = undef,
   Optional[String[1]] $prolog_sourceselect = undef,
   Boolean $manage_task_epilog = true,
   Optional[String[1]] $task_epilog = undef,
-  Optional[String[1]] $task_epilog_source = undef,
+  Optional[Variant[String[1], Array[String[1]]]] $task_epilog_source = undef,
   Boolean $manage_task_prolog = true,
   Optional[String[1]] $task_prolog = undef,
-  Optional[String[1]] $task_prolog_source = undef,
+  Optional[Variant[String[1], Array[String[1]]]] $task_prolog_source = undef,
 
   # slurmrestd
   Array $auth_alt_types = [],
