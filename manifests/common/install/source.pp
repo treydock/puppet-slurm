@@ -94,6 +94,7 @@ class slurm::common::install::source {
     command     => "${slurm::src_dir}/puppet-install.sh",
     cwd         => $slurm::src_dir,
     refreshonly => true,
+    timeout     => 0,
   }
   ~> exec { 'ldconfig-slurm':
     path        => '/usr/bin:/bin:/usr/sbin:/sbin',
