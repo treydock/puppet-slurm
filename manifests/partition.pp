@@ -49,7 +49,7 @@
 #
 define slurm::partition (
   String[1] $partition_name = $name,
-  Optional[String[1]] $alloc_nodes = undef,
+  Optional[Variant[String[1], Array[String[1]]]] $alloc_nodes = undef,
   Optional[Variant[String[1], Array[String[1]]]] $allow_accounts = undef,
   Optional[Variant[String[1], Array[String[1]]]] $allow_groups = undef,
   Optional[Variant[String[1], Array[String[1]]]] $allow_qos = undef,
