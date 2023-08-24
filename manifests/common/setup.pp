@@ -59,25 +59,25 @@ class slurm::common::setup {
       if $slurm::slurmd {
         rsyslog::snippet { '60_slurmd':
           ensure  => 'present',
-          content => ":programname, isequal, \"slurmd\" -${facts['slurm::log_dir']}/slurmd.log\n& stop",
+          content => ":programname, isequal, \"slurmd\" -${slurm::log_dir}/slurmd.log\n& stop",
         }
       }
       if $slurm::slurmctld {
         rsyslog::snippet { '60_slurmctld':
           ensure  => 'present',
-          content => ":programname, isequal, \"slurmctld\" -${facts['slurm::log_dir']}/slurmctld.log\n& stop",
+          content => ":programname, isequal, \"slurmctld\" -${slurm::log_dir}/slurmctld.log\n& stop",
         }
       }
       if $slurm::slurmdbd {
         rsyslog::snippet { '60_slurmdbd':
           ensure  => 'present',
-          content => ":programname, isequal, \"slurmdbd\" -${facts['slurm::log_dir']}/slurmdbd.log\n& stop",
+          content => ":programname, isequal, \"slurmdbd\" -${slurm::log_dir}/slurmdbd.log\n& stop",
         }
       }
       if $slurm::slurmrestd {
         rsyslog::snippet { '60_slurmrestd':
           ensure  => 'present',
-          content => ":programname, isequal, \"slurmrestd\" -${facts['slurm::log_dir']}/slurmrestd.log\n& stop",
+          content => ":programname, isequal, \"slurmrestd\" -${slurm::log_dir}/slurmrestd.log\n& stop",
         }
       }
     }
