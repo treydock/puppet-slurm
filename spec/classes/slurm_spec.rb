@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'slurm' do
   on_supported_os.each do |os, os_facts|
-    context "with #{os}" do
+    context "when #{os}" do
       let(:facts) do
         os_facts.merge('processors' => { 'count' => 1 })
       end
