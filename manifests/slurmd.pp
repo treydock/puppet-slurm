@@ -1,6 +1,5 @@
 # @api private
 class slurm::slurmd {
-
   contain slurm::common::munge
   contain slurm::common::user
   contain slurm::common::install
@@ -9,7 +8,7 @@ class slurm::slurmd {
   contain slurm::slurmd::config
   contain slurm::slurmd::service
 
-  Class['::munge::service']
+  Class['munge::service']
   -> Class['slurm::slurmd::service']
 
   Class['slurm::common::user']
@@ -20,16 +19,15 @@ class slurm::slurmd {
   -> Class['slurm::slurmd::service']
 
   if $slurm::use_nhc and $slurm::include_nhc {
-    include ::nhc
-    Class['::nhc'] -> Class['slurm::common::config']
+    include nhc
+    Class['nhc'] -> Class['slurm::common::config']
   }
 
   if $slurm::manage_firewall {
     firewall { '100 allow access to slurmd':
       proto  => 'tcp',
       dport  => $slurm::slurmd_port,
-      action => 'accept'
+      action => 'accept',
     }
   }
-
 }

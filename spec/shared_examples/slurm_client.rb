@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'slurm::client' do |facts|
   it { is_expected.to contain_class('munge') }
   it { is_expected.to contain_class('slurm::common::user').that_comes_before('Class[slurm::common::install]') }

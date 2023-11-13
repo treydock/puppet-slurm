@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'slurmctld::config' do |node|
   describe file('/var/log/slurm'), node: node do
     it { is_expected.to be_directory }

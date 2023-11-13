@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Fact: slurm_real_memory
 #
 # Purpose: Return the system memory rounded to nearest

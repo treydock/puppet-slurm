@@ -1,4 +1,5 @@
 #!/opt/puppetlabs/puppet/bin/ruby
+# frozen_string_literal: true
 
 require 'json'
 require 'open3'
@@ -9,14 +10,14 @@ class SlurmReconfig
     cmd = "#{scontrol} reconfig"
     stdout, stderr, status = Open3.capture3(cmd)
     if status != 0
-      raise Exception, "Failed to execute #{cmd}: #{stdout + stderr}"
+      raise StandardError, "Failed to execute #{cmd}: #{stdout + stderr}"
     end
-    result = { out: stdout, err: stderr, exit: status }
-    result
+
+    { out: stdout, err: stderr, exit: status }
   end
 
   def self.run
-    params = JSON.parse(STDIN.read)
+    params = JSON.parse($stdin.read)
     scontrol = params['scontrol'] || 'scontrol'
 
     result = execute(scontrol)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'slurm::common::install::source' do
   it { is_expected.to contain_class('slurm::common::install::source') }
 
@@ -26,7 +28,7 @@ shared_examples_for 'slurm::common::install::source' do
 
   it do
     verify_contents(catalogue, "/usr/local/src/slurm-#{params[:version]}/puppet-install.sh", [
-                      './configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc/slurm --enable-slurmrestd ',
+                      './configure --prefix=/usr --libdir=/usr/lib64 --sysconfdir=/etc/slurm --enable-slurmrestd '
                     ])
   end
 
@@ -39,6 +41,7 @@ shared_examples_for 'slurm::common::install::source' do
       notify: ['Exec[ldconfig-slurm]'],
     )
   end
+
   it do
     is_expected.to contain_exec('ldconfig-slurm').with(
       path: '/usr/bin:/bin:/usr/sbin:/sbin',

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'lib/module_spec_helper'
 
-dir = File.expand_path(File.dirname(__FILE__))
+dir = __dir__
 
 Dir["#{dir}/shared_examples/*.rb"].sort.each { |f| require f }
 
@@ -11,7 +13,7 @@ def base_packages(facts)
       'libslurm-perl',
       'libpmi0',
       'libpmi2-0',
-      'slurm-client',
+      'slurm-client'
     ]
   else
     [
@@ -21,7 +23,7 @@ def base_packages(facts)
       'slurm-example-configs',
       'slurm-perlapi',
       'slurm-libpmi',
-      'slurm-pam_slurm',
+      'slurm-pam_slurm'
     ]
   end
 end
@@ -53,6 +55,7 @@ end
 class String
   def camel_case
     return self if self !~ %r{_} && self =~ %r{[A-Z]+.*}
+
     split('_').map { |e| e.capitalize }.join
   end
 end

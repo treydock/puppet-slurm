@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'slurm::service - running' do |node|
   describe service('slurm'), node: node do
     it { is_expected.to be_enabled }

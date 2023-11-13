@@ -1,6 +1,5 @@
 # @api private
 class slurm::client {
-
   contain slurm::common::munge
   contain slurm::common::user
   contain slurm::common::install
@@ -11,5 +10,4 @@ class slurm::client {
   -> Class['slurm::common::install']
   -> Class['slurm::common::setup']
   -> Class['slurm::common::config']
-
 }

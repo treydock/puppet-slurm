@@ -1,6 +1,5 @@
 # @api private
 class slurm::common::config {
-
   create_resources('slurm::spank', $slurm::spank_plugins)
 
   if $slurm::manage_slurm_conf and ! $slurm::configless {
@@ -18,7 +17,7 @@ class slurm::common::config {
         order  => '25',
       }
     }
-    $::slurm::partitions.each |$name, $partition| {
+    $slurm::partitions.each |$name, $partition| {
       slurm::partition { $name: * => $partition }
     }
 
@@ -29,10 +28,10 @@ class slurm::common::config {
         order  => '75',
       }
     }
-    $::slurm::nodes.each |$name, $_node| {
+    $slurm::nodes.each |$name, $_node| {
       slurm::node { $name: * => $_node }
     }
-    $::slurm::nodesets.each |$name, $_nodeset| {
+    $slurm::nodesets.each |$name, $_nodeset| {
       slurm::nodeset { $name: * => $_nodeset }
     }
   }
@@ -59,7 +58,7 @@ class slurm::common::config {
           order  => '01',
         }
       }
-      $::slurm::switches.each |$name, $switch| {
+      $slurm::switches.each |$name, $switch| {
         slurm::switch { $name: * => $switch }
       }
     }
@@ -85,7 +84,7 @@ class slurm::common::config {
           order  => '01',
         }
       }
-      $::slurm::greses.each |$name, $gres| {
+      $slurm::greses.each |$name, $gres| {
         slurm::gres { $name: * => $gres }
       }
 

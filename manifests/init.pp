@@ -106,6 +106,8 @@
 # @param slurmdbd_storage_port
 # @param slurmdbd_storage_type
 # @param slurmdbd_storage_user
+# @param slurmdbd_db_charset
+# @param slurmdbd_db_collate
 # @param slurmdbd_conf_override
 # @param slurmdbd_archive_dir_nfs_device
 # @param slurmdbd_archive_dir_nfs_options
@@ -186,8 +188,6 @@ class slurm (
 
   # Repo (optional)
   Optional[Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl, Pattern[/^file:\/\//]]] $repo_baseurl = undef,
-
-
   Optional[Enum['package','source']] $install_method = undef,
   Stdlib::Absolutepath $install_prefix = '/usr',
 
@@ -206,15 +206,15 @@ class slurm (
   Enum['running','stopped'] $slurmd_service_ensure    = 'running',
   Boolean $slurmd_service_enable                      = true,
   Hash $slurmd_service_limits                         = {},
-  String $slurmd_options                              = '',
+  Optional[String[1]] $slurmd_options = undef,
   Enum['running','stopped'] $slurmctld_service_ensure = 'running',
   Boolean $slurmctld_service_enable                   = true,
   Hash $slurmctld_service_limits                      = {},
-  String $slurmctld_options                           = '',
+  Optional[String[1]] $slurmctld_options = undef,
   Enum['running','stopped'] $slurmdbd_service_ensure  = 'running',
   Boolean $slurmdbd_service_enable                    = true,
   Hash $slurmdbd_service_limits                       = {},
-  String $slurmdbd_options                            = '',
+  Optional[String[1]] $slurmdbd_options = undef,
   Boolean $slurmctld_restart_on_failure               = true,
   Boolean $slurmdbd_restart_on_failure                = true,
   Boolean $reload_services                            = false,
@@ -222,17 +222,17 @@ class slurm (
   Integer $slurmctld_conn_validator_timeout           = 60,
 
   # User and group management
-  $manage_slurm_user      = true,
-  $slurm_user_group       = 'slurm',
-  $slurm_group_gid        = undef,
-  $slurm_user             = 'slurm',
-  $slurm_user_uid         = undef,
-  $slurm_user_comment     = 'SLURM User',
-  $slurm_user_home        = '/var/lib/slurm',
-  $slurm_user_managehome  = true,
-  $slurm_user_shell       = '/sbin/nologin',
-  $slurmd_user            = 'root',
-  $slurmd_user_group      = 'root',
+  Boolean $manage_slurm_user = true,
+  String[1] $slurm_user_group = 'slurm',
+  Optional[Integer] $slurm_group_gid = undef,
+  String[1] $slurm_user = 'slurm',
+  Optional[Integer] $slurm_user_uid = undef,
+  String[1] $slurm_user_comment = 'SLURM User',
+  Stdlib::Absolutepath $slurm_user_home = '/var/lib/slurm',
+  Boolean $slurm_user_managehome = true,
+  Stdlib::Absolutepath $slurm_user_shell = '/sbin/nologin',
+  String[1] $slurmd_user = 'root',
+  String[1] $slurmd_user_group = 'root',
 
   # Munge key
   Boolean $manage_munge                 = false,
@@ -240,35 +240,35 @@ class slurm (
   Optional[String] $munge_key_content   = undef,
 
   # Behavior overrides
-  $manage_slurm_conf             = true,
-  $manage_scripts                = true,
-  $manage_firewall               = true,
+  Boolean $manage_slurm_conf             = true,
+  Boolean $manage_scripts                = true,
+  Boolean $manage_firewall               = true,
 
   # Logging
-  $use_syslog                    = false,
-  $manage_logrotate              = true,
-  $logrotate_syslog_pid_path     = '/var/run/syslogd.pid',
-  $manage_rsyslog                = true,
+  Boolean $use_syslog                    = false,
+  Boolean $manage_logrotate              = true,
+  Stdlib::Absolutepath $logrotate_syslog_pid_path = '/var/run/syslogd.pid',
+  Boolean $manage_rsyslog                = true,
 
   # Behavior overrides - slurmdbd
-  $manage_database     = true,
-  $export_database     = false,
-  $export_database_tag = $facts['domain'],
+  Boolean $manage_database     = true,
+  Boolean $export_database     = false,
+  Optional[String[1]] $export_database_tag = $facts['networking']['domain'],
 
   # client config
-  $cli_filter_lua_source  = undef,
-  $cli_filter_lua_content = undef,
+  Optional[String[1]] $cli_filter_lua_source  = undef,
+  Optional[String[1]] $cli_filter_lua_content = undef,
 
   # Config - controller
-  $state_dir_nfs_device           = undef,
-  $state_dir_nfs_options          = 'rw,sync,noexec,nolock,auto',
-  $job_submit_lua_source          = undef,
-  $job_submit_lua_content         = undef,
+  Optional[String[1]] $state_dir_nfs_device           = undef,
+  String[1] $state_dir_nfs_options = 'rw,sync,noexec,nolock,auto',
+  Optional[String[1]] $job_submit_lua_source          = undef,
+  Optional[String[1]] $job_submit_lua_content         = undef,
 
   # Cluster config
-  $cluster_name       = 'linux',
+  String[1] $cluster_name       = 'linux',
   Variant[Array, String] $slurmctld_host = 'slurm',
-  $slurmdbd_host      = 'slurmdbd',
+  Stdlib::Host $slurmdbd_host      = 'slurmdbd',
 
   # Managed directories
   Stdlib::Absolutepath $conf_dir = '/etc/slurm',
@@ -281,68 +281,70 @@ class slurm (
   Optional[String] $conf_server  = undef,
 
   # slurm.conf - overrides
-  $slurm_conf_override    = {},
-  $slurm_conf_template    = 'slurm/slurm.conf/slurm.conf.erb',
-  $slurm_conf_source      = undef,
-  $partition_template     = 'slurm/slurm.conf/conf_values.erb',
-  $partition_source       = undef,
-  $node_template          = 'slurm/slurm.conf/conf_values.erb',
-  $node_source            = undef,
-  $switch_template        = 'slurm/slurm.conf/conf_values.erb',
-  $topology_source        = undef,
-  $gres_template          = 'slurm/slurm.conf/conf_values.erb',
-  $gres_source            = undef,
-  $partitions             = {},
-  $nodes                  = {},
-  $nodesets               = {},
-  $switches               = {},
-  $greses                 = {},
-  $job_containers         = {},
+  Hash $slurm_conf_override = {},
+  String[1] $slurm_conf_template = 'slurm/slurm.conf/slurm.conf.erb',
+  Optional[String[1]] $slurm_conf_source = undef,
+  String[1] $partition_template = 'slurm/slurm.conf/conf_values.erb',
+  Optional[String[1]] $partition_source = undef,
+  String[1] $node_template = 'slurm/slurm.conf/conf_values.erb',
+  Optional[String[1]] $node_source = undef,
+  String[1] $switch_template = 'slurm/slurm.conf/conf_values.erb',
+  Optional[String[1]] $topology_source = undef,
+  String[1] $gres_template = 'slurm/slurm.conf/conf_values.erb',
+  Optional[String[1]] $gres_source = undef,
+  Hash $partitions             = {},
+  Hash $nodes                  = {},
+  Hash $nodesets               = {},
+  Hash $switches               = {},
+  Hash $greses                 = {},
+  Hash $job_containers         = {},
 
   # slurm.conf - node
-  Optional[Stdlib::Absolutepath] $slurmd_log_file  = undef,
-  $slurmd_spool_dir = '/var/spool/slurmd',
+  Optional[Stdlib::Absolutepath] $slurmd_log_file = undef,
+  Stdlib::Absolutepath $slurmd_spool_dir = '/var/spool/slurmd',
 
   # slurm.conf - controller
-  Optional[Stdlib::Absolutepath] $slurmctld_log_file     = undef,
-  $state_save_location    = '/var/spool/slurmctld.state',
+  Optional[Stdlib::Absolutepath] $slurmctld_log_file = undef,
+  Stdlib::Absolutepath $state_save_location = '/var/spool/slurmctld.state',
 
   # slurmdbd.conf
   Stdlib::Absolutepath $slurmdbd_archive_dir = '/var/lib/slurmdbd.archive',
   Optional[Stdlib::Absolutepath] $slurmdbd_log_file      = undef,
-  $slurmdbd_storage_host  = 'localhost',
-  $slurmdbd_storage_loc   = 'slurm_acct_db',
-  $slurmdbd_storage_pass  = 'slurmdbd',
-  $slurmdbd_storage_port  = '3306',
-  $slurmdbd_storage_type  = 'accounting_storage/mysql',
-  $slurmdbd_storage_user  = 'slurmdbd',
-  $slurmdbd_conf_override = {},
+  Stdlib::Host $slurmdbd_storage_host  = 'localhost',
+  String[1] $slurmdbd_storage_loc   = 'slurm_acct_db',
+  String[1] $slurmdbd_storage_pass  = 'slurmdbd',
+  Stdlib::Port $slurmdbd_storage_port  = 3306,
+  String[1] $slurmdbd_storage_type  = 'accounting_storage/mysql',
+  String[1] $slurmdbd_storage_user  = 'slurmdbd',
+  String[1] $slurmdbd_db_charset = 'utf8',
+  String[1] $slurmdbd_db_collate = 'utf8_general_ci',
+  Hash $slurmdbd_conf_override = {},
 
   # Config - slurmdbd
-  $slurmdbd_archive_dir_nfs_device = undef,
-  $slurmdbd_archive_dir_nfs_options = 'rw,sync,noexec,nolock,auto',
+  Optional[String[1]] $slurmdbd_archive_dir_nfs_device = undef,
+  String[1] $slurmdbd_archive_dir_nfs_options = 'rw,sync,noexec,nolock,auto',
 
   # slurm.conf health check
-  $use_nhc                      = false,
-  $include_nhc                  = false,
-  $health_check_program         = undef,
-  $health_check_program_source  = undef,
+  Boolean $use_nhc = false,
+  Boolean $include_nhc = false,
+  Optional[Stdlib::Absolutepath] $health_check_program = undef,
+  Optional[String[1]] $health_check_program_source = undef,
 
   # slurm.conf - epilog/prolog
-  $manage_epilog                = true,
-  $epilog                       = undef,
-  $epilog_source                = undef,
-  $epilog_sourceselect          = undef,
-  $manage_prolog                = true,
-  $prolog                       = undef,
-  $prolog_source                = undef,
-  $prolog_sourceselect          = undef,
-  $manage_task_epilog           = true,
-  $task_epilog                  = undef,
-  $task_epilog_source           = undef,
-  $manage_task_prolog           = true,
-  $task_prolog                  = undef,
-  $task_prolog_source           = undef,
+  Boolean $manage_epilog = true,
+  Optional[String[1]] $epilog = undef,
+  Optional[Variant[String[1], Array[String[1]]]] $epilog_source = undef,
+  Optional[String[1]] $epilog_sourceselect = undef,
+  Boolean $manage_prolog = true,
+  Optional[String[1]] $prolog = undef,
+  Optional[Variant[String[1], Array[String[1]]]] $prolog_source = undef,
+  Optional[String[1]] $prolog_sourceselect = undef,
+  Boolean $manage_task_epilog = true,
+  Optional[String[1]] $task_epilog = undef,
+  Optional[Variant[String[1], Array[String[1]]]] $task_epilog_source = undef,
+  Boolean $manage_task_prolog = true,
+  Optional[String[1]] $task_prolog = undef,
+  Optional[Variant[String[1], Array[String[1]]]] $task_prolog_source = undef,
 
   # slurmrestd
   Array $auth_alt_types = [],
@@ -355,7 +357,7 @@ class slurm (
   Enum['running','stopped'] $slurmrestd_service_ensure = 'running',
   Boolean $slurmrestd_service_enable                   = true,
   Hash $slurmrestd_service_limits                      = {},
-  String $slurmrestd_options                           = '',
+  Optional[String[1]] $slurmrestd_options = undef,
   Boolean $slurmrestd_restart_on_failure               = true,
 
   # cgroups
@@ -380,8 +382,8 @@ class slurm (
   Integer $cgroup_min_ram_space             = 30,
 
   # profile.d
-  $slurm_sh_template  = 'slurm/profile.d/slurm.sh.erb',
-  $slurm_csh_template = 'slurm/profile.d/slurm.csh.erb',
+  String[1] $slurm_sh_template  = 'slurm/profile.d/slurm.sh.erb',
+  String[1] $slurm_csh_template = 'slurm/profile.d/slurm.csh.erb',
   Hash $profile_d_env_vars = {},
 
   # ports
@@ -405,7 +407,6 @@ class slurm (
   Boolean $purge_qos = false,
   Integer $slurmdbd_conn_validator_timeout = 30,
 ) inherits slurm::params {
-
   $osfamily = $facts.dig('os', 'family')
   $osmajor = $facts.dig('os', 'release', 'major')
   $supported = ['RedHat','Debian']
@@ -532,7 +533,7 @@ class slurm (
   }
 
   $_slurm_conf_override = $slurm_conf_override - ['SlurmctldParameters']
-  $slurm_conf_defaults  = merge($::slurm::params::slurm_conf_defaults, $slurm_conf_local_defaults)
+  $slurm_conf_defaults  = merge($slurm::params::slurm_conf_defaults, $slurm_conf_local_defaults)
   $slurm_conf           = merge($slurm_conf_defaults, $_slurm_conf_override)
 
   $slurmdbd_conf_local_defaults = {
@@ -551,7 +552,7 @@ class slurm (
     'StorageUser' => $slurmdbd_storage_user,
   }
 
-  $slurmdbd_conf_defaults = merge($::slurm::params::slurmdbd_conf_defaults, $slurmdbd_conf_local_defaults)
+  $slurmdbd_conf_defaults = merge($slurm::params::slurmdbd_conf_defaults, $slurmdbd_conf_local_defaults)
   $slurmdbd_conf          = merge($slurmdbd_conf_defaults, $slurmdbd_conf_override)
 
   if $cgroup_conf_source {

@@ -14,7 +14,9 @@ HOSTS:
     docker_cmd:
       - '/usr/sbin/init'
     docker_image_commands:
-      - 'yum install -y tar wget iproute initscripts crontabs'
+      - 'yum install -y wget which cronie iproute initscripts'
+      - 'wget --no-check-certificate https://copr.fedorainfracloud.org/coprs/jsynacek/systemd-backports-for-centos-7/repo/epel-7/jsynacek-systemd-backports-for-centos-7-epel-7.repo -O /etc/yum.repos.d/jsynacek-systemd-centos-7.repo'
+      - 'yum update -y systemd'
     ip: 192.168.1.2
     docker_container_name: 'slurm-el7'
 CONFIG:

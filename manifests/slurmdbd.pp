@@ -1,6 +1,5 @@
 # @api private
 class slurm::slurmdbd {
-
   contain slurm::common::munge
   contain slurm::common::user
   contain slurm::common::install
@@ -9,7 +8,7 @@ class slurm::slurmdbd {
   contain slurm::slurmdbd::config
   contain slurm::slurmdbd::service
 
-  Class['::munge::service']
+  Class['munge::service']
   -> Class['slurm::slurmdbd::service']
 
   Class['slurm::common::user']
@@ -20,11 +19,10 @@ class slurm::slurmdbd {
   -> Class['slurm::slurmdbd::service']
 
   if $slurm::manage_firewall {
-    firewall {'100 allow access to slurmdbd':
+    firewall { '100 allow access to slurmdbd':
       proto  => 'tcp',
       dport  => $slurm::slurmdbd_port,
-      action => 'accept'
+      action => 'accept',
     }
   }
-
 }

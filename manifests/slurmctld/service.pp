@@ -1,5 +1,9 @@
 # @api private
 class slurm::slurmctld::service {
+  $slurmctld_options = [
+    "-f ${slurm::slurm_conf_path}",
+    $slurm::slurmctld_options,
+  ].filter |$c| { $c =~ NotUndef }.join(' ')
 
   file { "${slurm::env_dir}/slurmctld":
     ensure  => 'file',
@@ -27,9 +31,9 @@ class slurm::slurmctld::service {
     ensure         => $systemd_mounts,
     unit           => 'slurmctld.service',
     content        => join(delete_undef_values([
-      '# File managed by Puppet',
-      '[Unit]',
-      $slurm::state_dir_systemd,
+          '# File managed by Puppet',
+          '[Unit]',
+          $slurm::state_dir_systemd,
     ]), "\n"),
     notify_service => false,
     notify         => Service['slurmctld'],
@@ -45,9 +49,9 @@ class slurm::slurmctld::service {
     ensure         => $slurmctld_systemd_restart,
     unit           => 'slurmctld.service',
     content        => join([
-      '# File managed by Puppet',
-      '[Service]',
-      'Restart=on-failure',
+        '# File managed by Puppet',
+        '[Service]',
+        'Restart=on-failure',
     ], "\n"),
     notify_service => false,
     notify         => Service['slurmctld'],
@@ -57,10 +61,10 @@ class slurm::slurmctld::service {
     ensure         => $slurm::logging_systemd_override,
     unit           => 'slurmctld.service',
     content        => join([
-      '# File managed by Puppet',
-      '[Service]',
-      'StandardOutput=null',
-      'StandardError=null',
+        '# File managed by Puppet',
+        '[Service]',
+        'StandardOutput=null',
+        'StandardError=null',
     ], "\n"),
     notify_service => false,
     notify         => Service['slurmctld'],

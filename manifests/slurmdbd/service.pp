@@ -1,6 +1,5 @@
 # @api private
 class slurm::slurmdbd::service {
-
   file { "${slurm::env_dir}/slurmdbd":
     ensure  => 'file',
     owner   => 'root',
@@ -27,9 +26,9 @@ class slurm::slurmdbd::service {
     ensure         => $systemd_mounts,
     unit           => 'slurmctld.service',
     content        => join(delete_undef_values([
-      '# File managed by Puppet',
-      '[Unit]',
-      $slurm::slurmdbd_archive_dir_systemd,
+          '# File managed by Puppet',
+          '[Unit]',
+          $slurm::slurmdbd_archive_dir_systemd,
     ]), "\n"),
     notify_service => false,
     notify         => Service['slurmdbd'],
@@ -45,9 +44,9 @@ class slurm::slurmdbd::service {
     ensure         => $slurmdbd_systemd_restart,
     unit           => 'slurmdbd.service',
     content        => join([
-      '# File managed by Puppet',
-      '[Service]',
-      'Restart=on-failure',
+        '# File managed by Puppet',
+        '[Service]',
+        'Restart=on-failure',
     ], "\n"),
     notify_service => false,
     notify         => Service['slurmdbd'],
@@ -57,10 +56,10 @@ class slurm::slurmdbd::service {
     ensure         => $slurm::logging_systemd_override,
     unit           => 'slurmdbd.service',
     content        => join([
-      '# File managed by Puppet',
-      '[Service]',
-      'StandardOutput=null',
-      'StandardError=null',
+        '# File managed by Puppet',
+        '[Service]',
+        'StandardOutput=null',
+        'StandardError=null',
     ], "\n"),
     notify_service => false,
     notify         => Service['slurmdbd'],

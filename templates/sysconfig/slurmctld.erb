@@ -2,4 +2,4 @@
 # File managed by Puppet!
 #
 
-SLURMCTLD_OPTIONS="-f <%= scope['slurm::slurm_conf_path'] %> <%= scope['slurm::slurmctld_options'] %>"
+SLURMCTLD_OPTIONS="<%= @slurmctld_options %>"

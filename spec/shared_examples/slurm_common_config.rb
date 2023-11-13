@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'slurm::common::config' do
   it { is_expected.to have_slurm__spank_resource_count(0) }
 
@@ -124,7 +126,7 @@ shared_examples_for 'slurm::common::config' do
                                      'UnkillableStepTimeout=60',
                                      'UsePAM=0',
                                      'VSizeFactor=0',
-                                     'WaitTime=0',
+                                     'WaitTime=0'
                                    ])
   end
 
@@ -183,7 +185,7 @@ shared_examples_for 'slurm::common::config' do
                                  'MaxSwapPercent=100',
                                  'MaxKmemPercent=100',
                                  'MinKmemSpace=30',
-                                 'MinRAMSpace=30',
+                                 'MinRAMSpace=30'
                                ])
   end
 
@@ -241,16 +243,16 @@ shared_examples_for 'slurm::common::config' do
       {
         slurm_conf_override: {
           'PreemptMode' => 'SUSPEND,GANG',
-          'PreemptType'         => 'preempt/partition_prio',
-          'ProctrackType'       => 'proctrack/linuxproc',
+          'PreemptType' => 'preempt/partition_prio',
+          'ProctrackType' => 'proctrack/linuxproc',
           'SchedulerParameters' => {
             'bf_continue' => '',
             'defer' => '',
             'batch_sched_delay' => '3',
-            'bf_max_job_start' => 0,
+            'bf_max_job_start' => 0
           },
-          'TaskPlugin' => ['task/affinity', 'task/cgroup'],
-        },
+          'TaskPlugin' => ['task/affinity', 'task/cgroup']
+        }
       }
     end
 
@@ -260,7 +262,7 @@ shared_examples_for 'slurm::common::config' do
                                  'PreemptType=preempt/partition_prio',
                                  'ProctrackType=proctrack/linuxproc',
                                  'SchedulerParameters=bf_continue,defer,batch_sched_delay=3,bf_max_job_start=0',
-                                 'TaskPlugin=task/affinity,task/cgroup',
+                                 'TaskPlugin=task/affinity,task/cgroup'
                                ])
     end
   end
@@ -269,7 +271,7 @@ shared_examples_for 'slurm::common::config' do
     let :param_override do
       {
         auth_alt_types: ['auth/jwt'],
-        jwt_key_source: 'puppet:///dne',
+        jwt_key_source: 'puppet:///dne'
       }
     end
     let(:slurmctld) { true }
@@ -277,7 +279,7 @@ shared_examples_for 'slurm::common::config' do
     it 'enables JWT auth' do
       verify_fragment_contents(catalogue, 'slurm.conf-config', [
                                  'AuthAltTypes=auth/jwt',
-                                 'AuthAltParameters=jwt_key=/etc/slurm/jwt.key',
+                                 'AuthAltParameters=jwt_key=/etc/slurm/jwt.key'
                                ])
     end
 
@@ -298,15 +300,15 @@ shared_examples_for 'slurm::common::config' do
       {
         slurmctld_host: [
           'slurmctld1(10.0.0.1)',
-          'slurmctld2(10.0.0.2)',
-        ],
+          'slurmctld2(10.0.0.2)'
+        ]
       }
     end
 
     it 'overrides values' do
       verify_fragment_contents(catalogue, 'slurm.conf-config', [
                                  'SlurmctldHost=slurmctld1(10.0.0.1)',
-                                 'SlurmctldHost=slurmctld2(10.0.0.2)',
+                                 'SlurmctldHost=slurmctld2(10.0.0.2)'
                                ])
     end
   end
@@ -317,26 +319,27 @@ shared_examples_for 'slurm::common::config' do
         partitions: {
           'DEFAULT' =>
              {
-               'nodes'         => 'c[0-9]',
-               'state'         => 'UP',
+               'nodes' => 'c[0-9]',
+               'state' => 'UP'
              },
           'general' => {
             'max_nodes' => '1',
             'max_time' => '48:00:00',
-            'default' => 'YES',
-          },
-        },
+            'default' => 'YES'
+          }
+        }
       }
     end
 
     it do
       verify_exact_fragment_contents(catalogue, 'slurm.conf-partition-DEFAULT', [
-                                       'PartitionName=DEFAULT Nodes=c[0-9] State=UP',
+                                       'PartitionName=DEFAULT Nodes=c[0-9] State=UP'
                                      ])
     end
+
     it do
       verify_exact_fragment_contents(catalogue, 'slurm.conf-partition-general', [
-                                       'PartitionName=general Default=YES MaxNodes=1 MaxTime=48:00:00 State=UP',
+                                       'PartitionName=general Default=YES MaxNodes=1 MaxTime=48:00:00 State=UP'
                                      ])
     end
   end
@@ -348,24 +351,25 @@ shared_examples_for 'slurm::common::config' do
                    {
                      'cpus' => 4,
                      'node_hostname' => 'c01',
-                     'node_addr' => '10.0.0.1',
+                     'node_addr' => '10.0.0.1'
                    },
                  'c02' => {
                    'cpus' => 4,
                    'node_hostname' => 'c02',
-                   'node_addr' => '10.0.0.2',
-                 } },
+                   'node_addr' => '10.0.0.2'
+                 } }
       }
     end
 
     it do
       verify_exact_fragment_contents(catalogue, 'slurm.conf-node-c01', [
-                                       'NodeName=c01 NodeHostname=c01 NodeAddr=10.0.0.1 CPUs=4 State=UNKNOWN',
+                                       'NodeName=c01 NodeHostname=c01 NodeAddr=10.0.0.1 CPUs=4 State=UNKNOWN'
                                      ])
     end
+
     it do
       verify_exact_fragment_contents(catalogue, 'slurm.conf-node-c02', [
-                                       'NodeName=c02 NodeHostname=c02 NodeAddr=10.0.0.2 CPUs=4 State=UNKNOWN',
+                                       'NodeName=c02 NodeHostname=c02 NodeAddr=10.0.0.2 CPUs=4 State=UNKNOWN'
                                      ])
     end
   end
@@ -375,25 +379,26 @@ shared_examples_for 'slurm::common::config' do
       {
         switches: { 'switch01' =>
                    {
-                     'nodes' => 'c01',
+                     'nodes' => 'c01'
                    },
                     'switch00' => {
-                      'switches' => 'switch01',
-                    } },
+                      'switches' => 'switch01'
+                    } }
       }
     end
 
     it do
       if slurmd || slurmctld
         verify_exact_fragment_contents(catalogue, 'slurm-topology.conf-switch01', [
-                                         'SwitchName=switch01 Nodes=c01',
+                                         'SwitchName=switch01 Nodes=c01'
                                        ])
       end
     end
+
     it do
       if slurmd || slurmctld
         verify_exact_fragment_contents(catalogue, 'slurm-topology.conf-switch00', [
-                                         'SwitchName=switch00 Switches=switch01',
+                                         'SwitchName=switch00 Switches=switch01'
                                        ])
       end
     end
@@ -405,27 +410,28 @@ shared_examples_for 'slurm::common::config' do
         greses: { 'gpu' =>
                    {
                      'node_name' => 'c0[1-2]',
-                     'file' => '/dev/nvidia[0-1]',
+                     'file' => '/dev/nvidia[0-1]'
                    },
                   'gpu2' => {
                     'gres_name' => 'gpu',
                     'node_name' => 'c0[3-4]',
-                    'file' => '/dev/nvidia[0-3]',
-                  } },
+                    'file' => '/dev/nvidia[0-3]'
+                  } }
       }
     end
 
     it do
       if slurmd
         verify_exact_fragment_contents(catalogue, 'slurm-gres.conf-gpu', [
-                                         'NodeName=c0[1-2] Name=gpu File=/dev/nvidia[0-1]',
+                                         'NodeName=c0[1-2] Name=gpu File=/dev/nvidia[0-1]'
                                        ])
       end
     end
+
     it do
       if slurmd
         verify_exact_fragment_contents(catalogue, 'slurm-gres.conf-gpu2', [
-                                         'NodeName=c0[3-4] Name=gpu File=/dev/nvidia[0-3]',
+                                         'NodeName=c0[3-4] Name=gpu File=/dev/nvidia[0-3]'
                                        ])
       end
     end

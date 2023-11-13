@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Fact: slurm_thread_count_per_core
 #
 # Purpose: Return the number of threads per core

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'common::setup' do |node|
   describe file('/etc/profile.d/slurm.sh'), node: node do
     it { is_expected.to be_file }

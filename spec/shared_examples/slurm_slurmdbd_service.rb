@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'slurm::slurmdbd::service' do
   it do
     is_expected.to contain_service('slurmdbd').with(ensure: 'running',

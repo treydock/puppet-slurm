@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'slurm::slurmdbd::config' do
   it do
     is_expected.to contain_file('slurmdbd.conf').with(ensure: 'file',
@@ -36,7 +38,7 @@ shared_examples_for 'slurm::slurmdbd::config' do
                                  'StorageType=accounting_storage/mysql',
                                  'StorageUser=slurmdbd',
                                  'TCPTimeout=2',
-                                 'TrackSlurmctldDown=no',
+                                 'TrackSlurmctldDown=no'
                                ])
   end
 
@@ -52,14 +54,14 @@ shared_examples_for 'slurm::slurmdbd::config' do
     let :param_override do
       {
         auth_alt_types: ['auth/jwt'],
-        jwt_key_source: 'puppet:///dne',
+        jwt_key_source: 'puppet:///dne'
       }
     end
 
     it 'overrides values' do
       verify_fragment_contents(catalogue, 'slurm.conf-config', [
                                  'AuthAltTypes=auth/jwt',
-                                 'AuthAltParameters=jwt_key=/etc/slurm/jwt.key',
+                                 'AuthAltParameters=jwt_key=/etc/slurm/jwt.key'
                                ])
     end
   end

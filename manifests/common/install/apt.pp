@@ -1,6 +1,5 @@
 # @api private
 class slurm::common::install::apt {
-
   Package {
     ensure  => $slurm::package_ensure,
     notify  => $slurm::service_notify,
@@ -26,6 +25,6 @@ class slurm::common::install::apt {
     package { 'slurmdbd': }
   }
 
-  if $slurm::install_pam            { package { 'libpam-slurm': } }
+  if $slurm::install_pam { package { 'libpam-slurm': } }
   if $slurm::install_torque_wrapper { package { 'slurm-wlm-torque': } }
 }

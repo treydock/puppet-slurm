@@ -1,6 +1,5 @@
 # @api private
 class slurm::common::install {
-
   if $slurm::osfamily == 'RedHat' {
     $package_class = 'slurm::common::install::rpm'
   } elsif $slurm::osfamily == 'Debian' {

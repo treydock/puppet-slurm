@@ -22,28 +22,21 @@
 # @param file
 # @param flags
 # @param links
-# @param switch_name
-# @param switches
-# @param link_speed
 # @param order
 #
 define slurm::gres (
-  $gres_name = $name,
-  $type = undef,
-  $node_name = undef,
-  Optional[Enum['nvml','rsmi']] $auto_detect = undef,
-  $count = undef,
-  $cores = undef,
-  $file = undef,
+  String[1] $gres_name = $name,
+  Optional[String[1]] $type = undef,
+  Optional[Variant[String[1], Array[String[1]]]] $node_name = undef,
+  Optional[Enum['nvml','rsmi','oneapi','off']] $auto_detect = undef,
+  Optional[Variant[String[1], Integer]] $count = undef,
+  Optional[Variant[String[1], Integer, Array[Variant[String[1],Integer]]]] $cores = undef,
+  Optional[Stdlib::Absolutepath] $file = undef,
   Optional[Enum['CountOnly']] $flags = undef,
-  $links = undef,
-  $switch_name = $name,
-  $switches = undef,
-  $link_speed = undef,
-  $order = '50',
+  Optional[Variant[Integer, Array[Integer]]] $links = undef,
+  String[1] $order = '50',
 ) {
-
-  include ::slurm
+  include slurm
 
   if $auto_detect {
     $conf_values = {
@@ -66,8 +59,7 @@ define slurm::gres (
 
   concat::fragment { "slurm-gres.conf-${name}":
     target  => 'slurm-gres.conf',
-    content => template($::slurm::gres_template),
+    content => template($slurm::gres_template),
     order   => $order,
   }
-
 }

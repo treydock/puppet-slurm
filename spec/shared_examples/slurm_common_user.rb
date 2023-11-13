@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'slurm::common::user' do
   it do
     is_expected.to contain_group('slurm').with(ensure: 'present',

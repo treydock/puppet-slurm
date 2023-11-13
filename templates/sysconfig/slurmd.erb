@@ -2,10 +2,4 @@
 # File managed by Puppet!
 #
 
-<%- if scope['slurm::conf_server'] -%>
-SLURMD_OPTIONS="--conf-server <%= scope['slurm::conf_server'] %> -M <%= scope['slurm::slurmd_options'] %>"
-<%- elsif scope['slurm::configless'] -%>
-SLURMD_OPTIONS="-M <%= scope['slurm::slurmd_options'] %>"
-<%- else -%>
-SLURMD_OPTIONS="-f <%= scope['slurm::slurm_conf_path'] %> -M <%= scope['slurm::slurmd_options'] %>"
-<%- end -%>
+SLURMD_OPTIONS="<%= @slurmd_options %>"

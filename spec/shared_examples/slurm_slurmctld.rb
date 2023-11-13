@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'slurm::slurmctld' do |facts|
   it { is_expected.to contain_class('munge') }
   it { is_expected.to contain_class('munge::service').that_comes_before('Class[slurm::slurmctld::service]') }

@@ -1,22 +1,15 @@
 # @api private
 class slurm::slurmdbd::db {
   if $slurm::manage_database {
-    if $facts['os']['release']['major'] == '20.04' {
-      $charset = 'utf8mb3'
-      $collate = 'utf8mb3_general_ci'
-    } else {
-      $charset = 'utf8'
-      $collate = 'utf8_general_ci'
-    }
     if $slurm::export_database {
-      @@mysql::db { "slurmdbd_${::fqdn}":
+      @@mysql::db { "slurmdbd_${facts['networking']['fqdn']}":
         user     => $slurm::slurmdbd_storage_user,
         password => $slurm::slurmdbd_storage_pass,
         dbname   => $slurm::slurmdbd_storage_loc,
-        host     => $::fqdn,
+        host     => $facts['networking']['fqdn'],
         grant    => ['ALL'],
-        charset  => $charset,
-        collate  => $collate,
+        charset  => $slurm::slurmdbd_db_charset,
+        collate  => $slurm::slurmdbd_db_collate,
         tag      => $slurm::export_database_tag,
       }
     } else {
@@ -25,8 +18,8 @@ class slurm::slurmdbd::db {
         password => $slurm::slurmdbd_storage_pass,
         host     => $slurm::slurmdbd_storage_host,
         grant    => ['ALL'],
-        charset  => $charset,
-        collate  => $collate,
+        charset  => $slurm::slurmdbd_db_charset,
+        collate  => $slurm::slurmdbd_db_collate,
       }
     }
   }

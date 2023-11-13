@@ -26,7 +26,6 @@ define slurm::conf (
   Optional[String] $source = undef,
   String $config_name = "slurm-${name}.conf",
 ) {
-
   include slurm
 
   if $template {
@@ -55,5 +54,4 @@ define slurm::conf (
     source  => $source,
     order   => '00',
   }
-
 }
