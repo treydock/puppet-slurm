@@ -7,18 +7,18 @@ HOSTS:
       - slurmdbd
       - slurmd
       - slurm-client
-    platform: el-8-x86_64
+    platform: el-9-x86_64
     hypervisor: docker
-    image: rockylinux/rockylinux:8
+    image: rockylinux/rockylinux:9
     docker_preserve_image: true
     docker_cmd:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y dnf-utils'
-      - 'dnf config-manager --set-enabled powertools'
+      - 'dnf config-manager --set-enabled crb'
       - 'yum install -y tar wget iproute initscripts crontabs langpacks-en glibc-all-langpacks glibc-langpack-en'
-    ip: 192.168.2.2
-    docker_container_name: 'slurm-el8'
+    ip: 192.168.5.2
+    docker_container_name: 'slurm-el9'
 CONFIG:
   log_level: debug
   type: foss

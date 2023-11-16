@@ -18,7 +18,8 @@ class slurm::common::install::source {
   ($facts['os']['family'] == 'RedHat' and
   versioncmp($facts['os']['release']['major'], '8') >= 0) {
     if $slurm::source_install_manage_alternatives {
-      if $facts['os']['family'] == 'Debian' {
+      if $facts['os']['family'] == 'Debian' or
+      ($facts['os']['family'] == 'RedHat' and versioncmp($facts['os']['release']['major'], '9') >= 0) {
         alternative_entry { '/usr/bin/python3':
           ensure   => 'present',
           altlink  => '/usr/bin/python',
