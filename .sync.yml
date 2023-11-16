@@ -4,9 +4,10 @@
     set:
       - el7
       - el8
-      - ---el9
-      - debian-10
+      - el9
+      - debian-11
       - ubuntu-2004
+      - ubuntu-2204
     puppet:
       - puppet7
       - puppet8
@@ -31,16 +32,16 @@ spec/acceptance/nodesets/el8.yml:
   packages:
     - crontabs
 spec/acceptance/nodesets/el9.yml:
-  delete: true
-spec/acceptance/nodesets/debian-9.yml:
-  delete: true
-spec/acceptance/nodesets/debian-10.yml:
   unmanaged: true
+  packages:
+    - crontabs
 spec/acceptance/nodesets/debian-11.yml:
-  delete: true
+  unmanaged: true
 spec/acceptance/nodesets/ubuntu-2004.yml:
   unmanaged: true
   packages:
     - cron
 spec/acceptance/nodesets/ubuntu-2204.yml:
-  delete: true
+  unmanaged: true
+  packages:
+    - cron

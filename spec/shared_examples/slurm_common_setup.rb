@@ -2,7 +2,7 @@
 
 shared_examples_for 'slurm::common::setup' do |facts|
   let(:syslog_pid) do
-    if facts[:os]['release']['major'].to_s == '8'
+    if facts[:os]['release']['major'].to_s =~ %r{8|9}
       '/var/run/rsyslogd.pid'
     else
       '/var/run/syslogd.pid'
