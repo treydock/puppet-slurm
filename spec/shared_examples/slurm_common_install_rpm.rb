@@ -42,12 +42,15 @@ end
 shared_examples_for 'slurm::common::install::rpm-slurmd' do
   it { is_expected.to contain_package('slurm-slurmd').with_ensure('present').without_require }
 end
+
 shared_examples_for 'slurm::common::install::rpm-slurmctld' do
   it { is_expected.to contain_package('slurm-slurmctld').with_ensure('present').without_require }
 end
+
 shared_examples_for 'slurm::common::install::rpm-slurmdbd' do
   it { is_expected.to contain_package('slurm-slurmdbd').with_ensure('present').without_require }
 end
+
 shared_examples_for 'slurm::common::install::rpm-slurmrestd' do
   it { is_expected.to contain_package('slurm-slurmrestd').with_ensure('present').without_require }
 end
