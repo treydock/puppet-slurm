@@ -13,9 +13,11 @@ class slurm::common::install {
   }
   if $install_method == 'package' {
     $install_class = $package_class
-  } else {
+  } elsif $install_method == 'source' {
     $install_class = 'slurm::common::install::source'
   }
 
-  contain $install_class
+  if $install_method != 'none' {
+    contain $install_class
+  }
 }

@@ -31,9 +31,11 @@ end
 shared_examples_for 'slurm::common::install::apt-slurmd' do
   it { is_expected.to contain_package('slurmd').with_ensure('present').without_require }
 end
+
 shared_examples_for 'slurm::common::install::apt-slurmctld' do
   it { is_expected.to contain_package('slurmctld').with_ensure('present').without_require }
 end
+
 shared_examples_for 'slurm::common::install::apt-slurmdbd' do
   it { is_expected.to contain_package('slurmdbd').with_ensure('present').without_require }
 end

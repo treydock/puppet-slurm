@@ -85,8 +85,3 @@ jobs:
         env:
           BEAKER_PUPPET_COLLECTION: ${{ matrix.puppet }}
           BEAKER_set: ${{ matrix.set }}
-          BEAKER_destroy: 'no'
-      - name: Debug failure
-        if: failure()
-        run: |
-          docker exec slurm-${{ matrix.set }} cat /var/log/slurm/slurmd.log

@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe 'slurm' do
   on_supported_os.each do |os, os_facts|
-    context "on #{os}" do
+    context "with #{os}" do
       let(:facts) do
         os_facts.merge('processors' => { 'count' => 1 })
       end
@@ -44,6 +44,15 @@ describe 'slurm' do
         it { is_expected.to compile.with_all_deps }
 
         it_behaves_like 'slurm::common::install::source', os_facts
+      end
+
+      context 'when install method is none' do
+        let(:param_override) { { install_method: 'none' } }
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.not_to contain_class('slurm::common::install::source') }
+        it { is_expected.not_to contain_class('slurm::common::install::rpm') }
+        it { is_expected.not_to contain_class('slurm::common::install::apt') }
       end
 
       context 'when slurmd' do

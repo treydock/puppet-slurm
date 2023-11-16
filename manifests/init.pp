@@ -188,7 +188,7 @@ class slurm (
 
   # Repo (optional)
   Optional[Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl, Pattern[/^file:\/\//]]] $repo_baseurl = undef,
-  Optional[Enum['package','source']] $install_method = undef,
+  Optional[Enum['package','source','none']] $install_method = undef,
   Stdlib::Absolutepath $install_prefix = '/usr',
 
   # Packages

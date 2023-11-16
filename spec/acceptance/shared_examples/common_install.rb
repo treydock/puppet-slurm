@@ -46,16 +46,19 @@ shared_examples_for 'common::install-slurmd' do |node|
     it { is_expected.to be_installed.with_version(RSpec.configuration.slurm_version.to_s) }
   end
 end
+
 shared_examples_for 'common::install-slurmctld' do |node|
   describe package(packages[:slurmctld]), node: node do
     it { is_expected.to be_installed.with_version(RSpec.configuration.slurm_version.to_s) }
   end
 end
+
 shared_examples_for 'common::install-slurmdbd' do |node|
   describe package(packages[:slurmdbd]), node: node do
     it { is_expected.to be_installed.with_version(RSpec.configuration.slurm_version.to_s) }
   end
 end
+
 shared_examples_for 'common::install-slurmrestd' do |node|
   describe package(packages[:slurmrestd]), node: node, unless: packages[:slurmrestd].nil? do
     it { is_expected.to be_installed.with_version(RSpec.configuration.slurm_version.to_s) }
