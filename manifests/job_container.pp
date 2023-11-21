@@ -16,7 +16,7 @@ define slurm::job_container (
   Boolean $auto_base_path                     = false,
   Optional[Stdlib::Absolutepath] $init_script = undef,
   Optional[String] $node_name                 = undef,
-  String[1] $order                            = '50',
+  Variant[String[1], Integer] $order = '50',
 ) {
   include slurm
 

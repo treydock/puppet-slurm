@@ -24,7 +24,7 @@ define slurm::switch (
   Optional[String[1]] $switches = undef,
   Optional[String[1]] $nodes = undef,
   Optional[String[1]] $link_speed = undef,
-  String[1] $order = '50',
+  Variant[String[1], Integer] $order = '50',
 ) {
   if ! $nodes and ! $switches {
     fail('slurm::switch: Must define either nodes or switches')
