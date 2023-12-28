@@ -38,23 +38,25 @@
 
 ### Defined types
 
-* [`slurm::conf`](#slurmconf): Manage Slurm main configuration
-* [`slurm::down_node`](#slurmdown_node): Manage SLURM down node configuration
-* [`slurm::gres`](#slurmgres): Manage SLURM GRES configuration
-* [`slurm::job_container`](#slurmjob_container): Manage SLURM job_container.conf entry
-* [`slurm::node`](#slurmnode): Manage SLURM node configuration
-* [`slurm::nodeset`](#slurmnodeset): Manage SLURM nodeset configuration
-* [`slurm::partition`](#slurmpartition): Manage a SLURM partition configuration
-* [`slurm::spank`](#slurmspank): Manage SLURM SPANK plugin
-* [`slurm::switch`](#slurmswitch): Add switch to topology.conf
+* [`slurm::conf`](#slurm--conf): Manage Slurm main configuration
+* [`slurm::down_node`](#slurm--down_node): Manage SLURM down node configuration
+* [`slurm::gres`](#slurm--gres): Manage SLURM GRES configuration
+* [`slurm::job_container`](#slurm--job_container): Manage SLURM job_container.conf entry
+* [`slurm::node`](#slurm--node): Manage SLURM node configuration
+* [`slurm::nodeset`](#slurm--nodeset): Manage SLURM nodeset configuration
+* [`slurm::partition`](#slurm--partition): Manage a SLURM partition configuration
+* [`slurm::spank`](#slurm--spank): Manage SLURM SPANK plugin
+* [`slurm::switch`](#slurm--switch): Add switch to topology.conf
 
 ### Data types
 
-* [`Slurm::DownNodeState`](#slurmdownnodestate)
-* [`Slurm::NodeState`](#slurmnodestate)
-* [`Slurm::PartitionState`](#slurmpartitionstate)
-* [`Slurm::PreemptMode`](#slurmpreemptmode)
-* [`Slurm::SelectTypeParameters`](#slurmselecttypeparameters)
+* [`Slurm::CPUBind`](#Slurm--CPUBind): Type for CPU bind settings
+* [`Slurm::DownNodeState`](#Slurm--DownNodeState)
+* [`Slurm::NodeState`](#Slurm--NodeState)
+* [`Slurm::PartitionState`](#Slurm--PartitionState)
+* [`Slurm::PreemptMode`](#Slurm--PreemptMode)
+* [`Slurm::SelectTypeParameters`](#Slurm--SelectTypeParameters)
+* [`Slurm::YesNo`](#Slurm--YesNo)
 
 ### Tasks
 
@@ -70,243 +72,241 @@ Roles
 
 The following parameters are available in the `slurm` class:
 
-* [`slurmd`](#slurmd)
-* [`slurmctld`](#slurmctld)
-* [`slurmdbd`](#slurmdbd)
-* [`database`](#database)
-* [`client`](#client)
-* [`slurmrestd`](#slurmrestd)
-* [`repo_baseurl`](#repo_baseurl)
-* [`install_method`](#install_method)
-* [`install_prefix`](#install_prefix)
-* [`package_ensure`](#package_ensure)
-* [`install_torque_wrapper`](#install_torque_wrapper)
-* [`install_pam`](#install_pam)
-* [`version`](#version)
-* [`source_dependencies`](#source_dependencies)
-* [`configure_flags`](#configure_flags)
-* [`source_install_manage_alternatives`](#source_install_manage_alternatives)
-* [`slurmd_service_ensure`](#slurmd_service_ensure)
-* [`slurmd_service_enable`](#slurmd_service_enable)
-* [`slurmd_service_limits`](#slurmd_service_limits)
-* [`slurmd_options`](#slurmd_options)
-* [`slurmctld_service_ensure`](#slurmctld_service_ensure)
-* [`slurmctld_service_enable`](#slurmctld_service_enable)
-* [`slurmctld_service_limits`](#slurmctld_service_limits)
-* [`slurmctld_options`](#slurmctld_options)
-* [`slurmdbd_service_ensure`](#slurmdbd_service_ensure)
-* [`slurmdbd_service_enable`](#slurmdbd_service_enable)
-* [`slurmdbd_service_limits`](#slurmdbd_service_limits)
-* [`slurmdbd_options`](#slurmdbd_options)
-* [`slurmctld_restart_on_failure`](#slurmctld_restart_on_failure)
-* [`slurmdbd_restart_on_failure`](#slurmdbd_restart_on_failure)
-* [`reload_services`](#reload_services)
-* [`restart_services`](#restart_services)
-* [`slurmctld_conn_validator_timeout`](#slurmctld_conn_validator_timeout)
-* [`manage_slurm_user`](#manage_slurm_user)
-* [`slurm_user_group`](#slurm_user_group)
-* [`slurm_group_gid`](#slurm_group_gid)
-* [`slurm_user`](#slurm_user)
-* [`slurm_user_uid`](#slurm_user_uid)
-* [`slurm_user_comment`](#slurm_user_comment)
-* [`slurm_user_home`](#slurm_user_home)
-* [`slurm_user_managehome`](#slurm_user_managehome)
-* [`slurm_user_shell`](#slurm_user_shell)
-* [`slurmd_user`](#slurmd_user)
-* [`slurmd_user_group`](#slurmd_user_group)
-* [`manage_munge`](#manage_munge)
-* [`munge_key_source`](#munge_key_source)
-* [`munge_key_content`](#munge_key_content)
-* [`manage_slurm_conf`](#manage_slurm_conf)
-* [`manage_scripts`](#manage_scripts)
-* [`manage_firewall`](#manage_firewall)
-* [`use_syslog`](#use_syslog)
-* [`manage_logrotate`](#manage_logrotate)
-* [`logrotate_syslog_pid_path`](#logrotate_syslog_pid_path)
-* [`manage_rsyslog`](#manage_rsyslog)
-* [`manage_database`](#manage_database)
-* [`export_database`](#export_database)
-* [`export_database_tag`](#export_database_tag)
-* [`cli_filter_lua_source`](#cli_filter_lua_source)
-* [`cli_filter_lua_content`](#cli_filter_lua_content)
-* [`state_dir_nfs_device`](#state_dir_nfs_device)
-* [`state_dir_nfs_options`](#state_dir_nfs_options)
-* [`job_submit_lua_source`](#job_submit_lua_source)
-* [`job_submit_lua_content`](#job_submit_lua_content)
-* [`cluster_name`](#cluster_name)
-* [`slurmctld_host`](#slurmctld_host)
-* [`slurmdbd_host`](#slurmdbd_host)
-* [`conf_dir`](#conf_dir)
-* [`log_dir`](#log_dir)
-* [`env_dir`](#env_dir)
-* [`spank_plugins`](#spank_plugins)
-* [`enable_configless`](#enable_configless)
-* [`configless`](#configless)
-* [`conf_server`](#conf_server)
-* [`slurm_conf_override`](#slurm_conf_override)
-* [`slurm_conf_template`](#slurm_conf_template)
-* [`slurm_conf_source`](#slurm_conf_source)
-* [`partition_template`](#partition_template)
-* [`partition_source`](#partition_source)
-* [`node_template`](#node_template)
-* [`node_source`](#node_source)
-* [`switch_template`](#switch_template)
-* [`topology_source`](#topology_source)
-* [`gres_template`](#gres_template)
-* [`gres_source`](#gres_source)
-* [`partitions`](#partitions)
-* [`nodes`](#nodes)
-* [`nodesets`](#nodesets)
-* [`switches`](#switches)
-* [`greses`](#greses)
-* [`job_containers`](#job_containers)
-* [`slurmd_log_file`](#slurmd_log_file)
-* [`slurmd_spool_dir`](#slurmd_spool_dir)
-* [`slurmctld_log_file`](#slurmctld_log_file)
-* [`state_save_location`](#state_save_location)
-* [`slurmdbd_archive_dir`](#slurmdbd_archive_dir)
-* [`slurmdbd_log_file`](#slurmdbd_log_file)
-* [`slurmdbd_storage_host`](#slurmdbd_storage_host)
-* [`slurmdbd_storage_loc`](#slurmdbd_storage_loc)
-* [`slurmdbd_storage_pass`](#slurmdbd_storage_pass)
-* [`slurmdbd_storage_port`](#slurmdbd_storage_port)
-* [`slurmdbd_storage_type`](#slurmdbd_storage_type)
-* [`slurmdbd_storage_user`](#slurmdbd_storage_user)
-* [`slurmdbd_conf_override`](#slurmdbd_conf_override)
-* [`slurmdbd_archive_dir_nfs_device`](#slurmdbd_archive_dir_nfs_device)
-* [`slurmdbd_archive_dir_nfs_options`](#slurmdbd_archive_dir_nfs_options)
-* [`use_nhc`](#use_nhc)
-* [`include_nhc`](#include_nhc)
-* [`health_check_program`](#health_check_program)
-* [`health_check_program_source`](#health_check_program_source)
-* [`manage_epilog`](#manage_epilog)
-* [`epilog`](#epilog)
-* [`epilog_source`](#epilog_source)
-* [`epilog_sourceselect`](#epilog_sourceselect)
-* [`manage_prolog`](#manage_prolog)
-* [`prolog`](#prolog)
-* [`prolog_source`](#prolog_source)
-* [`prolog_sourceselect`](#prolog_sourceselect)
-* [`manage_task_epilog`](#manage_task_epilog)
-* [`task_epilog`](#task_epilog)
-* [`task_epilog_source`](#task_epilog_source)
-* [`manage_task_prolog`](#manage_task_prolog)
-* [`task_prolog`](#task_prolog)
-* [`task_prolog_source`](#task_prolog_source)
-* [`auth_alt_types`](#auth_alt_types)
-* [`jwt_key_content`](#jwt_key_content)
-* [`jwt_key_source`](#jwt_key_source)
-* [`slurmrestd_listen_address`](#slurmrestd_listen_address)
-* [`slurmrestd_disable_token_creation`](#slurmrestd_disable_token_creation)
-* [`slurmrestd_user`](#slurmrestd_user)
-* [`slurmrestd_user_group`](#slurmrestd_user_group)
-* [`slurmrestd_service_ensure`](#slurmrestd_service_ensure)
-* [`slurmrestd_service_enable`](#slurmrestd_service_enable)
-* [`slurmrestd_service_limits`](#slurmrestd_service_limits)
-* [`slurmrestd_options`](#slurmrestd_options)
-* [`slurmrestd_restart_on_failure`](#slurmrestd_restart_on_failure)
-* [`cgroup_conf_template`](#cgroup_conf_template)
-* [`cgroup_conf_source`](#cgroup_conf_source)
-* [`cgroup_automount`](#cgroup_automount)
-* [`cgroup_mountpoint`](#cgroup_mountpoint)
-* [`cgroup_plugin`](#cgroup_plugin)
-* [`cgroup_allowed_kmem_space`](#cgroup_allowed_kmem_space)
-* [`cgroup_allowed_ram_space`](#cgroup_allowed_ram_space)
-* [`cgroup_allowed_swap_space`](#cgroup_allowed_swap_space)
-* [`cgroup_constrain_cores`](#cgroup_constrain_cores)
-* [`cgroup_constrain_devices`](#cgroup_constrain_devices)
-* [`cgroup_constrain_kmem_space`](#cgroup_constrain_kmem_space)
-* [`cgroup_constrain_ram_space`](#cgroup_constrain_ram_space)
-* [`cgroup_constrain_swap_space`](#cgroup_constrain_swap_space)
-* [`cgroup_max_ram_percent`](#cgroup_max_ram_percent)
-* [`cgroup_max_swap_percent`](#cgroup_max_swap_percent)
-* [`cgroup_max_kmem_percent`](#cgroup_max_kmem_percent)
-* [`cgroup_memory_swappiness`](#cgroup_memory_swappiness)
-* [`cgroup_min_kmem_space`](#cgroup_min_kmem_space)
-* [`cgroup_min_ram_space`](#cgroup_min_ram_space)
-* [`slurm_sh_template`](#slurm_sh_template)
-* [`slurm_csh_template`](#slurm_csh_template)
-* [`profile_d_env_vars`](#profile_d_env_vars)
-* [`slurmd_port`](#slurmd_port)
-* [`slurmctld_port`](#slurmctld_port)
-* [`slurmdbd_port`](#slurmdbd_port)
-* [`slurmrestd_port`](#slurmrestd_port)
-* [`tuning_net_core_somaxconn`](#tuning_net_core_somaxconn)
-* [`include_resources`](#include_resources)
-* [`clusters`](#clusters)
-* [`qoses`](#qoses)
-* [`reservations`](#reservations)
-* [`accounts`](#accounts)
-* [`users`](#users)
-* [`licenses`](#licenses)
-* [`purge_qos`](#purge_qos)
-* [`slurmdbd_conn_validator_timeout`](#slurmdbd_conn_validator_timeout)
+* [`slurmd`](#-slurm--slurmd)
+* [`slurmctld`](#-slurm--slurmctld)
+* [`slurmdbd`](#-slurm--slurmdbd)
+* [`database`](#-slurm--database)
+* [`client`](#-slurm--client)
+* [`slurmrestd`](#-slurm--slurmrestd)
+* [`repo_baseurl`](#-slurm--repo_baseurl)
+* [`install_method`](#-slurm--install_method)
+* [`install_prefix`](#-slurm--install_prefix)
+* [`package_ensure`](#-slurm--package_ensure)
+* [`install_torque_wrapper`](#-slurm--install_torque_wrapper)
+* [`install_pam`](#-slurm--install_pam)
+* [`version`](#-slurm--version)
+* [`source_dependencies`](#-slurm--source_dependencies)
+* [`configure_flags`](#-slurm--configure_flags)
+* [`source_install_manage_alternatives`](#-slurm--source_install_manage_alternatives)
+* [`slurmd_service_ensure`](#-slurm--slurmd_service_ensure)
+* [`slurmd_service_enable`](#-slurm--slurmd_service_enable)
+* [`slurmd_service_limits`](#-slurm--slurmd_service_limits)
+* [`slurmd_options`](#-slurm--slurmd_options)
+* [`slurmctld_service_ensure`](#-slurm--slurmctld_service_ensure)
+* [`slurmctld_service_enable`](#-slurm--slurmctld_service_enable)
+* [`slurmctld_service_limits`](#-slurm--slurmctld_service_limits)
+* [`slurmctld_options`](#-slurm--slurmctld_options)
+* [`slurmdbd_service_ensure`](#-slurm--slurmdbd_service_ensure)
+* [`slurmdbd_service_enable`](#-slurm--slurmdbd_service_enable)
+* [`slurmdbd_service_limits`](#-slurm--slurmdbd_service_limits)
+* [`slurmdbd_options`](#-slurm--slurmdbd_options)
+* [`slurmctld_restart_on_failure`](#-slurm--slurmctld_restart_on_failure)
+* [`slurmdbd_restart_on_failure`](#-slurm--slurmdbd_restart_on_failure)
+* [`reload_services`](#-slurm--reload_services)
+* [`restart_services`](#-slurm--restart_services)
+* [`slurmctld_conn_validator_timeout`](#-slurm--slurmctld_conn_validator_timeout)
+* [`manage_slurm_user`](#-slurm--manage_slurm_user)
+* [`slurm_user_group`](#-slurm--slurm_user_group)
+* [`slurm_group_gid`](#-slurm--slurm_group_gid)
+* [`slurm_user`](#-slurm--slurm_user)
+* [`slurm_user_uid`](#-slurm--slurm_user_uid)
+* [`slurm_user_comment`](#-slurm--slurm_user_comment)
+* [`slurm_user_home`](#-slurm--slurm_user_home)
+* [`slurm_user_managehome`](#-slurm--slurm_user_managehome)
+* [`slurm_user_shell`](#-slurm--slurm_user_shell)
+* [`slurmd_user`](#-slurm--slurmd_user)
+* [`slurmd_user_group`](#-slurm--slurmd_user_group)
+* [`manage_munge`](#-slurm--manage_munge)
+* [`munge_key_source`](#-slurm--munge_key_source)
+* [`munge_key_content`](#-slurm--munge_key_content)
+* [`manage_slurm_conf`](#-slurm--manage_slurm_conf)
+* [`manage_scripts`](#-slurm--manage_scripts)
+* [`manage_firewall`](#-slurm--manage_firewall)
+* [`use_syslog`](#-slurm--use_syslog)
+* [`manage_logrotate`](#-slurm--manage_logrotate)
+* [`logrotate_syslog_pid_path`](#-slurm--logrotate_syslog_pid_path)
+* [`manage_rsyslog`](#-slurm--manage_rsyslog)
+* [`manage_database`](#-slurm--manage_database)
+* [`export_database`](#-slurm--export_database)
+* [`export_database_tag`](#-slurm--export_database_tag)
+* [`cli_filter_lua_source`](#-slurm--cli_filter_lua_source)
+* [`cli_filter_lua_content`](#-slurm--cli_filter_lua_content)
+* [`state_dir_nfs_device`](#-slurm--state_dir_nfs_device)
+* [`state_dir_nfs_options`](#-slurm--state_dir_nfs_options)
+* [`job_submit_lua_source`](#-slurm--job_submit_lua_source)
+* [`job_submit_lua_content`](#-slurm--job_submit_lua_content)
+* [`cluster_name`](#-slurm--cluster_name)
+* [`slurmctld_host`](#-slurm--slurmctld_host)
+* [`slurmdbd_host`](#-slurm--slurmdbd_host)
+* [`conf_dir`](#-slurm--conf_dir)
+* [`log_dir`](#-slurm--log_dir)
+* [`env_dir`](#-slurm--env_dir)
+* [`spank_plugins`](#-slurm--spank_plugins)
+* [`enable_configless`](#-slurm--enable_configless)
+* [`configless`](#-slurm--configless)
+* [`conf_server`](#-slurm--conf_server)
+* [`slurm_conf_override`](#-slurm--slurm_conf_override)
+* [`slurm_conf_template`](#-slurm--slurm_conf_template)
+* [`slurm_conf_source`](#-slurm--slurm_conf_source)
+* [`partition_template`](#-slurm--partition_template)
+* [`partition_source`](#-slurm--partition_source)
+* [`node_template`](#-slurm--node_template)
+* [`node_source`](#-slurm--node_source)
+* [`switch_template`](#-slurm--switch_template)
+* [`topology_source`](#-slurm--topology_source)
+* [`gres_template`](#-slurm--gres_template)
+* [`gres_source`](#-slurm--gres_source)
+* [`partitions`](#-slurm--partitions)
+* [`nodes`](#-slurm--nodes)
+* [`nodesets`](#-slurm--nodesets)
+* [`switches`](#-slurm--switches)
+* [`greses`](#-slurm--greses)
+* [`job_containers`](#-slurm--job_containers)
+* [`slurmd_log_file`](#-slurm--slurmd_log_file)
+* [`slurmd_spool_dir`](#-slurm--slurmd_spool_dir)
+* [`slurmctld_log_file`](#-slurm--slurmctld_log_file)
+* [`state_save_location`](#-slurm--state_save_location)
+* [`slurmdbd_archive_dir`](#-slurm--slurmdbd_archive_dir)
+* [`slurmdbd_log_file`](#-slurm--slurmdbd_log_file)
+* [`slurmdbd_storage_host`](#-slurm--slurmdbd_storage_host)
+* [`slurmdbd_storage_loc`](#-slurm--slurmdbd_storage_loc)
+* [`slurmdbd_storage_pass`](#-slurm--slurmdbd_storage_pass)
+* [`slurmdbd_storage_port`](#-slurm--slurmdbd_storage_port)
+* [`slurmdbd_storage_type`](#-slurm--slurmdbd_storage_type)
+* [`slurmdbd_storage_user`](#-slurm--slurmdbd_storage_user)
+* [`slurmdbd_db_charset`](#-slurm--slurmdbd_db_charset)
+* [`slurmdbd_db_collate`](#-slurm--slurmdbd_db_collate)
+* [`slurmdbd_conf_override`](#-slurm--slurmdbd_conf_override)
+* [`slurmdbd_archive_dir_nfs_device`](#-slurm--slurmdbd_archive_dir_nfs_device)
+* [`slurmdbd_archive_dir_nfs_options`](#-slurm--slurmdbd_archive_dir_nfs_options)
+* [`use_nhc`](#-slurm--use_nhc)
+* [`include_nhc`](#-slurm--include_nhc)
+* [`health_check_program`](#-slurm--health_check_program)
+* [`health_check_program_source`](#-slurm--health_check_program_source)
+* [`manage_epilog`](#-slurm--manage_epilog)
+* [`epilog`](#-slurm--epilog)
+* [`epilog_source`](#-slurm--epilog_source)
+* [`epilog_sourceselect`](#-slurm--epilog_sourceselect)
+* [`manage_prolog`](#-slurm--manage_prolog)
+* [`prolog`](#-slurm--prolog)
+* [`prolog_source`](#-slurm--prolog_source)
+* [`prolog_sourceselect`](#-slurm--prolog_sourceselect)
+* [`manage_task_epilog`](#-slurm--manage_task_epilog)
+* [`task_epilog`](#-slurm--task_epilog)
+* [`task_epilog_source`](#-slurm--task_epilog_source)
+* [`manage_task_prolog`](#-slurm--manage_task_prolog)
+* [`task_prolog`](#-slurm--task_prolog)
+* [`task_prolog_source`](#-slurm--task_prolog_source)
+* [`auth_alt_types`](#-slurm--auth_alt_types)
+* [`jwt_key_content`](#-slurm--jwt_key_content)
+* [`jwt_key_source`](#-slurm--jwt_key_source)
+* [`slurmrestd_listen_address`](#-slurm--slurmrestd_listen_address)
+* [`slurmrestd_disable_token_creation`](#-slurm--slurmrestd_disable_token_creation)
+* [`slurmrestd_user`](#-slurm--slurmrestd_user)
+* [`slurmrestd_user_group`](#-slurm--slurmrestd_user_group)
+* [`slurmrestd_service_ensure`](#-slurm--slurmrestd_service_ensure)
+* [`slurmrestd_service_enable`](#-slurm--slurmrestd_service_enable)
+* [`slurmrestd_service_limits`](#-slurm--slurmrestd_service_limits)
+* [`slurmrestd_options`](#-slurm--slurmrestd_options)
+* [`slurmrestd_restart_on_failure`](#-slurm--slurmrestd_restart_on_failure)
+* [`cgroup_conf_template`](#-slurm--cgroup_conf_template)
+* [`cgroup_conf_source`](#-slurm--cgroup_conf_source)
+* [`cgroup_automount`](#-slurm--cgroup_automount)
+* [`cgroup_mountpoint`](#-slurm--cgroup_mountpoint)
+* [`cgroup_plugin`](#-slurm--cgroup_plugin)
+* [`cgroup_allowed_ram_space`](#-slurm--cgroup_allowed_ram_space)
+* [`cgroup_allowed_swap_space`](#-slurm--cgroup_allowed_swap_space)
+* [`cgroup_constrain_cores`](#-slurm--cgroup_constrain_cores)
+* [`cgroup_constrain_devices`](#-slurm--cgroup_constrain_devices)
+* [`cgroup_constrain_ram_space`](#-slurm--cgroup_constrain_ram_space)
+* [`cgroup_constrain_swap_space`](#-slurm--cgroup_constrain_swap_space)
+* [`cgroup_max_ram_percent`](#-slurm--cgroup_max_ram_percent)
+* [`cgroup_max_swap_percent`](#-slurm--cgroup_max_swap_percent)
+* [`cgroup_memory_swappiness`](#-slurm--cgroup_memory_swappiness)
+* [`cgroup_min_ram_space`](#-slurm--cgroup_min_ram_space)
+* [`slurm_sh_template`](#-slurm--slurm_sh_template)
+* [`slurm_csh_template`](#-slurm--slurm_csh_template)
+* [`profile_d_env_vars`](#-slurm--profile_d_env_vars)
+* [`slurmd_port`](#-slurm--slurmd_port)
+* [`slurmctld_port`](#-slurm--slurmctld_port)
+* [`slurmdbd_port`](#-slurm--slurmdbd_port)
+* [`slurmrestd_port`](#-slurm--slurmrestd_port)
+* [`tuning_net_core_somaxconn`](#-slurm--tuning_net_core_somaxconn)
+* [`include_resources`](#-slurm--include_resources)
+* [`clusters`](#-slurm--clusters)
+* [`qoses`](#-slurm--qoses)
+* [`reservations`](#-slurm--reservations)
+* [`accounts`](#-slurm--accounts)
+* [`users`](#-slurm--users)
+* [`licenses`](#-slurm--licenses)
+* [`purge_qos`](#-slurm--purge_qos)
+* [`slurmdbd_conn_validator_timeout`](#-slurm--slurmdbd_conn_validator_timeout)
 
-##### <a name="slurmd"></a>`slurmd`
+##### <a name="-slurm--slurmd"></a>`slurmd`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="slurmctld"></a>`slurmctld`
-
-Data type: `Boolean`
-
-
-
-Default value: ``false``
-
-##### <a name="slurmdbd"></a>`slurmdbd`
+##### <a name="-slurm--slurmctld"></a>`slurmctld`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="database"></a>`database`
-
-Data type: `Boolean`
-
-
-
-Default value: ``false``
-
-##### <a name="client"></a>`client`
+##### <a name="-slurm--slurmdbd"></a>`slurmdbd`
 
 Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `false`
 
-##### <a name="slurmrestd"></a>`slurmrestd`
+##### <a name="-slurm--database"></a>`database`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="repo_baseurl"></a>`repo_baseurl`
+##### <a name="-slurm--client"></a>`client`
+
+Data type: `Boolean`
+
+
+
+Default value: `true`
+
+##### <a name="-slurm--slurmrestd"></a>`slurmrestd`
+
+Data type: `Boolean`
+
+
+
+Default value: `false`
+
+##### <a name="-slurm--repo_baseurl"></a>`repo_baseurl`
 
 Data type: `Optional[Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl, Pattern[/^file:\/\//]]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="install_method"></a>`install_method`
+##### <a name="-slurm--install_method"></a>`install_method`
 
-Data type: `Optional[Enum['package','source']]`
+Data type: `Optional[Enum['package','source','none']]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="install_prefix"></a>`install_prefix`
+##### <a name="-slurm--install_prefix"></a>`install_prefix`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -314,7 +314,7 @@ Data type: `Stdlib::Absolutepath`
 
 Default value: `'/usr'`
 
-##### <a name="package_ensure"></a>`package_ensure`
+##### <a name="-slurm--package_ensure"></a>`package_ensure`
 
 Data type: `String`
 
@@ -322,23 +322,23 @@ Data type: `String`
 
 Default value: `'present'`
 
-##### <a name="install_torque_wrapper"></a>`install_torque_wrapper`
+##### <a name="-slurm--install_torque_wrapper"></a>`install_torque_wrapper`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="install_pam"></a>`install_pam`
+##### <a name="-slurm--install_pam"></a>`install_pam`
 
 Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="version"></a>`version`
+##### <a name="-slurm--version"></a>`version`
 
 Data type: `String`
 
@@ -346,7 +346,7 @@ Data type: `String`
 
 Default value: `'21.08.8'`
 
-##### <a name="source_dependencies"></a>`source_dependencies`
+##### <a name="-slurm--source_dependencies"></a>`source_dependencies`
 
 Data type: `Array`
 
@@ -354,7 +354,7 @@ Data type: `Array`
 
 Default value: `[]`
 
-##### <a name="configure_flags"></a>`configure_flags`
+##### <a name="-slurm--configure_flags"></a>`configure_flags`
 
 Data type: `Array`
 
@@ -362,15 +362,15 @@ Data type: `Array`
 
 Default value: `[]`
 
-##### <a name="source_install_manage_alternatives"></a>`source_install_manage_alternatives`
+##### <a name="-slurm--source_install_manage_alternatives"></a>`source_install_manage_alternatives`
 
 Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="slurmd_service_ensure"></a>`slurmd_service_ensure`
+##### <a name="-slurm--slurmd_service_ensure"></a>`slurmd_service_ensure`
 
 Data type: `Enum['running','stopped']`
 
@@ -378,15 +378,15 @@ Data type: `Enum['running','stopped']`
 
 Default value: `'running'`
 
-##### <a name="slurmd_service_enable"></a>`slurmd_service_enable`
+##### <a name="-slurm--slurmd_service_enable"></a>`slurmd_service_enable`
 
 Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="slurmd_service_limits"></a>`slurmd_service_limits`
+##### <a name="-slurm--slurmd_service_limits"></a>`slurmd_service_limits`
 
 Data type: `Hash`
 
@@ -394,15 +394,15 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="slurmd_options"></a>`slurmd_options`
+##### <a name="-slurm--slurmd_options"></a>`slurmd_options`
 
-Data type: `String`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: `''`
+Default value: `undef`
 
-##### <a name="slurmctld_service_ensure"></a>`slurmctld_service_ensure`
+##### <a name="-slurm--slurmctld_service_ensure"></a>`slurmctld_service_ensure`
 
 Data type: `Enum['running','stopped']`
 
@@ -410,15 +410,15 @@ Data type: `Enum['running','stopped']`
 
 Default value: `'running'`
 
-##### <a name="slurmctld_service_enable"></a>`slurmctld_service_enable`
+##### <a name="-slurm--slurmctld_service_enable"></a>`slurmctld_service_enable`
 
 Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="slurmctld_service_limits"></a>`slurmctld_service_limits`
+##### <a name="-slurm--slurmctld_service_limits"></a>`slurmctld_service_limits`
 
 Data type: `Hash`
 
@@ -426,15 +426,15 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="slurmctld_options"></a>`slurmctld_options`
+##### <a name="-slurm--slurmctld_options"></a>`slurmctld_options`
 
-Data type: `String`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: `''`
+Default value: `undef`
 
-##### <a name="slurmdbd_service_ensure"></a>`slurmdbd_service_ensure`
+##### <a name="-slurm--slurmdbd_service_ensure"></a>`slurmdbd_service_ensure`
 
 Data type: `Enum['running','stopped']`
 
@@ -442,15 +442,15 @@ Data type: `Enum['running','stopped']`
 
 Default value: `'running'`
 
-##### <a name="slurmdbd_service_enable"></a>`slurmdbd_service_enable`
+##### <a name="-slurm--slurmdbd_service_enable"></a>`slurmdbd_service_enable`
 
 Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="slurmdbd_service_limits"></a>`slurmdbd_service_limits`
+##### <a name="-slurm--slurmdbd_service_limits"></a>`slurmdbd_service_limits`
 
 Data type: `Hash`
 
@@ -458,47 +458,47 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="slurmdbd_options"></a>`slurmdbd_options`
+##### <a name="-slurm--slurmdbd_options"></a>`slurmdbd_options`
 
-Data type: `String`
-
-
-
-Default value: `''`
-
-##### <a name="slurmctld_restart_on_failure"></a>`slurmctld_restart_on_failure`
-
-Data type: `Boolean`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: ``true``
+Default value: `undef`
 
-##### <a name="slurmdbd_restart_on_failure"></a>`slurmdbd_restart_on_failure`
+##### <a name="-slurm--slurmctld_restart_on_failure"></a>`slurmctld_restart_on_failure`
 
 Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="reload_services"></a>`reload_services`
-
-Data type: `Boolean`
-
-
-
-Default value: ``false``
-
-##### <a name="restart_services"></a>`restart_services`
+##### <a name="-slurm--slurmdbd_restart_on_failure"></a>`slurmdbd_restart_on_failure`
 
 Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="slurmctld_conn_validator_timeout"></a>`slurmctld_conn_validator_timeout`
+##### <a name="-slurm--reload_services"></a>`reload_services`
+
+Data type: `Boolean`
+
+
+
+Default value: `false`
+
+##### <a name="-slurm--restart_services"></a>`restart_services`
+
+Data type: `Boolean`
+
+
+
+Default value: `true`
+
+##### <a name="-slurm--slurmctld_conn_validator_timeout"></a>`slurmctld_conn_validator_timeout`
 
 Data type: `Integer`
 
@@ -506,255 +506,255 @@ Data type: `Integer`
 
 Default value: `60`
 
-##### <a name="manage_slurm_user"></a>`manage_slurm_user`
-
-Data type: `Any`
-
-
-
-Default value: ``true``
-
-##### <a name="slurm_user_group"></a>`slurm_user_group`
-
-Data type: `Any`
-
-
-
-Default value: `'slurm'`
-
-##### <a name="slurm_group_gid"></a>`slurm_group_gid`
-
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="slurm_user"></a>`slurm_user`
-
-Data type: `Any`
-
-
-
-Default value: `'slurm'`
-
-##### <a name="slurm_user_uid"></a>`slurm_user_uid`
-
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="slurm_user_comment"></a>`slurm_user_comment`
-
-Data type: `Any`
-
-
-
-Default value: `'SLURM User'`
-
-##### <a name="slurm_user_home"></a>`slurm_user_home`
-
-Data type: `Any`
-
-
-
-Default value: `'/var/lib/slurm'`
-
-##### <a name="slurm_user_managehome"></a>`slurm_user_managehome`
-
-Data type: `Any`
-
-
-
-Default value: ``true``
-
-##### <a name="slurm_user_shell"></a>`slurm_user_shell`
-
-Data type: `Any`
-
-
-
-Default value: `'/sbin/nologin'`
-
-##### <a name="slurmd_user"></a>`slurmd_user`
-
-Data type: `Any`
-
-
-
-Default value: `'root'`
-
-##### <a name="slurmd_user_group"></a>`slurmd_user_group`
-
-Data type: `Any`
-
-
-
-Default value: `'root'`
-
-##### <a name="manage_munge"></a>`manage_munge`
+##### <a name="-slurm--manage_slurm_user"></a>`manage_slurm_user`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `true`
 
-##### <a name="munge_key_source"></a>`munge_key_source`
+##### <a name="-slurm--slurm_user_group"></a>`slurm_user_group`
+
+Data type: `String[1]`
+
+
+
+Default value: `'slurm'`
+
+##### <a name="-slurm--slurm_group_gid"></a>`slurm_group_gid`
+
+Data type: `Optional[Integer]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--slurm_user"></a>`slurm_user`
+
+Data type: `String[1]`
+
+
+
+Default value: `'slurm'`
+
+##### <a name="-slurm--slurm_user_uid"></a>`slurm_user_uid`
+
+Data type: `Optional[Integer]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--slurm_user_comment"></a>`slurm_user_comment`
+
+Data type: `String[1]`
+
+
+
+Default value: `'SLURM User'`
+
+##### <a name="-slurm--slurm_user_home"></a>`slurm_user_home`
+
+Data type: `Stdlib::Absolutepath`
+
+
+
+Default value: `'/var/lib/slurm'`
+
+##### <a name="-slurm--slurm_user_managehome"></a>`slurm_user_managehome`
+
+Data type: `Boolean`
+
+
+
+Default value: `true`
+
+##### <a name="-slurm--slurm_user_shell"></a>`slurm_user_shell`
+
+Data type: `Stdlib::Absolutepath`
+
+
+
+Default value: `'/sbin/nologin'`
+
+##### <a name="-slurm--slurmd_user"></a>`slurmd_user`
+
+Data type: `String[1]`
+
+
+
+Default value: `'root'`
+
+##### <a name="-slurm--slurmd_user_group"></a>`slurmd_user_group`
+
+Data type: `String[1]`
+
+
+
+Default value: `'root'`
+
+##### <a name="-slurm--manage_munge"></a>`manage_munge`
+
+Data type: `Boolean`
+
+
+
+Default value: `false`
+
+##### <a name="-slurm--munge_key_source"></a>`munge_key_source`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="munge_key_content"></a>`munge_key_content`
+##### <a name="-slurm--munge_key_content"></a>`munge_key_content`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="manage_slurm_conf"></a>`manage_slurm_conf`
+##### <a name="-slurm--manage_slurm_conf"></a>`manage_slurm_conf`
 
-Data type: `Any`
-
-
-
-Default value: ``true``
-
-##### <a name="manage_scripts"></a>`manage_scripts`
-
-Data type: `Any`
+Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="manage_firewall"></a>`manage_firewall`
+##### <a name="-slurm--manage_scripts"></a>`manage_scripts`
 
-Data type: `Any`
-
-
-
-Default value: ``true``
-
-##### <a name="use_syslog"></a>`use_syslog`
-
-Data type: `Any`
+Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `true`
 
-##### <a name="manage_logrotate"></a>`manage_logrotate`
+##### <a name="-slurm--manage_firewall"></a>`manage_firewall`
 
-Data type: `Any`
+Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="logrotate_syslog_pid_path"></a>`logrotate_syslog_pid_path`
+##### <a name="-slurm--use_syslog"></a>`use_syslog`
 
-Data type: `Any`
+Data type: `Boolean`
+
+
+
+Default value: `false`
+
+##### <a name="-slurm--manage_logrotate"></a>`manage_logrotate`
+
+Data type: `Boolean`
+
+
+
+Default value: `true`
+
+##### <a name="-slurm--logrotate_syslog_pid_path"></a>`logrotate_syslog_pid_path`
+
+Data type: `Stdlib::Absolutepath`
 
 
 
 Default value: `'/var/run/syslogd.pid'`
 
-##### <a name="manage_rsyslog"></a>`manage_rsyslog`
+##### <a name="-slurm--manage_rsyslog"></a>`manage_rsyslog`
 
-Data type: `Any`
-
-
-
-Default value: ``true``
-
-##### <a name="manage_database"></a>`manage_database`
-
-Data type: `Any`
+Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="export_database"></a>`export_database`
+##### <a name="-slurm--manage_database"></a>`manage_database`
 
-Data type: `Any`
-
-
-
-Default value: ``false``
-
-##### <a name="export_database_tag"></a>`export_database_tag`
-
-Data type: `Any`
+Data type: `Boolean`
 
 
 
-Default value: `$facts['domain']`
+Default value: `true`
 
-##### <a name="cli_filter_lua_source"></a>`cli_filter_lua_source`
+##### <a name="-slurm--export_database"></a>`export_database`
 
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="cli_filter_lua_content"></a>`cli_filter_lua_content`
-
-Data type: `Any`
+Data type: `Boolean`
 
 
 
-Default value: ``undef``
+Default value: `false`
 
-##### <a name="state_dir_nfs_device"></a>`state_dir_nfs_device`
+##### <a name="-slurm--export_database_tag"></a>`export_database_tag`
 
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: ``undef``
+Default value: `$facts['networking']['domain']`
 
-##### <a name="state_dir_nfs_options"></a>`state_dir_nfs_options`
+##### <a name="-slurm--cli_filter_lua_source"></a>`cli_filter_lua_source`
 
-Data type: `Any`
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--cli_filter_lua_content"></a>`cli_filter_lua_content`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--state_dir_nfs_device"></a>`state_dir_nfs_device`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--state_dir_nfs_options"></a>`state_dir_nfs_options`
+
+Data type: `String[1]`
 
 
 
 Default value: `'rw,sync,noexec,nolock,auto'`
 
-##### <a name="job_submit_lua_source"></a>`job_submit_lua_source`
+##### <a name="-slurm--job_submit_lua_source"></a>`job_submit_lua_source`
 
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="job_submit_lua_content"></a>`job_submit_lua_content`
-
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="cluster_name"></a>`cluster_name`
+##### <a name="-slurm--job_submit_lua_content"></a>`job_submit_lua_content`
 
-Data type: `Any`
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--cluster_name"></a>`cluster_name`
+
+Data type: `String[1]`
 
 
 
 Default value: `'linux'`
 
-##### <a name="slurmctld_host"></a>`slurmctld_host`
+##### <a name="-slurm--slurmctld_host"></a>`slurmctld_host`
 
 Data type: `Variant[Array, String]`
 
@@ -762,15 +762,15 @@ Data type: `Variant[Array, String]`
 
 Default value: `'slurm'`
 
-##### <a name="slurmdbd_host"></a>`slurmdbd_host`
+##### <a name="-slurm--slurmdbd_host"></a>`slurmdbd_host`
 
-Data type: `Any`
+Data type: `Stdlib::Host`
 
 
 
 Default value: `'slurmdbd'`
 
-##### <a name="conf_dir"></a>`conf_dir`
+##### <a name="-slurm--conf_dir"></a>`conf_dir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -778,7 +778,7 @@ Data type: `Stdlib::Absolutepath`
 
 Default value: `'/etc/slurm'`
 
-##### <a name="log_dir"></a>`log_dir`
+##### <a name="-slurm--log_dir"></a>`log_dir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -786,7 +786,7 @@ Data type: `Stdlib::Absolutepath`
 
 Default value: `'/var/log/slurm'`
 
-##### <a name="env_dir"></a>`env_dir`
+##### <a name="-slurm--env_dir"></a>`env_dir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -794,7 +794,7 @@ Data type: `Stdlib::Absolutepath`
 
 Default value: `'/etc/sysconfig'`
 
-##### <a name="spank_plugins"></a>`spank_plugins`
+##### <a name="-slurm--spank_plugins"></a>`spank_plugins`
 
 Data type: `Hash`
 
@@ -802,199 +802,199 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="enable_configless"></a>`enable_configless`
+##### <a name="-slurm--enable_configless"></a>`enable_configless`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="configless"></a>`configless`
+##### <a name="-slurm--configless"></a>`configless`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="conf_server"></a>`conf_server`
+##### <a name="-slurm--conf_server"></a>`conf_server`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="slurm_conf_override"></a>`slurm_conf_override`
+##### <a name="-slurm--slurm_conf_override"></a>`slurm_conf_override`
 
-Data type: `Any`
+Data type: `Hash`
 
 
 
 Default value: `{}`
 
-##### <a name="slurm_conf_template"></a>`slurm_conf_template`
+##### <a name="-slurm--slurm_conf_template"></a>`slurm_conf_template`
 
-Data type: `Any`
+Data type: `String[1]`
 
 
 
 Default value: `'slurm/slurm.conf/slurm.conf.erb'`
 
-##### <a name="slurm_conf_source"></a>`slurm_conf_source`
+##### <a name="-slurm--slurm_conf_source"></a>`slurm_conf_source`
 
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="partition_template"></a>`partition_template`
-
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: `'slurm/slurm.conf/conf_values.erb'`
+Default value: `undef`
 
-##### <a name="partition_source"></a>`partition_source`
+##### <a name="-slurm--partition_template"></a>`partition_template`
 
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="node_template"></a>`node_template`
-
-Data type: `Any`
+Data type: `String[1]`
 
 
 
 Default value: `'slurm/slurm.conf/conf_values.erb'`
 
-##### <a name="node_source"></a>`node_source`
+##### <a name="-slurm--partition_source"></a>`partition_source`
 
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="switch_template"></a>`switch_template`
-
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: `'slurm/slurm.conf/conf_values.erb'`
+Default value: `undef`
 
-##### <a name="topology_source"></a>`topology_source`
+##### <a name="-slurm--node_template"></a>`node_template`
 
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="gres_template"></a>`gres_template`
-
-Data type: `Any`
+Data type: `String[1]`
 
 
 
 Default value: `'slurm/slurm.conf/conf_values.erb'`
 
-##### <a name="gres_source"></a>`gres_source`
+##### <a name="-slurm--node_source"></a>`node_source`
 
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="partitions"></a>`partitions`
-
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: `{}`
+Default value: `undef`
 
-##### <a name="nodes"></a>`nodes`
+##### <a name="-slurm--switch_template"></a>`switch_template`
 
-Data type: `Any`
-
-
-
-Default value: `{}`
-
-##### <a name="nodesets"></a>`nodesets`
-
-Data type: `Any`
+Data type: `String[1]`
 
 
 
-Default value: `{}`
+Default value: `'slurm/slurm.conf/conf_values.erb'`
 
-##### <a name="switches"></a>`switches`
+##### <a name="-slurm--topology_source"></a>`topology_source`
 
-Data type: `Any`
-
-
-
-Default value: `{}`
-
-##### <a name="greses"></a>`greses`
-
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: `{}`
+Default value: `undef`
 
-##### <a name="job_containers"></a>`job_containers`
+##### <a name="-slurm--gres_template"></a>`gres_template`
 
-Data type: `Any`
+Data type: `String[1]`
+
+
+
+Default value: `'slurm/slurm.conf/conf_values.erb'`
+
+##### <a name="-slurm--gres_source"></a>`gres_source`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--partitions"></a>`partitions`
+
+Data type: `Hash`
 
 
 
 Default value: `{}`
 
-##### <a name="slurmd_log_file"></a>`slurmd_log_file`
+##### <a name="-slurm--nodes"></a>`nodes`
+
+Data type: `Hash`
+
+
+
+Default value: `{}`
+
+##### <a name="-slurm--nodesets"></a>`nodesets`
+
+Data type: `Hash`
+
+
+
+Default value: `{}`
+
+##### <a name="-slurm--switches"></a>`switches`
+
+Data type: `Hash`
+
+
+
+Default value: `{}`
+
+##### <a name="-slurm--greses"></a>`greses`
+
+Data type: `Hash`
+
+
+
+Default value: `{}`
+
+##### <a name="-slurm--job_containers"></a>`job_containers`
+
+Data type: `Hash`
+
+
+
+Default value: `{}`
+
+##### <a name="-slurm--slurmd_log_file"></a>`slurmd_log_file`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="slurmd_spool_dir"></a>`slurmd_spool_dir`
+##### <a name="-slurm--slurmd_spool_dir"></a>`slurmd_spool_dir`
 
-Data type: `Any`
+Data type: `Stdlib::Absolutepath`
 
 
 
 Default value: `'/var/spool/slurmd'`
 
-##### <a name="slurmctld_log_file"></a>`slurmctld_log_file`
+##### <a name="-slurm--slurmctld_log_file"></a>`slurmctld_log_file`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="state_save_location"></a>`state_save_location`
+##### <a name="-slurm--state_save_location"></a>`state_save_location`
 
-Data type: `Any`
+Data type: `Stdlib::Absolutepath`
 
 
 
 Default value: `'/var/spool/slurmctld.state'`
 
-##### <a name="slurmdbd_archive_dir"></a>`slurmdbd_archive_dir`
+##### <a name="-slurm--slurmdbd_archive_dir"></a>`slurmdbd_archive_dir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1002,231 +1002,247 @@ Data type: `Stdlib::Absolutepath`
 
 Default value: `'/var/lib/slurmdbd.archive'`
 
-##### <a name="slurmdbd_log_file"></a>`slurmdbd_log_file`
+##### <a name="-slurm--slurmdbd_log_file"></a>`slurmdbd_log_file`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="slurmdbd_storage_host"></a>`slurmdbd_storage_host`
+##### <a name="-slurm--slurmdbd_storage_host"></a>`slurmdbd_storage_host`
 
-Data type: `Any`
+Data type: `Stdlib::Host`
 
 
 
 Default value: `'localhost'`
 
-##### <a name="slurmdbd_storage_loc"></a>`slurmdbd_storage_loc`
+##### <a name="-slurm--slurmdbd_storage_loc"></a>`slurmdbd_storage_loc`
 
-Data type: `Any`
+Data type: `String[1]`
 
 
 
 Default value: `'slurm_acct_db'`
 
-##### <a name="slurmdbd_storage_pass"></a>`slurmdbd_storage_pass`
+##### <a name="-slurm--slurmdbd_storage_pass"></a>`slurmdbd_storage_pass`
 
-Data type: `Any`
+Data type: `String[1]`
 
 
 
 Default value: `'slurmdbd'`
 
-##### <a name="slurmdbd_storage_port"></a>`slurmdbd_storage_port`
+##### <a name="-slurm--slurmdbd_storage_port"></a>`slurmdbd_storage_port`
 
-Data type: `Any`
+Data type: `Stdlib::Port`
 
 
 
-Default value: `'3306'`
+Default value: `3306`
 
-##### <a name="slurmdbd_storage_type"></a>`slurmdbd_storage_type`
+##### <a name="-slurm--slurmdbd_storage_type"></a>`slurmdbd_storage_type`
 
-Data type: `Any`
+Data type: `String[1]`
 
 
 
 Default value: `'accounting_storage/mysql'`
 
-##### <a name="slurmdbd_storage_user"></a>`slurmdbd_storage_user`
+##### <a name="-slurm--slurmdbd_storage_user"></a>`slurmdbd_storage_user`
 
-Data type: `Any`
+Data type: `String[1]`
 
 
 
 Default value: `'slurmdbd'`
 
-##### <a name="slurmdbd_conf_override"></a>`slurmdbd_conf_override`
+##### <a name="-slurm--slurmdbd_db_charset"></a>`slurmdbd_db_charset`
 
-Data type: `Any`
+Data type: `String[1]`
+
+
+
+Default value: `'utf8'`
+
+##### <a name="-slurm--slurmdbd_db_collate"></a>`slurmdbd_db_collate`
+
+Data type: `String[1]`
+
+
+
+Default value: `'utf8_general_ci'`
+
+##### <a name="-slurm--slurmdbd_conf_override"></a>`slurmdbd_conf_override`
+
+Data type: `Hash`
 
 
 
 Default value: `{}`
 
-##### <a name="slurmdbd_archive_dir_nfs_device"></a>`slurmdbd_archive_dir_nfs_device`
+##### <a name="-slurm--slurmdbd_archive_dir_nfs_device"></a>`slurmdbd_archive_dir_nfs_device`
 
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="slurmdbd_archive_dir_nfs_options"></a>`slurmdbd_archive_dir_nfs_options`
+##### <a name="-slurm--slurmdbd_archive_dir_nfs_options"></a>`slurmdbd_archive_dir_nfs_options`
 
-Data type: `Any`
+Data type: `String[1]`
 
 
 
 Default value: `'rw,sync,noexec,nolock,auto'`
 
-##### <a name="use_nhc"></a>`use_nhc`
+##### <a name="-slurm--use_nhc"></a>`use_nhc`
 
-Data type: `Any`
+Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="include_nhc"></a>`include_nhc`
+##### <a name="-slurm--include_nhc"></a>`include_nhc`
 
-Data type: `Any`
+Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="health_check_program"></a>`health_check_program`
+##### <a name="-slurm--health_check_program"></a>`health_check_program`
 
-Data type: `Any`
+Data type: `Optional[Stdlib::Absolutepath]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="health_check_program_source"></a>`health_check_program_source`
+##### <a name="-slurm--health_check_program_source"></a>`health_check_program_source`
 
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="manage_epilog"></a>`manage_epilog`
+##### <a name="-slurm--manage_epilog"></a>`manage_epilog`
 
-Data type: `Any`
+Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="epilog"></a>`epilog`
+##### <a name="-slurm--epilog"></a>`epilog`
 
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="epilog_source"></a>`epilog_source`
+##### <a name="-slurm--epilog_source"></a>`epilog_source`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Array[String[1]]]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="epilog_sourceselect"></a>`epilog_sourceselect`
+##### <a name="-slurm--epilog_sourceselect"></a>`epilog_sourceselect`
 
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="manage_prolog"></a>`manage_prolog`
+##### <a name="-slurm--manage_prolog"></a>`manage_prolog`
 
-Data type: `Any`
+Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="prolog"></a>`prolog`
+##### <a name="-slurm--prolog"></a>`prolog`
 
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="prolog_source"></a>`prolog_source`
+##### <a name="-slurm--prolog_source"></a>`prolog_source`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Array[String[1]]]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="prolog_sourceselect"></a>`prolog_sourceselect`
+##### <a name="-slurm--prolog_sourceselect"></a>`prolog_sourceselect`
 
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="manage_task_epilog"></a>`manage_task_epilog`
+##### <a name="-slurm--manage_task_epilog"></a>`manage_task_epilog`
 
-Data type: `Any`
+Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="task_epilog"></a>`task_epilog`
+##### <a name="-slurm--task_epilog"></a>`task_epilog`
 
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="task_epilog_source"></a>`task_epilog_source`
+##### <a name="-slurm--task_epilog_source"></a>`task_epilog_source`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Array[String[1]]]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="manage_task_prolog"></a>`manage_task_prolog`
+##### <a name="-slurm--manage_task_prolog"></a>`manage_task_prolog`
 
-Data type: `Any`
+Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="task_prolog"></a>`task_prolog`
+##### <a name="-slurm--task_prolog"></a>`task_prolog`
 
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="task_prolog_source"></a>`task_prolog_source`
+##### <a name="-slurm--task_prolog_source"></a>`task_prolog_source`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Array[String[1]]]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="auth_alt_types"></a>`auth_alt_types`
+##### <a name="-slurm--auth_alt_types"></a>`auth_alt_types`
 
 Data type: `Array`
 
@@ -1234,23 +1250,23 @@ Data type: `Array`
 
 Default value: `[]`
 
-##### <a name="jwt_key_content"></a>`jwt_key_content`
+##### <a name="-slurm--jwt_key_content"></a>`jwt_key_content`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="jwt_key_source"></a>`jwt_key_source`
+##### <a name="-slurm--jwt_key_source"></a>`jwt_key_source`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="slurmrestd_listen_address"></a>`slurmrestd_listen_address`
+##### <a name="-slurm--slurmrestd_listen_address"></a>`slurmrestd_listen_address`
 
 Data type: `String`
 
@@ -1258,31 +1274,31 @@ Data type: `String`
 
 Default value: `$facts['networking']['ip']`
 
-##### <a name="slurmrestd_disable_token_creation"></a>`slurmrestd_disable_token_creation`
+##### <a name="-slurm--slurmrestd_disable_token_creation"></a>`slurmrestd_disable_token_creation`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="slurmrestd_user"></a>`slurmrestd_user`
-
-Data type: `String`
-
-
-
-Default value: `'nobody'`
-
-##### <a name="slurmrestd_user_group"></a>`slurmrestd_user_group`
+##### <a name="-slurm--slurmrestd_user"></a>`slurmrestd_user`
 
 Data type: `String`
 
 
 
-Default value: `'nobody'`
+Default value: `'daemon'`
 
-##### <a name="slurmrestd_service_ensure"></a>`slurmrestd_service_ensure`
+##### <a name="-slurm--slurmrestd_user_group"></a>`slurmrestd_user_group`
+
+Data type: `String`
+
+
+
+Default value: `'daemon'`
+
+##### <a name="-slurm--slurmrestd_service_ensure"></a>`slurmrestd_service_ensure`
 
 Data type: `Enum['running','stopped']`
 
@@ -1290,15 +1306,15 @@ Data type: `Enum['running','stopped']`
 
 Default value: `'running'`
 
-##### <a name="slurmrestd_service_enable"></a>`slurmrestd_service_enable`
+##### <a name="-slurm--slurmrestd_service_enable"></a>`slurmrestd_service_enable`
 
 Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="slurmrestd_service_limits"></a>`slurmrestd_service_limits`
+##### <a name="-slurm--slurmrestd_service_limits"></a>`slurmrestd_service_limits`
 
 Data type: `Hash`
 
@@ -1306,23 +1322,23 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="slurmrestd_options"></a>`slurmrestd_options`
+##### <a name="-slurm--slurmrestd_options"></a>`slurmrestd_options`
 
-Data type: `String`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: `''`
+Default value: `undef`
 
-##### <a name="slurmrestd_restart_on_failure"></a>`slurmrestd_restart_on_failure`
+##### <a name="-slurm--slurmrestd_restart_on_failure"></a>`slurmrestd_restart_on_failure`
 
 Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="cgroup_conf_template"></a>`cgroup_conf_template`
+##### <a name="-slurm--cgroup_conf_template"></a>`cgroup_conf_template`
 
 Data type: `String`
 
@@ -1330,23 +1346,23 @@ Data type: `String`
 
 Default value: `'slurm/cgroup/cgroup.conf.erb'`
 
-##### <a name="cgroup_conf_source"></a>`cgroup_conf_source`
+##### <a name="-slurm--cgroup_conf_source"></a>`cgroup_conf_source`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="cgroup_automount"></a>`cgroup_automount`
+##### <a name="-slurm--cgroup_automount"></a>`cgroup_automount`
 
 Data type: `Boolean`
 
 
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="cgroup_mountpoint"></a>`cgroup_mountpoint`
+##### <a name="-slurm--cgroup_mountpoint"></a>`cgroup_mountpoint`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -1354,23 +1370,15 @@ Data type: `Stdlib::Absolutepath`
 
 Default value: `'/sys/fs/cgroup'`
 
-##### <a name="cgroup_plugin"></a>`cgroup_plugin`
+##### <a name="-slurm--cgroup_plugin"></a>`cgroup_plugin`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="cgroup_allowed_kmem_space"></a>`cgroup_allowed_kmem_space`
-
-Data type: `Optional[Integer]`
-
-
-
-Default value: ``undef``
-
-##### <a name="cgroup_allowed_ram_space"></a>`cgroup_allowed_ram_space`
+##### <a name="-slurm--cgroup_allowed_ram_space"></a>`cgroup_allowed_ram_space`
 
 Data type: `Integer`
 
@@ -1378,7 +1386,7 @@ Data type: `Integer`
 
 Default value: `100`
 
-##### <a name="cgroup_allowed_swap_space"></a>`cgroup_allowed_swap_space`
+##### <a name="-slurm--cgroup_allowed_swap_space"></a>`cgroup_allowed_swap_space`
 
 Data type: `Integer`
 
@@ -1386,47 +1394,39 @@ Data type: `Integer`
 
 Default value: `0`
 
-##### <a name="cgroup_constrain_cores"></a>`cgroup_constrain_cores`
+##### <a name="-slurm--cgroup_constrain_cores"></a>`cgroup_constrain_cores`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="cgroup_constrain_devices"></a>`cgroup_constrain_devices`
-
-Data type: `Boolean`
-
-
-
-Default value: ``false``
-
-##### <a name="cgroup_constrain_kmem_space"></a>`cgroup_constrain_kmem_space`
+##### <a name="-slurm--cgroup_constrain_devices"></a>`cgroup_constrain_devices`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="cgroup_constrain_ram_space"></a>`cgroup_constrain_ram_space`
-
-Data type: `Boolean`
-
-
-
-Default value: ``false``
-
-##### <a name="cgroup_constrain_swap_space"></a>`cgroup_constrain_swap_space`
+##### <a name="-slurm--cgroup_constrain_ram_space"></a>`cgroup_constrain_ram_space`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="cgroup_max_ram_percent"></a>`cgroup_max_ram_percent`
+##### <a name="-slurm--cgroup_constrain_swap_space"></a>`cgroup_constrain_swap_space`
+
+Data type: `Boolean`
+
+
+
+Default value: `false`
+
+##### <a name="-slurm--cgroup_max_ram_percent"></a>`cgroup_max_ram_percent`
 
 Data type: `Integer`
 
@@ -1434,7 +1434,7 @@ Data type: `Integer`
 
 Default value: `100`
 
-##### <a name="cgroup_max_swap_percent"></a>`cgroup_max_swap_percent`
+##### <a name="-slurm--cgroup_max_swap_percent"></a>`cgroup_max_swap_percent`
 
 Data type: `Integer`
 
@@ -1442,31 +1442,15 @@ Data type: `Integer`
 
 Default value: `100`
 
-##### <a name="cgroup_max_kmem_percent"></a>`cgroup_max_kmem_percent`
-
-Data type: `Integer`
-
-
-
-Default value: `100`
-
-##### <a name="cgroup_memory_swappiness"></a>`cgroup_memory_swappiness`
+##### <a name="-slurm--cgroup_memory_swappiness"></a>`cgroup_memory_swappiness`
 
 Data type: `Optional[Integer[0,100]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="cgroup_min_kmem_space"></a>`cgroup_min_kmem_space`
-
-Data type: `Integer`
-
-
-
-Default value: `30`
-
-##### <a name="cgroup_min_ram_space"></a>`cgroup_min_ram_space`
+##### <a name="-slurm--cgroup_min_ram_space"></a>`cgroup_min_ram_space`
 
 Data type: `Integer`
 
@@ -1474,23 +1458,23 @@ Data type: `Integer`
 
 Default value: `30`
 
-##### <a name="slurm_sh_template"></a>`slurm_sh_template`
+##### <a name="-slurm--slurm_sh_template"></a>`slurm_sh_template`
 
-Data type: `Any`
+Data type: `String[1]`
 
 
 
 Default value: `'slurm/profile.d/slurm.sh.erb'`
 
-##### <a name="slurm_csh_template"></a>`slurm_csh_template`
+##### <a name="-slurm--slurm_csh_template"></a>`slurm_csh_template`
 
-Data type: `Any`
+Data type: `String[1]`
 
 
 
 Default value: `'slurm/profile.d/slurm.csh.erb'`
 
-##### <a name="profile_d_env_vars"></a>`profile_d_env_vars`
+##### <a name="-slurm--profile_d_env_vars"></a>`profile_d_env_vars`
 
 Data type: `Hash`
 
@@ -1498,7 +1482,7 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="slurmd_port"></a>`slurmd_port`
+##### <a name="-slurm--slurmd_port"></a>`slurmd_port`
 
 Data type: `Stdlib::Port`
 
@@ -1506,7 +1490,7 @@ Data type: `Stdlib::Port`
 
 Default value: `6818`
 
-##### <a name="slurmctld_port"></a>`slurmctld_port`
+##### <a name="-slurm--slurmctld_port"></a>`slurmctld_port`
 
 Data type: `Stdlib::Port`
 
@@ -1514,7 +1498,7 @@ Data type: `Stdlib::Port`
 
 Default value: `6817`
 
-##### <a name="slurmdbd_port"></a>`slurmdbd_port`
+##### <a name="-slurm--slurmdbd_port"></a>`slurmdbd_port`
 
 Data type: `Stdlib::Port`
 
@@ -1522,7 +1506,7 @@ Data type: `Stdlib::Port`
 
 Default value: `6819`
 
-##### <a name="slurmrestd_port"></a>`slurmrestd_port`
+##### <a name="-slurm--slurmrestd_port"></a>`slurmrestd_port`
 
 Data type: `Stdlib::Port`
 
@@ -1530,7 +1514,7 @@ Data type: `Stdlib::Port`
 
 Default value: `6820`
 
-##### <a name="tuning_net_core_somaxconn"></a>`tuning_net_core_somaxconn`
+##### <a name="-slurm--tuning_net_core_somaxconn"></a>`tuning_net_core_somaxconn`
 
 Data type: `Variant[Boolean, Integer]`
 
@@ -1538,23 +1522,15 @@ Data type: `Variant[Boolean, Integer]`
 
 Default value: `1024`
 
-##### <a name="include_resources"></a>`include_resources`
+##### <a name="-slurm--include_resources"></a>`include_resources`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="clusters"></a>`clusters`
-
-Data type: `Hash`
-
-
-
-Default value: `{}`
-
-##### <a name="qoses"></a>`qoses`
+##### <a name="-slurm--clusters"></a>`clusters`
 
 Data type: `Hash`
 
@@ -1562,7 +1538,7 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="reservations"></a>`reservations`
+##### <a name="-slurm--qoses"></a>`qoses`
 
 Data type: `Hash`
 
@@ -1570,7 +1546,7 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="accounts"></a>`accounts`
+##### <a name="-slurm--reservations"></a>`reservations`
 
 Data type: `Hash`
 
@@ -1578,7 +1554,7 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="users"></a>`users`
+##### <a name="-slurm--accounts"></a>`accounts`
 
 Data type: `Hash`
 
@@ -1586,7 +1562,7 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="licenses"></a>`licenses`
+##### <a name="-slurm--users"></a>`users`
 
 Data type: `Hash`
 
@@ -1594,15 +1570,23 @@ Data type: `Hash`
 
 Default value: `{}`
 
-##### <a name="purge_qos"></a>`purge_qos`
+##### <a name="-slurm--licenses"></a>`licenses`
+
+Data type: `Hash`
+
+
+
+Default value: `{}`
+
+##### <a name="-slurm--purge_qos"></a>`purge_qos`
 
 Data type: `Boolean`
 
 
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="slurmdbd_conn_validator_timeout"></a>`slurmdbd_conn_validator_timeout`
+##### <a name="-slurm--slurmdbd_conn_validator_timeout"></a>`slurmdbd_conn_validator_timeout`
 
 Data type: `Integer`
 
@@ -1612,7 +1596,7 @@ Default value: `30`
 
 ## Defined types
 
-### <a name="slurmconf"></a>`slurm::conf`
+### <a name="slurm--conf"></a>`slurm::conf`
 
 Manage Slurm main configuration
 
@@ -1636,12 +1620,12 @@ slurm::conf { 'ascend':
 
 The following parameters are available in the `slurm::conf` defined type:
 
-* [`configs`](#configs)
-* [`template`](#template)
-* [`source`](#source)
-* [`config_name`](#config_name)
+* [`configs`](#-slurm--conf--configs)
+* [`template`](#-slurm--conf--template)
+* [`source`](#-slurm--conf--source)
+* [`config_name`](#-slurm--conf--config_name)
 
-##### <a name="configs"></a>`configs`
+##### <a name="-slurm--conf--configs"></a>`configs`
 
 Data type: `Hash`
 
@@ -1649,23 +1633,23 @@ Hash of Slurm configs
 
 Default value: `{}`
 
-##### <a name="template"></a>`template`
+##### <a name="-slurm--conf--template"></a>`template`
 
 Data type: `Optional[String]`
 
 Template to use to generate slurm.conf contents
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="source"></a>`source`
+##### <a name="-slurm--conf--source"></a>`source`
 
 Data type: `Optional[String]`
 
 Source of configuration instead of templated configs
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="config_name"></a>`config_name`
+##### <a name="-slurm--conf--config_name"></a>`config_name`
 
 Data type: `String`
 
@@ -1673,7 +1657,7 @@ Name of configuration file
 
 Default value: `"slurm-${name}.conf"`
 
-### <a name="slurmdown_node"></a>`slurm::down_node`
+### <a name="slurm--down_node"></a>`slurm::down_node`
 
 Manage SLURM down node configuration
 
@@ -1681,13 +1665,13 @@ Manage SLURM down node configuration
 
 The following parameters are available in the `slurm::down_node` defined type:
 
-* [`down_nodes`](#down_nodes)
-* [`reason`](#reason)
-* [`state`](#state)
-* [`target`](#target)
-* [`order`](#order)
+* [`down_nodes`](#-slurm--down_node--down_nodes)
+* [`reason`](#-slurm--down_node--reason)
+* [`state`](#-slurm--down_node--state)
+* [`target`](#-slurm--down_node--target)
+* [`order`](#-slurm--down_node--order)
 
-##### <a name="down_nodes"></a>`down_nodes`
+##### <a name="-slurm--down_node--down_nodes"></a>`down_nodes`
 
 Data type: `String`
 
@@ -1695,15 +1679,15 @@ Data type: `String`
 
 Default value: `$name`
 
-##### <a name="reason"></a>`reason`
+##### <a name="-slurm--down_node--reason"></a>`reason`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="state"></a>`state`
+##### <a name="-slurm--down_node--state"></a>`state`
 
 Data type: `Slurm::DownNodeState`
 
@@ -1711,7 +1695,7 @@ Data type: `Slurm::DownNodeState`
 
 Default value: `'UNKNOWN'`
 
-##### <a name="target"></a>`target`
+##### <a name="-slurm--down_node--target"></a>`target`
 
 Data type: `String`
 
@@ -1719,15 +1703,15 @@ Data type: `String`
 
 Default value: `'slurm.conf'`
 
-##### <a name="order"></a>`order`
+##### <a name="-slurm--down_node--order"></a>`order`
 
-Data type: `Any`
+Data type: `Variant[String[1], Integer]`
 
 
 
 Default value: `'75'`
 
-### <a name="slurmgres"></a>`slurm::gres`
+### <a name="slurm--gres"></a>`slurm::gres`
 
 Manage SLURM GRES configuration
 
@@ -1755,125 +1739,98 @@ slurm::gres { 'nvml':
 
 The following parameters are available in the `slurm::gres` defined type:
 
-* [`gres_name`](#gres_name)
-* [`type`](#type)
-* [`node_name`](#node_name)
-* [`auto_detect`](#auto_detect)
-* [`count`](#count)
-* [`cores`](#cores)
-* [`file`](#file)
-* [`flags`](#flags)
-* [`links`](#links)
-* [`switch_name`](#switch_name)
-* [`switches`](#switches)
-* [`link_speed`](#link_speed)
-* [`order`](#order)
+* [`gres_name`](#-slurm--gres--gres_name)
+* [`type`](#-slurm--gres--type)
+* [`node_name`](#-slurm--gres--node_name)
+* [`auto_detect`](#-slurm--gres--auto_detect)
+* [`count`](#-slurm--gres--count)
+* [`cores`](#-slurm--gres--cores)
+* [`file`](#-slurm--gres--file)
+* [`flags`](#-slurm--gres--flags)
+* [`links`](#-slurm--gres--links)
+* [`order`](#-slurm--gres--order)
 
-##### <a name="gres_name"></a>`gres_name`
+##### <a name="-slurm--gres--gres_name"></a>`gres_name`
 
-Data type: `Any`
+Data type: `String[1]`
 
 
 
 Default value: `$name`
 
-##### <a name="type"></a>`type`
+##### <a name="-slurm--gres--type"></a>`type`
 
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="node_name"></a>`node_name`
-
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="auto_detect"></a>`auto_detect`
+##### <a name="-slurm--gres--node_name"></a>`node_name`
 
-Data type: `Optional[Enum['nvml','rsmi']]`
-
-
-
-Default value: ``undef``
-
-##### <a name="count"></a>`count`
-
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Array[String[1]]]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="cores"></a>`cores`
+##### <a name="-slurm--gres--auto_detect"></a>`auto_detect`
 
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="file"></a>`file`
-
-Data type: `Any`
+Data type: `Optional[Enum['nvml','rsmi','oneapi','off']]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="flags"></a>`flags`
+##### <a name="-slurm--gres--count"></a>`count`
+
+Data type: `Optional[Variant[String[1], Integer]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--gres--cores"></a>`cores`
+
+Data type: `Optional[Variant[String[1], Integer, Array[Variant[String[1],Integer]]]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--gres--file"></a>`file`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--gres--flags"></a>`flags`
 
 Data type: `Optional[Enum['CountOnly']]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="links"></a>`links`
+##### <a name="-slurm--gres--links"></a>`links`
 
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="switch_name"></a>`switch_name`
-
-Data type: `Any`
+Data type: `Optional[Variant[Integer, Array[Integer]]]`
 
 
 
-Default value: `$name`
+Default value: `undef`
 
-##### <a name="switches"></a>`switches`
+##### <a name="-slurm--gres--order"></a>`order`
 
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="link_speed"></a>`link_speed`
-
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="order"></a>`order`
-
-Data type: `Any`
+Data type: `Variant[String[1], Integer]`
 
 
 
 Default value: `'50'`
 
-### <a name="slurmjob_container"></a>`slurm::job_container`
+### <a name="slurm--job_container"></a>`slurm::job_container`
 
 Manage SLURM job_container.conf entry
 
@@ -1881,51 +1838,51 @@ Manage SLURM job_container.conf entry
 
 The following parameters are available in the `slurm::job_container` defined type:
 
-* [`base_path`](#base_path)
-* [`auto_base_path`](#auto_base_path)
-* [`init_script`](#init_script)
-* [`node_name`](#node_name)
-* [`order`](#order)
+* [`base_path`](#-slurm--job_container--base_path)
+* [`auto_base_path`](#-slurm--job_container--auto_base_path)
+* [`init_script`](#-slurm--job_container--init_script)
+* [`node_name`](#-slurm--job_container--node_name)
+* [`order`](#-slurm--job_container--order)
 
-##### <a name="base_path"></a>`base_path`
+##### <a name="-slurm--job_container--base_path"></a>`base_path`
 
 Data type: `Stdlib::Absolutepath`
 
 job_container.conf BasePath
 
-##### <a name="auto_base_path"></a>`auto_base_path`
+##### <a name="-slurm--job_container--auto_base_path"></a>`auto_base_path`
 
 Data type: `Boolean`
 
 job_container.conf AutoBasePath
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="init_script"></a>`init_script`
+##### <a name="-slurm--job_container--init_script"></a>`init_script`
 
 Data type: `Optional[Stdlib::Absolutepath]`
 
 job_container.conf InitScript
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="node_name"></a>`node_name`
+##### <a name="-slurm--job_container--node_name"></a>`node_name`
 
 Data type: `Optional[String]`
 
 job_container.conf NodeName
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="order"></a>`order`
+##### <a name="-slurm--job_container--order"></a>`order`
 
-Data type: `Any`
+Data type: `Variant[String[1], Integer]`
 
 Order in job_container.conf
 
 Default value: `'50'`
 
-### <a name="slurmnode"></a>`slurm::node`
+### <a name="slurm--node"></a>`slurm::node`
 
 Manage SLURM node configuration
 
@@ -1933,177 +1890,176 @@ Manage SLURM node configuration
 
 The following parameters are available in the `slurm::node` defined type:
 
-* [`node_name`](#node_name)
-* [`node_hostname`](#node_hostname)
-* [`node_addr`](#node_addr)
-* [`bcast_addr`](#bcast_addr)
-* [`boards`](#boards)
-* [`core_spec_count`](#core_spec_count)
-* [`cores_per_socket`](#cores_per_socket)
-* [`cpu_bind`](#cpu_bind)
-* [`cpus`](#cpus)
-* [`cpu_spec_list`](#cpu_spec_list)
-* [`features`](#features)
-* [`gres`](#gres)
-* [`mem_spec_limit`](#mem_spec_limit)
-* [`port`](#port)
-* [`real_memory`](#real_memory)
-* [`reason`](#reason)
-* [`sockets`](#sockets)
-* [`sockets_per_board`](#sockets_per_board)
-* [`state`](#state)
-* [`threads_per_core`](#threads_per_core)
-* [`tmp_disk`](#tmp_disk)
-* [`tres_weights`](#tres_weights)
-* [`weight`](#weight)
-* [`target`](#target)
-* [`order`](#order)
+* [`node_name`](#-slurm--node--node_name)
+* [`node_hostname`](#-slurm--node--node_hostname)
+* [`node_addr`](#-slurm--node--node_addr)
+* [`bcast_addr`](#-slurm--node--bcast_addr)
+* [`boards`](#-slurm--node--boards)
+* [`core_spec_count`](#-slurm--node--core_spec_count)
+* [`cores_per_socket`](#-slurm--node--cores_per_socket)
+* [`cpu_bind`](#-slurm--node--cpu_bind)
+* [`cpus`](#-slurm--node--cpus)
+* [`cpu_spec_list`](#-slurm--node--cpu_spec_list)
+* [`features`](#-slurm--node--features)
+* [`gres`](#-slurm--node--gres)
+* [`mem_spec_limit`](#-slurm--node--mem_spec_limit)
+* [`port`](#-slurm--node--port)
+* [`real_memory`](#-slurm--node--real_memory)
+* [`reason`](#-slurm--node--reason)
+* [`sockets`](#-slurm--node--sockets)
+* [`sockets_per_board`](#-slurm--node--sockets_per_board)
+* [`state`](#-slurm--node--state)
+* [`threads_per_core`](#-slurm--node--threads_per_core)
+* [`tmp_disk`](#-slurm--node--tmp_disk)
+* [`weight`](#-slurm--node--weight)
+* [`target`](#-slurm--node--target)
+* [`order`](#-slurm--node--order)
 
-##### <a name="node_name"></a>`node_name`
+##### <a name="-slurm--node--node_name"></a>`node_name`
 
-Data type: `Any`
+Data type: `String[1]`
 
 
 
 Default value: `$name`
 
-##### <a name="node_hostname"></a>`node_hostname`
+##### <a name="-slurm--node--node_hostname"></a>`node_hostname`
 
-Data type: `Any`
+Data type: `Optional[Stdlib::Host]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="node_addr"></a>`node_addr`
+##### <a name="-slurm--node--node_addr"></a>`node_addr`
 
-Data type: `Any`
+Data type: `Optional[Stdlib::IP::Address]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="bcast_addr"></a>`bcast_addr`
+##### <a name="-slurm--node--bcast_addr"></a>`bcast_addr`
 
-Data type: `Any`
+Data type: `Optional[Stdlib::IP::Address]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="boards"></a>`boards`
+##### <a name="-slurm--node--boards"></a>`boards`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="core_spec_count"></a>`core_spec_count`
+##### <a name="-slurm--node--core_spec_count"></a>`core_spec_count`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="cores_per_socket"></a>`cores_per_socket`
+##### <a name="-slurm--node--cores_per_socket"></a>`cores_per_socket`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="cpu_bind"></a>`cpu_bind`
+##### <a name="-slurm--node--cpu_bind"></a>`cpu_bind`
 
-Data type: `Any`
+Data type: `Optional[Slurm::CPUBind]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="cpus"></a>`cpus`
+##### <a name="-slurm--node--cpus"></a>`cpus`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="cpu_spec_list"></a>`cpu_spec_list`
+##### <a name="-slurm--node--cpu_spec_list"></a>`cpu_spec_list`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Array[String[1]]]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="features"></a>`features`
+##### <a name="-slurm--node--features"></a>`features`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Array[String[1]]]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="gres"></a>`gres`
+##### <a name="-slurm--node--gres"></a>`gres`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Array[String[1]]]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="mem_spec_limit"></a>`mem_spec_limit`
+##### <a name="-slurm--node--mem_spec_limit"></a>`mem_spec_limit`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="port"></a>`port`
+##### <a name="-slurm--node--port"></a>`port`
 
-Data type: `Any`
+Data type: `Optional[Stdlib::Port]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="real_memory"></a>`real_memory`
+##### <a name="-slurm--node--real_memory"></a>`real_memory`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="reason"></a>`reason`
+##### <a name="-slurm--node--reason"></a>`reason`
 
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="sockets"></a>`sockets`
+##### <a name="-slurm--node--sockets"></a>`sockets`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="sockets_per_board"></a>`sockets_per_board`
+##### <a name="-slurm--node--sockets_per_board"></a>`sockets_per_board`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="state"></a>`state`
+##### <a name="-slurm--node--state"></a>`state`
 
 Data type: `Slurm::NodeState`
 
@@ -2111,55 +2067,47 @@ Data type: `Slurm::NodeState`
 
 Default value: `'UNKNOWN'`
 
-##### <a name="threads_per_core"></a>`threads_per_core`
+##### <a name="-slurm--node--threads_per_core"></a>`threads_per_core`
 
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="tmp_disk"></a>`tmp_disk`
-
-Data type: `Optional[Integer]`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="tres_weights"></a>`tres_weights`
-
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="weight"></a>`weight`
+##### <a name="-slurm--node--tmp_disk"></a>`tmp_disk`
 
 Data type: `Optional[Integer]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="target"></a>`target`
+##### <a name="-slurm--node--weight"></a>`weight`
 
-Data type: `Any`
+Data type: `Optional[Integer]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--node--target"></a>`target`
+
+Data type: `String[1]`
 
 
 
 Default value: `'slurm.conf'`
 
-##### <a name="order"></a>`order`
+##### <a name="-slurm--node--order"></a>`order`
 
-Data type: `Any`
+Data type: `Variant[String[1], Integer]`
 
 
 
 Default value: `'90'`
 
-### <a name="slurmnodeset"></a>`slurm::nodeset`
+### <a name="slurm--nodeset"></a>`slurm::nodeset`
 
 Manage SLURM nodeset configuration
 
@@ -2167,29 +2115,29 @@ Manage SLURM nodeset configuration
 
 The following parameters are available in the `slurm::nodeset` defined type:
 
-* [`feature`](#feature)
-* [`nodes`](#nodes)
-* [`node_set`](#node_set)
-* [`target`](#target)
-* [`order`](#order)
+* [`feature`](#-slurm--nodeset--feature)
+* [`nodes`](#-slurm--nodeset--nodes)
+* [`node_set`](#-slurm--nodeset--node_set)
+* [`target`](#-slurm--nodeset--target)
+* [`order`](#-slurm--nodeset--order)
 
-##### <a name="feature"></a>`feature`
-
-Data type: `Optional[String]`
-
-
-
-Default value: ``undef``
-
-##### <a name="nodes"></a>`nodes`
+##### <a name="-slurm--nodeset--feature"></a>`feature`
 
 Data type: `Optional[String]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="node_set"></a>`node_set`
+##### <a name="-slurm--nodeset--nodes"></a>`nodes`
+
+Data type: `Optional[String]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--nodeset--node_set"></a>`node_set`
 
 Data type: `String`
 
@@ -2197,23 +2145,23 @@ Data type: `String`
 
 Default value: `$name`
 
-##### <a name="target"></a>`target`
+##### <a name="-slurm--nodeset--target"></a>`target`
 
-Data type: `Any`
+Data type: `String[1]`
 
 
 
 Default value: `'slurm.conf'`
 
-##### <a name="order"></a>`order`
+##### <a name="-slurm--nodeset--order"></a>`order`
 
-Data type: `Any`
+Data type: `Variant[String[1], Integer]`
 
 
 
 Default value: `'40'`
 
-### <a name="slurmpartition"></a>`slurm::partition`
+### <a name="slurm--partition"></a>`slurm::partition`
 
 Manage a SLURM partition configuration
 
@@ -2221,356 +2169,356 @@ Manage a SLURM partition configuration
 
 The following parameters are available in the `slurm::partition` defined type:
 
-* [`partition_name`](#partition_name)
-* [`alloc_nodes`](#alloc_nodes)
-* [`allow_accounts`](#allow_accounts)
-* [`allow_groups`](#allow_groups)
-* [`allow_qos`](#allow_qos)
-* [`alternate`](#alternate)
-* [`cpu_bind`](#cpu_bind)
-* [`default`](#default)
-* [`def_cpu_per_gpu`](#def_cpu_per_gpu)
-* [`def_mem_per_cpu`](#def_mem_per_cpu)
-* [`def_mem_per_gpu`](#def_mem_per_gpu)
-* [`def_mem_per_node`](#def_mem_per_node)
-* [`deny_accounts`](#deny_accounts)
-* [`deny_qos`](#deny_qos)
-* [`default_time`](#default_time)
-* [`disable_root_jobs`](#disable_root_jobs)
-* [`exclusive_user`](#exclusive_user)
-* [`grace_time`](#grace_time)
-* [`hidden`](#hidden)
-* [`lln`](#lln)
-* [`max_cpus_per_node`](#max_cpus_per_node)
-* [`max_mem_per_cpu`](#max_mem_per_cpu)
-* [`max_mem_per_node`](#max_mem_per_node)
-* [`max_nodes`](#max_nodes)
-* [`max_time`](#max_time)
-* [`min_nodes`](#min_nodes)
-* [`nodes`](#nodes)
-* [`over_subscribe`](#over_subscribe)
-* [`over_time_limit`](#over_time_limit)
-* [`preempt_mode`](#preempt_mode)
-* [`priority_job_factor`](#priority_job_factor)
-* [`priority_tier`](#priority_tier)
-* [`qos`](#qos)
-* [`req_resv`](#req_resv)
-* [`resume_timeout`](#resume_timeout)
-* [`root_only`](#root_only)
-* [`select_type_parameters`](#select_type_parameters)
-* [`shared`](#shared)
-* [`state`](#state)
-* [`suspend_time`](#suspend_time)
-* [`suspend_timeout`](#suspend_timeout)
-* [`tres_billing_weights`](#tres_billing_weights)
-* [`target`](#target)
-* [`order`](#order)
+* [`partition_name`](#-slurm--partition--partition_name)
+* [`alloc_nodes`](#-slurm--partition--alloc_nodes)
+* [`allow_accounts`](#-slurm--partition--allow_accounts)
+* [`allow_groups`](#-slurm--partition--allow_groups)
+* [`allow_qos`](#-slurm--partition--allow_qos)
+* [`alternate`](#-slurm--partition--alternate)
+* [`cpu_bind`](#-slurm--partition--cpu_bind)
+* [`default`](#-slurm--partition--default)
+* [`def_cpu_per_gpu`](#-slurm--partition--def_cpu_per_gpu)
+* [`def_mem_per_cpu`](#-slurm--partition--def_mem_per_cpu)
+* [`def_mem_per_gpu`](#-slurm--partition--def_mem_per_gpu)
+* [`def_mem_per_node`](#-slurm--partition--def_mem_per_node)
+* [`deny_accounts`](#-slurm--partition--deny_accounts)
+* [`deny_qos`](#-slurm--partition--deny_qos)
+* [`default_time`](#-slurm--partition--default_time)
+* [`disable_root_jobs`](#-slurm--partition--disable_root_jobs)
+* [`exclusive_user`](#-slurm--partition--exclusive_user)
+* [`grace_time`](#-slurm--partition--grace_time)
+* [`hidden`](#-slurm--partition--hidden)
+* [`lln`](#-slurm--partition--lln)
+* [`max_cpus_per_node`](#-slurm--partition--max_cpus_per_node)
+* [`max_mem_per_cpu`](#-slurm--partition--max_mem_per_cpu)
+* [`max_mem_per_node`](#-slurm--partition--max_mem_per_node)
+* [`max_nodes`](#-slurm--partition--max_nodes)
+* [`max_time`](#-slurm--partition--max_time)
+* [`min_nodes`](#-slurm--partition--min_nodes)
+* [`nodes`](#-slurm--partition--nodes)
+* [`over_subscribe`](#-slurm--partition--over_subscribe)
+* [`over_time_limit`](#-slurm--partition--over_time_limit)
+* [`preempt_mode`](#-slurm--partition--preempt_mode)
+* [`priority_job_factor`](#-slurm--partition--priority_job_factor)
+* [`priority_tier`](#-slurm--partition--priority_tier)
+* [`qos`](#-slurm--partition--qos)
+* [`req_resv`](#-slurm--partition--req_resv)
+* [`resume_timeout`](#-slurm--partition--resume_timeout)
+* [`root_only`](#-slurm--partition--root_only)
+* [`select_type_parameters`](#-slurm--partition--select_type_parameters)
+* [`shared`](#-slurm--partition--shared)
+* [`state`](#-slurm--partition--state)
+* [`suspend_time`](#-slurm--partition--suspend_time)
+* [`suspend_timeout`](#-slurm--partition--suspend_timeout)
+* [`tres_billing_weights`](#-slurm--partition--tres_billing_weights)
+* [`target`](#-slurm--partition--target)
+* [`order`](#-slurm--partition--order)
 
-##### <a name="partition_name"></a>`partition_name`
+##### <a name="-slurm--partition--partition_name"></a>`partition_name`
 
-Data type: `Any`
+Data type: `String[1]`
 
 
 
 Default value: `$name`
 
-##### <a name="alloc_nodes"></a>`alloc_nodes`
+##### <a name="-slurm--partition--alloc_nodes"></a>`alloc_nodes`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Array[String[1]]]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="allow_accounts"></a>`allow_accounts`
+##### <a name="-slurm--partition--allow_accounts"></a>`allow_accounts`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Array[String[1]]]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="allow_groups"></a>`allow_groups`
+##### <a name="-slurm--partition--allow_groups"></a>`allow_groups`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Array[String[1]]]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="allow_qos"></a>`allow_qos`
+##### <a name="-slurm--partition--allow_qos"></a>`allow_qos`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Array[String[1]]]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="alternate"></a>`alternate`
+##### <a name="-slurm--partition--alternate"></a>`alternate`
 
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="cpu_bind"></a>`cpu_bind`
+##### <a name="-slurm--partition--cpu_bind"></a>`cpu_bind`
 
-Data type: `Any`
+Data type: `Optional[Slurm::CPUBind]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="default"></a>`default`
+##### <a name="-slurm--partition--default"></a>`default`
 
-Data type: `Optional[Enum['YES','NO']]`
+Data type: `Optional[Slurm::YesNo]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="def_cpu_per_gpu"></a>`def_cpu_per_gpu`
+##### <a name="-slurm--partition--def_cpu_per_gpu"></a>`def_cpu_per_gpu`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="def_mem_per_cpu"></a>`def_mem_per_cpu`
+##### <a name="-slurm--partition--def_mem_per_cpu"></a>`def_mem_per_cpu`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="def_mem_per_gpu"></a>`def_mem_per_gpu`
+##### <a name="-slurm--partition--def_mem_per_gpu"></a>`def_mem_per_gpu`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="def_mem_per_node"></a>`def_mem_per_node`
+##### <a name="-slurm--partition--def_mem_per_node"></a>`def_mem_per_node`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="deny_accounts"></a>`deny_accounts`
+##### <a name="-slurm--partition--deny_accounts"></a>`deny_accounts`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Array[String[1]]]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="deny_qos"></a>`deny_qos`
+##### <a name="-slurm--partition--deny_qos"></a>`deny_qos`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Array[String[1]]]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="default_time"></a>`default_time`
+##### <a name="-slurm--partition--default_time"></a>`default_time`
 
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="disable_root_jobs"></a>`disable_root_jobs`
+##### <a name="-slurm--partition--disable_root_jobs"></a>`disable_root_jobs`
 
-Data type: `Optional[Enum['YES','NO']]`
+Data type: `Optional[Slurm::YesNo]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="exclusive_user"></a>`exclusive_user`
+##### <a name="-slurm--partition--exclusive_user"></a>`exclusive_user`
 
-Data type: `Optional[Enum['YES','NO']]`
+Data type: `Optional[Slurm::YesNo]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="grace_time"></a>`grace_time`
+##### <a name="-slurm--partition--grace_time"></a>`grace_time`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="hidden"></a>`hidden`
+##### <a name="-slurm--partition--hidden"></a>`hidden`
 
-Data type: `Optional[Enum['YES','NO']]`
+Data type: `Optional[Slurm::YesNo]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="lln"></a>`lln`
+##### <a name="-slurm--partition--lln"></a>`lln`
 
-Data type: `Optional[Enum['YES','NO']]`
+Data type: `Optional[Slurm::YesNo]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="max_cpus_per_node"></a>`max_cpus_per_node`
+##### <a name="-slurm--partition--max_cpus_per_node"></a>`max_cpus_per_node`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="max_mem_per_cpu"></a>`max_mem_per_cpu`
+##### <a name="-slurm--partition--max_mem_per_cpu"></a>`max_mem_per_cpu`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="max_mem_per_node"></a>`max_mem_per_node`
+##### <a name="-slurm--partition--max_mem_per_node"></a>`max_mem_per_node`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="max_nodes"></a>`max_nodes`
+##### <a name="-slurm--partition--max_nodes"></a>`max_nodes`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="max_time"></a>`max_time`
+##### <a name="-slurm--partition--max_time"></a>`max_time`
 
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="min_nodes"></a>`min_nodes`
+##### <a name="-slurm--partition--min_nodes"></a>`min_nodes`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="nodes"></a>`nodes`
+##### <a name="-slurm--partition--nodes"></a>`nodes`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Array[String[1]]]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="over_subscribe"></a>`over_subscribe`
+##### <a name="-slurm--partition--over_subscribe"></a>`over_subscribe`
 
 Data type: `Optional[Enum['EXCLUSIVE','FORCE','YES','NO']]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="over_time_limit"></a>`over_time_limit`
+##### <a name="-slurm--partition--over_time_limit"></a>`over_time_limit`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="preempt_mode"></a>`preempt_mode`
+##### <a name="-slurm--partition--preempt_mode"></a>`preempt_mode`
 
 Data type: `Optional[Slurm::PreemptMode]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="priority_job_factor"></a>`priority_job_factor`
+##### <a name="-slurm--partition--priority_job_factor"></a>`priority_job_factor`
 
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="priority_tier"></a>`priority_tier`
-
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="qos"></a>`qos`
+##### <a name="-slurm--partition--priority_tier"></a>`priority_tier`
 
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="req_resv"></a>`req_resv`
-
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="resume_timeout"></a>`resume_timeout`
+##### <a name="-slurm--partition--qos"></a>`qos`
 
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="root_only"></a>`root_only`
-
-Data type: `Optional[Enum['YES','NO']]`
+Data type: `Optional[String[1]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="select_type_parameters"></a>`select_type_parameters`
+##### <a name="-slurm--partition--req_resv"></a>`req_resv`
+
+Data type: `Optional[Slurm::YesNo]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--partition--resume_timeout"></a>`resume_timeout`
+
+Data type: `Optional[Variant[String[1], Integer]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--partition--root_only"></a>`root_only`
+
+Data type: `Optional[Slurm::YesNo]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--partition--select_type_parameters"></a>`select_type_parameters`
 
 Data type: `Optional[Slurm::SelectTypeParameters]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="shared"></a>`shared`
+##### <a name="-slurm--partition--shared"></a>`shared`
 
-Data type: `Any`
+Data type: `Optional[Enum['EXCLUSIVE','FORCE','YES','NO']]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="state"></a>`state`
+##### <a name="-slurm--partition--state"></a>`state`
 
 Data type: `Slurm::PartitionState`
 
@@ -2578,47 +2526,47 @@ Data type: `Slurm::PartitionState`
 
 Default value: `'UP'`
 
-##### <a name="suspend_time"></a>`suspend_time`
+##### <a name="-slurm--partition--suspend_time"></a>`suspend_time`
 
-Data type: `Any`
-
-
-
-Default value: ``undef``
-
-##### <a name="suspend_timeout"></a>`suspend_timeout`
-
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="tres_billing_weights"></a>`tres_billing_weights`
+##### <a name="-slurm--partition--suspend_timeout"></a>`suspend_timeout`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Integer]]`
 
 
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="target"></a>`target`
+##### <a name="-slurm--partition--tres_billing_weights"></a>`tres_billing_weights`
 
-Data type: `Any`
+Data type: `Optional[Variant[String[1], Array[String[1]]]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--partition--target"></a>`target`
+
+Data type: `String[1]`
 
 
 
 Default value: `'slurm.conf'`
 
-##### <a name="order"></a>`order`
+##### <a name="-slurm--partition--order"></a>`order`
 
-Data type: `Any`
+Data type: `Variant[String[1], Integer]`
 
 
 
 Default value: `'50'`
 
-### <a name="slurmspank"></a>`slurm::spank`
+### <a name="slurm--spank"></a>`slurm::spank`
 
 Manage SLURM SPANK plugin
 
@@ -2626,16 +2574,16 @@ Manage SLURM SPANK plugin
 
 The following parameters are available in the `slurm::spank` defined type:
 
-* [`ensure`](#ensure)
-* [`plugin`](#plugin)
-* [`arguments`](#arguments)
-* [`required`](#required)
-* [`manage_package`](#manage_package)
-* [`package_name`](#package_name)
-* [`package_ensure`](#package_ensure)
-* [`order`](#order)
+* [`ensure`](#-slurm--spank--ensure)
+* [`plugin`](#-slurm--spank--plugin)
+* [`arguments`](#-slurm--spank--arguments)
+* [`required`](#-slurm--spank--required)
+* [`manage_package`](#-slurm--spank--manage_package)
+* [`package_name`](#-slurm--spank--package_name)
+* [`package_ensure`](#-slurm--spank--package_ensure)
+* [`order`](#-slurm--spank--order)
 
-##### <a name="ensure"></a>`ensure`
+##### <a name="-slurm--spank--ensure"></a>`ensure`
 
 Data type: `Enum['present','absent']`
 
@@ -2643,7 +2591,7 @@ Ensure state of SPANK plugin
 
 Default value: `'present'`
 
-##### <a name="plugin"></a>`plugin`
+##### <a name="-slurm--spank--plugin"></a>`plugin`
 
 Data type: `String`
 
@@ -2651,31 +2599,31 @@ The shared library
 
 Default value: `"${name}.so"`
 
-##### <a name="arguments"></a>`arguments`
+##### <a name="-slurm--spank--arguments"></a>`arguments`
 
 Data type: `Optional[Variant[Hash, Array, String]]`
 
 Arguments for the plugin
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="required"></a>`required`
+##### <a name="-slurm--spank--required"></a>`required`
 
 Data type: `Boolean`
 
 Is this plugin required?
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="manage_package"></a>`manage_package`
+##### <a name="-slurm--spank--manage_package"></a>`manage_package`
 
 Data type: `Boolean`
 
 Manage plugin package?
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="package_name"></a>`package_name`
+##### <a name="-slurm--spank--package_name"></a>`package_name`
 
 Data type: `String`
 
@@ -2683,7 +2631,7 @@ Plugin package name
 
 Default value: `"slurm-spank-${name}"`
 
-##### <a name="package_ensure"></a>`package_ensure`
+##### <a name="-slurm--spank--package_ensure"></a>`package_ensure`
 
 Data type: `String`
 
@@ -2691,15 +2639,15 @@ Plugin package ensure value
 
 Default value: `'installed'`
 
-##### <a name="order"></a>`order`
+##### <a name="-slurm--spank--order"></a>`order`
 
-Data type: `Any`
+Data type: `Variant[String[1], Integer]`
 
 Order in plugstack.conf
 
 Default value: `'50'`
 
-### <a name="slurmswitch"></a>`slurm::switch`
+### <a name="slurm--switch"></a>`slurm::switch`
 
 Add switch to topology.conf
 
@@ -2720,51 +2668,51 @@ slurm::switch { 'switch2':
 
 The following parameters are available in the `slurm::switch` defined type:
 
-* [`switch_name`](#switch_name)
-* [`switches`](#switches)
-* [`nodes`](#nodes)
-* [`link_speed`](#link_speed)
-* [`order`](#order)
+* [`switch_name`](#-slurm--switch--switch_name)
+* [`switches`](#-slurm--switch--switches)
+* [`nodes`](#-slurm--switch--nodes)
+* [`link_speed`](#-slurm--switch--link_speed)
+* [`order`](#-slurm--switch--order)
 
-##### <a name="switch_name"></a>`switch_name`
+##### <a name="-slurm--switch--switch_name"></a>`switch_name`
 
-Data type: `Any`
+Data type: `String[1]`
 
 = $name,
 SwitchName value, see man page for topology.conf
 
 Default value: `$name`
 
-##### <a name="switches"></a>`switches`
+##### <a name="-slurm--switch--switches"></a>`switches`
 
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 = undef,
 Switches value, see man page for topology.conf
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="nodes"></a>`nodes`
+##### <a name="-slurm--switch--nodes"></a>`nodes`
 
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 = undef,
 Nodes value, see man page for topology.conf
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="link_speed"></a>`link_speed`
+##### <a name="-slurm--switch--link_speed"></a>`link_speed`
 
-Data type: `Any`
+Data type: `Optional[String[1]]`
 
 = undef,
 LinkSpeed value, see man page for topology.conf
 
-Default value: ``undef``
+Default value: `undef`
 
-##### <a name="order"></a>`order`
+##### <a name="-slurm--switch--order"></a>`order`
 
-Data type: `Any`
+Data type: `Variant[String[1], Integer]`
 
 = '50',
 Order inside topology.conf
@@ -2773,55 +2721,47 @@ Default value: `'50'`
 
 ## Data types
 
-### <a name="slurmdownnodestate"></a>`Slurm::DownNodeState`
+### <a name="Slurm--CPUBind"></a>`Slurm::CPUBind`
+
+Type for CPU bind settings
+
+Alias of `Enum['none', 'socket', 'ldom', 'core', 'thread', 'UNSET']`
+
+### <a name="Slurm--DownNodeState"></a>`Slurm::DownNodeState`
 
 The Slurm::DownNodeState data type.
 
-Alias of
+Alias of `Enum['DOWN', 'DRAIN', 'FAIL', 'FAILING', 'UNKNOWN']`
 
-```puppet
-Enum['DOWN', 'DRAIN', 'FAIL', 'FAILING', 'UNKNOWN']
-```
-
-### <a name="slurmnodestate"></a>`Slurm::NodeState`
+### <a name="Slurm--NodeState"></a>`Slurm::NodeState`
 
 The Slurm::NodeState data type.
 
-Alias of
+Alias of `Variant[Enum['CLOUD','FUTURE'], Slurm::DownNodeState]`
 
-```puppet
-Variant[Enum['CLOUD','FUTURE'], Slurm::DownNodeState]
-```
-
-### <a name="slurmpartitionstate"></a>`Slurm::PartitionState`
+### <a name="Slurm--PartitionState"></a>`Slurm::PartitionState`
 
 The Slurm::PartitionState data type.
 
-Alias of
+Alias of `Enum['UP', 'DOWN', 'DRAIN', 'INACTIVE']`
 
-```puppet
-Enum['UP', 'DOWN', 'DRAIN', 'INACTIVE']
-```
-
-### <a name="slurmpreemptmode"></a>`Slurm::PreemptMode`
+### <a name="Slurm--PreemptMode"></a>`Slurm::PreemptMode`
 
 The Slurm::PreemptMode data type.
 
-Alias of
+Alias of `Enum['OFF', 'CANCEL', 'CHECKPOINT', 'GANG', 'REQUEUE', 'SUSPEND']`
 
-```puppet
-Enum['OFF', 'CANCEL', 'CHECKPOINT', 'GANG', 'REQUEUE', 'SUSPEND']
-```
-
-### <a name="slurmselecttypeparameters"></a>`Slurm::SelectTypeParameters`
+### <a name="Slurm--SelectTypeParameters"></a>`Slurm::SelectTypeParameters`
 
 The Slurm::SelectTypeParameters data type.
 
-Alias of
+Alias of `Enum['CR_Core', 'CR_Core_Memory', 'CR_Socket', 'CR_Socket_Memory']`
 
-```puppet
-Enum['CR_Core', 'CR_Core_Memory', 'CR_Socket', 'CR_Socket_Memory']
-```
+### <a name="Slurm--YesNo"></a>`Slurm::YesNo`
+
+The Slurm::YesNo data type.
+
+Alias of `Enum['YES', 'NO', 'UNSET']`
 
 ## Tasks
 

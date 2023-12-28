@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v3.0.0](https://github.com/treydock/puppet-slurm/tree/v3.0.0) (2023-12-28)
+
+[Full Changelog](https://github.com/treydock/puppet-slurm/compare/v2.4.0...v3.0.0)
+
+### Changed
+
+- Drop Debian 10, Add EL9, Debian 11, Ubuntu 22.04 [\#50](https://github.com/treydock/puppet-slurm/pull/50) ([treydock](https://github.com/treydock))
+- Support Slurm 23.02.x [\#48](https://github.com/treydock/puppet-slurm/pull/48) ([treydock](https://github.com/treydock))
+- BREAKING: Many updates - read description [\#46](https://github.com/treydock/puppet-slurm/pull/46) ([treydock](https://github.com/treydock))
+
+### Added
+
+- Support install\_method being 'none' [\#49](https://github.com/treydock/puppet-slurm/pull/49) ([treydock](https://github.com/treydock))
+- Test against Slurm 22.05.4 [\#44](https://github.com/treydock/puppet-slurm/pull/44) ([treydock](https://github.com/treydock))
+
 ## [v2.4.0](https://github.com/treydock/puppet-slurm/tree/v2.4.0) (2022-08-11)
 
 [Full Changelog](https://github.com/treydock/puppet-slurm/compare/v2.3.0...v2.4.0)
