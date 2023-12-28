@@ -13,8 +13,8 @@ define slurm::nodeset (
   Optional[String] $feature   = undef,
   Optional[String] $nodes     = undef,
   String $node_set            = $name,
-  String[1] $target                     = 'slurm.conf',
-  String[1] $order                      = '40',
+  String[1] $target = 'slurm.conf',
+  Variant[String[1], Integer] $order = '40',
 ) {
   include slurm
 

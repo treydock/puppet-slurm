@@ -178,13 +178,10 @@ shared_examples_for 'slurm::common::config' do
                                  'AllowedSwapSpace=0',
                                  'ConstrainCores=no',
                                  'ConstrainDevices=no',
-                                 'ConstrainKmemSpace=no',
                                  'ConstrainRAMSpace=no',
                                  'ConstrainSwapSpace=no',
                                  'MaxRAMPercent=100',
                                  'MaxSwapPercent=100',
-                                 'MaxKmemPercent=100',
-                                 'MinKmemSpace=30',
                                  'MinRAMSpace=30'
                                ])
   end

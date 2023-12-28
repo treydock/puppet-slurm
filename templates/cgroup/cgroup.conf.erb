@@ -12,21 +12,15 @@ CgroupMountpoint=<%= scope['slurm::cgroup_mountpoint'] %>
 CgroupPlugin=<%= scope['slurm::cgroup_plugin'] %>
 <%- end -%>
 # task/cgroup plugin
-<%- if scope['slurm::cgroup_allowed_kmem_space'] -%>
-AllowedKmemSpace=<%= scope['slurm::cgroup_allowed_kmem_space'] %>
-<%- end -%>
 AllowedRAMSpace=<%= scope['slurm::cgroup_allowed_ram_space'] %>
 AllowedSwapSpace=<%= scope['slurm::cgroup_allowed_swap_space'] %>
 ConstrainCores=<%= scope['slurm::cgroup_constrain_cores'] ? "yes" : "no" %>
 ConstrainDevices=<%= scope['slurm::cgroup_constrain_devices'] ? "yes" : "no" %>
-ConstrainKmemSpace=<%= scope['slurm::cgroup_constrain_kmem_space'] ? "yes" : "no" %>
 ConstrainRAMSpace=<%= scope['slurm::cgroup_constrain_ram_space'] ? "yes" : "no" %>
 ConstrainSwapSpace=<%= scope['slurm::cgroup_constrain_swap_space'] ? "yes" : "no" %>
 MaxRAMPercent=<%= scope['slurm::cgroup_max_ram_percent'] %>
 MaxSwapPercent=<%= scope['slurm::cgroup_max_swap_percent'] %>
-MaxKmemPercent=<%= scope['slurm::cgroup_max_kmem_percent'] %>
 <%- if scope['slurm::cgroup_memory_swappiness'] -%>
 MemorySwappiness=<%= scope['slurm::cgroup_memory_swappiness'] %>
 <%- end -%>
-MinKmemSpace=<%= scope['slurm::cgroup_min_kmem_space'] %>
 MinRAMSpace=<%= scope['slurm::cgroup_min_ram_space'] %>

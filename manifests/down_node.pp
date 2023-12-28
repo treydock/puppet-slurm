@@ -14,7 +14,7 @@ define slurm::down_node (
   Optional[String] $reason = undef,
   Slurm::DownNodeState $state = 'UNKNOWN',
   String $target = 'slurm.conf',
-  String[1] $order = '75',
+  Variant[String[1], Integer] $order = '75',
 ) {
   include slurm
 

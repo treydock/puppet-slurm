@@ -34,7 +34,7 @@ define slurm::gres (
   Optional[Stdlib::Absolutepath] $file = undef,
   Optional[Enum['CountOnly']] $flags = undef,
   Optional[Variant[Integer, Array[Integer]]] $links = undef,
-  String[1] $order = '50',
+  Variant[String[1], Integer] $order = '50',
 ) {
   include slurm
 

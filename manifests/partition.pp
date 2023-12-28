@@ -91,7 +91,7 @@ define slurm::partition (
   Optional[Variant[String[1], Integer]] $suspend_timeout = undef,
   Optional[Variant[String[1], Array[String[1]]]] $tres_billing_weights = undef,
   String[1] $target = 'slurm.conf',
-  String[1] $order = '50',
+  Variant[String[1], Integer] $order = '50',
 ) {
   include slurm
 

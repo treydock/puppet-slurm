@@ -51,7 +51,7 @@ define slurm::node (
   Optional[Integer] $tmp_disk = undef,
   Optional[Integer] $weight = undef,
   String[1] $target = 'slurm.conf',
-  String[1] $order = '90',
+  Variant[String[1], Integer] $order = '90',
 ) {
   include slurm
 

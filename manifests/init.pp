@@ -146,19 +146,15 @@
 # @param cgroup_automount
 # @param cgroup_mountpoint
 # @param cgroup_plugin
-# @param cgroup_allowed_kmem_space
 # @param cgroup_allowed_ram_space
 # @param cgroup_allowed_swap_space
 # @param cgroup_constrain_cores
 # @param cgroup_constrain_devices
-# @param cgroup_constrain_kmem_space
 # @param cgroup_constrain_ram_space
 # @param cgroup_constrain_swap_space
 # @param cgroup_max_ram_percent
 # @param cgroup_max_swap_percent
-# @param cgroup_max_kmem_percent
 # @param cgroup_memory_swappiness
-# @param cgroup_min_kmem_space
 # @param cgroup_min_ram_space
 # @param slurm_sh_template
 # @param slurm_csh_template
@@ -352,8 +348,8 @@ class slurm (
   Optional[String] $jwt_key_source = undef,
   String $slurmrestd_listen_address = $facts['networking']['ip'],
   Boolean $slurmrestd_disable_token_creation = false,
-  String $slurmrestd_user = 'nobody',
-  String $slurmrestd_user_group = 'nobody',
+  String $slurmrestd_user = 'daemon',
+  String $slurmrestd_user_group = 'daemon',
   Enum['running','stopped'] $slurmrestd_service_ensure = 'running',
   Boolean $slurmrestd_service_enable                   = true,
   Hash $slurmrestd_service_limits                      = {},
@@ -366,19 +362,15 @@ class slurm (
   Boolean $cgroup_automount                 = true,
   Stdlib::Absolutepath $cgroup_mountpoint                = '/sys/fs/cgroup',
   Optional[String] $cgroup_plugin = undef,
-  Optional[Integer] $cgroup_allowed_kmem_space = undef,
   Integer $cgroup_allowed_ram_space         = 100,
   Integer $cgroup_allowed_swap_space        = 0,
   Boolean $cgroup_constrain_cores           = false,
   Boolean $cgroup_constrain_devices         = false,
-  Boolean $cgroup_constrain_kmem_space       = false,
   Boolean $cgroup_constrain_ram_space       = false,
   Boolean $cgroup_constrain_swap_space      = false,
   Integer $cgroup_max_ram_percent           = 100,
   Integer $cgroup_max_swap_percent          = 100,
-  Integer $cgroup_max_kmem_percent          = 100,
   Optional[Integer[0,100]] $cgroup_memory_swappiness = undef,
-  Integer $cgroup_min_kmem_space             = 30,
   Integer $cgroup_min_ram_space             = 30,
 
   # profile.d

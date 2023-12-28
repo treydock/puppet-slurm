@@ -25,7 +25,7 @@ define slurm::spank (
   Boolean $manage_package = true,
   String $package_name = "slurm-spank-${name}",
   String $package_ensure = 'installed',
-  String[1] $order = '50',
+  Variant[String[1], Integer] $order = '50',
 ) {
   include slurm
 
