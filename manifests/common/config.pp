@@ -37,30 +37,28 @@ class slurm::common::config {
   }
 
   if $slurm::manage_slurm_conf and ! $slurm::configless {
-    if $slurm::slurmd or $slurm::slurmctld {
-      concat { 'slurm-topology.conf':
-        ensure => 'present',
-        path   => $slurm::topology_conf_path,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-        notify => $slurm::service_notify,
+    concat { 'slurm-topology.conf':
+      ensure => 'present',
+      path   => $slurm::topology_conf_path,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+      notify => $slurm::service_notify,
+    }
+    concat::fragment { 'slurm-topology.conf-header':
+      target  => 'slurm-topology.conf',
+      content => "# File managed by Puppet - DO NOT EDIT\n",
+      order   => '00',
+    }
+    if $slurm::topology_source {
+      concat::fragment { 'slurm-topology.conf-source':
+        target => 'slurm-topology.conf',
+        source => $slurm::topology_source,
+        order  => '01',
       }
-      concat::fragment { 'slurm-topology.conf-header':
-        target  => 'slurm-topology.conf',
-        content => "# File managed by Puppet - DO NOT EDIT\n",
-        order   => '00',
-      }
-      if $slurm::topology_source {
-        concat::fragment { 'slurm-topology.conf-source':
-          target => 'slurm-topology.conf',
-          source => $slurm::topology_source,
-          order  => '01',
-        }
-      }
-      $slurm::switches.each |$name, $switch| {
-        slurm::switch { $name: * => $switch }
-      }
+    }
+    $slurm::switches.each |$name, $switch| {
+      slurm::switch { $name: * => $switch }
     }
 
     if $slurm::slurmd or $slurm::slurmctld {
