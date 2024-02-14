@@ -126,7 +126,7 @@ shared_examples_for 'slurm::common::config' do
                                      'UnkillableStepTimeout=60',
                                      'UsePAM=0',
                                      'VSizeFactor=0',
-                                     'WaitTime=0',
+                                     'WaitTime=0'
                                    ])
   end
 
