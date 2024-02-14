@@ -11,7 +11,7 @@ RSpec.configure do |c|
   c.slurm_repo_baseurl = ENV['SLURM_BEAKER_repo_baseurl'] || nil
 
   c.add_setting :slurm_version
-  c.slurm_version = ENV['SLURM_BEAKER_version'] || '23.02.6'
+  c.slurm_version = ENV['SLURM_BEAKER_version'] || '23.11.3'
 
   if ENV['BEAKER_set'] =~ %r{cluster}
     slurmctld_host = 'slurmctld'
@@ -73,7 +73,6 @@ slurm::slurm_user_group: root
 slurm::auth_alt_types:
   - auth/jwt
 slurm::jwt_key_source: 'puppet:///modules/site_slurm/jwt.key'
-slurm::cgroup_plugin: 'cgroup/v1'
 slurm::partitions:
   general:
     default: 'YES'

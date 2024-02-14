@@ -145,7 +145,6 @@
 # @param slurmrestd_restart_on_failure
 # @param cgroup_conf_template
 # @param cgroup_conf_source
-# @param cgroup_automount
 # @param cgroup_mountpoint
 # @param cgroup_plugin
 # @param cgroup_allowed_ram_space
@@ -158,6 +157,7 @@
 # @param cgroup_max_swap_percent
 # @param cgroup_memory_swappiness
 # @param cgroup_min_ram_space
+# @param cgroup_signal_child_processes
 # @param oci_conf_template
 # @param oci_conf_source
 # @param oci_container_path
@@ -217,7 +217,7 @@ class slurm (
   Boolean $install_pam            = true,
 
   # Source install
-  String $version = '21.08.8',
+  String $version = '23.11.3',
   Array $source_dependencies = [],
   Array $configure_flags = [],
   Boolean $source_install_manage_alternatives = true,
@@ -385,9 +385,8 @@ class slurm (
   # cgroups
   String $cgroup_conf_template             = 'slurm/cgroup/cgroup.conf.erb',
   Optional[String] $cgroup_conf_source               = undef,
-  Boolean $cgroup_automount                 = true,
   Stdlib::Absolutepath $cgroup_mountpoint                = '/sys/fs/cgroup',
-  Optional[String] $cgroup_plugin = undef,
+  String $cgroup_plugin = 'autodetect',
   Integer $cgroup_allowed_ram_space         = 100,
   Integer $cgroup_allowed_swap_space        = 0,
   Boolean $cgroup_constrain_cores           = false,
@@ -398,6 +397,7 @@ class slurm (
   Integer $cgroup_max_swap_percent          = 100,
   Optional[Integer[0,100]] $cgroup_memory_swappiness = undef,
   Integer $cgroup_min_ram_space             = 30,
+  Boolean $cgroup_signal_child_processes = false,
 
   # OCI
   String $oci_conf_template             = 'slurm/oci.conf.erb',

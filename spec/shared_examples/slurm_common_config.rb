@@ -31,7 +31,6 @@ shared_examples_for 'slurm::common::config' do
                                      'BatchStartTimeout=10',
                                      'ClusterName=linux',
                                      'CompleteWait=0',
-                                     'CoreSpecPlugin=core_spec/none',
                                      'CpuFreqGovernors=OnDemand,Performance,UserSpace',
                                      'CredType=cred/munge',
                                      'DisableRootJobs=NO',
@@ -50,7 +49,6 @@ shared_examples_for 'slurm::common::config' do
                                      'InteractiveStepOptions="--interactive --preserve-env --pty $SHELL"',
                                      'JobAcctGatherType=jobacct_gather/cgroup',
                                      'JobAcctGatherFrequency=task=30,energy=0,network=0,filesystem=0',
-                                     'JobCompType=jobcomp/none',
                                      'JobRequeue=1',
                                      'KillOnBadExit=0',
                                      'KillWait=30',
@@ -76,7 +74,7 @@ shared_examples_for 'slurm::common::config' do
                                      'PriorityFavorSmall=NO',
                                      'PriorityMaxAge=7-0',
                                      'PrioritySiteFactorPlugin=site_factor/none',
-                                     'PriorityType=priority/basic',
+                                     'PriorityType=priority/multifactor',
                                      'PriorityUsageResetPeriod=NONE',
                                      'PriorityWeightAge=0',
                                      'PriorityWeightAssoc=0',
@@ -94,7 +92,7 @@ shared_examples_for 'slurm::common::config' do
                                      'RoutePlugin=route/default',
                                      'SchedulerTimeSlice=30',
                                      'SchedulerType=sched/backfill',
-                                     'SelectType=select/linear',
+                                     'SelectType=select/cons_tres',
                                      'SlurmctldDebug=info',
                                      'SlurmctldHost=slurm',
                                      'SlurmctldLogFile=/var/log/slurm/slurmctld.log',
@@ -117,12 +115,10 @@ shared_examples_for 'slurm::common::config' do
                                      'SuspendRate=60',
                                      'SuspendTime=-1',
                                      'SuspendTimeout=30',
-                                     'SwitchType=switch/none',
                                      'TaskPlugin=task/affinity,task/cgroup',
                                      'TCPTimeout=2',
                                      'TmpFS=/tmp',
-                                     'TopologyPlugin=topology/none',
-                                     'TreeWidth=50',
+                                     'TreeWidth=16',
                                      'UnkillableStepTimeout=60',
                                      'UsePAM=0',
                                      'VSizeFactor=0',
@@ -168,8 +164,8 @@ shared_examples_for 'slurm::common::config' do
 
   it 'has cgroup.conf with valid contents' do
     verify_exact_file_contents(catalogue, 'slurm-cgroup.conf', [
-                                 'CgroupAutomount=yes',
                                  'CgroupMountpoint=/sys/fs/cgroup',
+                                 'CgroupPlugin=autodetect',
                                  'AllowedRAMSpace=100',
                                  'AllowedSwapSpace=0',
                                  'ConstrainCores=no',
@@ -178,7 +174,8 @@ shared_examples_for 'slurm::common::config' do
                                  'ConstrainSwapSpace=no',
                                  'MaxRAMPercent=100',
                                  'MaxSwapPercent=100',
-                                 'MinRAMSpace=30'
+                                 'MinRAMSpace=30',
+                                 'SignalChildrenProcesses=no'
                                ])
   end
 
