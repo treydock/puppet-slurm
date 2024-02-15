@@ -1,0 +1,59 @@
+### File managed by Puppet - do NOT edit !
+###
+#
+# Slurm OCI support configuration file
+#
+# See man oci.conf for further
+# information on cgroup configuration parameters
+<% if scope['slurm::oci_container_path'] -%>
+ContainerPath="<%= scope['slurm::oci_container_path'] %>"
+<% end -%>
+CreateEnvFile=<%= scope['slurm::oci_create_env_file'] %>
+<% if scope['slurm::oci_debug_flags'] -%>
+DebugFlags="<%= scope['slurm::oci_debug_flags'] %>"
+<% end -%>
+DisableCleanup=<%= scope['slurm::oci_disable_cleanup'] %>
+<% if scope['slurm::oci_disable_hooks'] -%>
+DisableHooks=<%= scope['slurm::oci_disable_hooks'] %>
+<% end -%>
+<% if scope['slurm::oci_env_exclude'] -%>
+EnvExclude="<%= scope['slurm::oci_env_exclude'] %>"
+<% end -%>
+MountSpoolDir="<%= scope['slurm::oci_mount_spool_dir'] %>"
+<% if scope['slurm::oci_run_time_env_exclude'] -%>
+RunTimeEnvExclude="<%= scope['slurm::oci_run_time_env_exclude'] %>"
+<% end -%>
+<% if scope['slurm::oci_file_debug'] -%>
+FileDebug="<%= scope['slurm::oci_file_debug'] %>"
+<% end -%>
+IgnoreFileConfigJson=<%= scope['slurm::oci_ignore_file_config_json'] %>
+<% if scope['slurm::oci_run_time_create'] -%>
+RunTimeCreate="<%= scope['slurm::oci_run_time_create'] %>"
+<% end -%>
+<% if scope['slurm::oci_run_time_delete'] -%>
+RunTimeDelete="<%= scope['slurm::oci_run_time_delete'] %>"
+<% end -%>
+<% if scope['slurm::oci_run_time_kill'] -%>
+RunTimeKill="<%= scope['slurm::oci_run_time_kill'] %>"
+<% end -%>
+<% if scope['slurm::oci_run_time_query'] -%>
+RunTimeQuery="<%= scope['slurm::oci_run_time_query'] %>"
+<% end -%>
+<% if scope['slurm::oci_run_time_run'] -%>
+RunTimeRun="<%= scope['slurm::oci_run_time_run'] %>"
+<% end -%>
+<% if scope['slurm::oci_run_time_start'] -%>
+RunTimeStart="<%= scope['slurm::oci_run_time_start'] %>"
+<% end -%>
+<% if scope['slurm::oci_srun_path'] -%>
+SrunPath="<%= scope['slurm::oci_srun_path'] %>"
+<% end -%>
+<% if scope['slurm::oci_srun_args'] -%>
+SrunArgs="<%= scope['slurm::oci_srun_args'] %>"
+<% end -%>
+<% if scope['slurm::oci_std_io_debug'] -%>
+StdIODebug="<%= scope['slurm::oci_std_io_debug'] %>"
+<% end -%>
+<% if scope['slurm::oci_syslog_debug'] -%>
+SyslogDebug="<%= scope['slurm::oci_syslog_debug'] %>"
+<% end -%>
