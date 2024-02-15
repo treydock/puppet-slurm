@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v3.1.0](https://github.com/treydock/puppet-slurm/tree/v3.1.0) (2024-02-15)
+
+[Full Changelog](https://github.com/treydock/puppet-slurm/compare/v3.0.0...v3.1.0)
+
+### Added
+
+- Support managing oci.conf [\#55](https://github.com/treydock/puppet-slurm/pull/55) ([treydock](https://github.com/treydock))
+
+### Fixed
+
+- Deploy topology.conf unconditionally [\#53](https://github.com/treydock/puppet-slurm/pull/53) ([optiz0r](https://github.com/optiz0r))
+
 ## [v3.0.0](https://github.com/treydock/puppet-slurm/tree/v3.0.0) (2023-12-28)
 
 [Full Changelog](https://github.com/treydock/puppet-slurm/compare/v2.4.0...v3.0.0)

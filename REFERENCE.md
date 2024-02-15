@@ -224,6 +224,28 @@ The following parameters are available in the `slurm` class:
 * [`cgroup_max_swap_percent`](#-slurm--cgroup_max_swap_percent)
 * [`cgroup_memory_swappiness`](#-slurm--cgroup_memory_swappiness)
 * [`cgroup_min_ram_space`](#-slurm--cgroup_min_ram_space)
+* [`oci_conf_template`](#-slurm--oci_conf_template)
+* [`oci_conf_source`](#-slurm--oci_conf_source)
+* [`oci_container_path`](#-slurm--oci_container_path)
+* [`oci_create_env_file`](#-slurm--oci_create_env_file)
+* [`oci_debug_flags`](#-slurm--oci_debug_flags)
+* [`oci_disable_cleanup`](#-slurm--oci_disable_cleanup)
+* [`oci_disable_hooks`](#-slurm--oci_disable_hooks)
+* [`oci_env_exclude`](#-slurm--oci_env_exclude)
+* [`oci_mount_spool_dir`](#-slurm--oci_mount_spool_dir)
+* [`oci_run_time_env_exclude`](#-slurm--oci_run_time_env_exclude)
+* [`oci_file_debug`](#-slurm--oci_file_debug)
+* [`oci_ignore_file_config_json`](#-slurm--oci_ignore_file_config_json)
+* [`oci_run_time_create`](#-slurm--oci_run_time_create)
+* [`oci_run_time_delete`](#-slurm--oci_run_time_delete)
+* [`oci_run_time_kill`](#-slurm--oci_run_time_kill)
+* [`oci_run_time_query`](#-slurm--oci_run_time_query)
+* [`oci_run_time_run`](#-slurm--oci_run_time_run)
+* [`oci_run_time_start`](#-slurm--oci_run_time_start)
+* [`oci_srun_path`](#-slurm--oci_srun_path)
+* [`oci_srun_args`](#-slurm--oci_srun_args)
+* [`oci_std_io_debug`](#-slurm--oci_std_io_debug)
+* [`oci_syslog_debug`](#-slurm--oci_syslog_debug)
 * [`slurm_sh_template`](#-slurm--slurm_sh_template)
 * [`slurm_csh_template`](#-slurm--slurm_csh_template)
 * [`profile_d_env_vars`](#-slurm--profile_d_env_vars)
@@ -1457,6 +1479,182 @@ Data type: `Integer`
 
 
 Default value: `30`
+
+##### <a name="-slurm--oci_conf_template"></a>`oci_conf_template`
+
+Data type: `String`
+
+
+
+Default value: `'slurm/oci.conf.erb'`
+
+##### <a name="-slurm--oci_conf_source"></a>`oci_conf_source`
+
+Data type: `Optional[String]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--oci_container_path"></a>`oci_container_path`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--oci_create_env_file"></a>`oci_create_env_file`
+
+Data type: `String[1]`
+
+
+
+Default value: `'disabled'`
+
+##### <a name="-slurm--oci_debug_flags"></a>`oci_debug_flags`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--oci_disable_cleanup"></a>`oci_disable_cleanup`
+
+Data type: `Boolean`
+
+
+
+Default value: `false`
+
+##### <a name="-slurm--oci_disable_hooks"></a>`oci_disable_hooks`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--oci_env_exclude"></a>`oci_env_exclude`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--oci_mount_spool_dir"></a>`oci_mount_spool_dir`
+
+Data type: `Stdlib::Absolutepath`
+
+
+
+Default value: `'/var/run/slurm/'`
+
+##### <a name="-slurm--oci_run_time_env_exclude"></a>`oci_run_time_env_exclude`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--oci_file_debug"></a>`oci_file_debug`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--oci_ignore_file_config_json"></a>`oci_ignore_file_config_json`
+
+Data type: `Boolean`
+
+
+
+Default value: `false`
+
+##### <a name="-slurm--oci_run_time_create"></a>`oci_run_time_create`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--oci_run_time_delete"></a>`oci_run_time_delete`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--oci_run_time_kill"></a>`oci_run_time_kill`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--oci_run_time_query"></a>`oci_run_time_query`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--oci_run_time_run"></a>`oci_run_time_run`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--oci_run_time_start"></a>`oci_run_time_start`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--oci_srun_path"></a>`oci_srun_path`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--oci_srun_args"></a>`oci_srun_args`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--oci_std_io_debug"></a>`oci_std_io_debug`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--oci_syslog_debug"></a>`oci_syslog_debug`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
 
 ##### <a name="-slurm--slurm_sh_template"></a>`slurm_sh_template`
 
