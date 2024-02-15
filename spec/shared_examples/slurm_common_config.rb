@@ -182,6 +182,23 @@ shared_examples_for 'slurm::common::config' do
                                ])
   end
 
+  it do
+    is_expected.to contain_file('slurm-oci.conf').with(ensure: 'file',
+                                                       path: '/etc/slurm/oci.conf',
+                                                       owner: 'root',
+                                                       group: 'root',
+                                                       mode: '0644')
+  end
+
+  it 'has oci.conf with valid contents' do
+    verify_exact_file_contents(catalogue, 'slurm-oci.conf', [
+                                 'CreateEnvFile=disabled',
+                                 'DisableCleanup=false',
+                                 'MountSpoolDir="/var/run/slurm/"',
+                                 'IgnoreFileConfigJson=false'
+                               ])
+  end
+
   it { is_expected.not_to contain_file('/etc/slurm/jwt.key') }
 
   it do
@@ -426,6 +443,34 @@ shared_examples_for 'slurm::common::config' do
     end
   end
 
+  context 'when oci parameters defined' do
+    let(:param_override) do
+      {
+        oci_env_exclude: '^(SLURM_CONF|SLURM_CONF_SERVER)=',
+        oci_run_time_env_exclude: '^(SLURM_CONF|SLURM_CONF_SERVER)=',
+        oci_run_time_delete: 'runc delete',
+        oci_run_time_kill: 'runc kill',
+        oci_run_time_query: 'runc query',
+        oci_run_time_run: 'runc run'
+      }
+    end
+
+    it 'has oci.conf with valid contents' do
+      verify_exact_file_contents(catalogue, 'slurm-oci.conf', [
+                                   'CreateEnvFile=disabled',
+                                   'DisableCleanup=false',
+                                   'EnvExclude="^(SLURM_CONF|SLURM_CONF_SERVER)="',
+                                   'MountSpoolDir="/var/run/slurm/"',
+                                   'RunTimeEnvExclude="^(SLURM_CONF|SLURM_CONF_SERVER)="',
+                                   'IgnoreFileConfigJson=false',
+                                   'RunTimeDelete="runc delete"',
+                                   'RunTimeKill="runc kill"',
+                                   'RunTimeQuery="runc query"',
+                                   'RunTimeRun="runc run"'
+                                 ])
+    end
+  end
+
   context 'when manage_slurm_conf => false' do
     let(:param_override) {  { manage_slurm_conf: false } }
 
@@ -433,6 +478,7 @@ shared_examples_for 'slurm::common::config' do
     it { is_expected.not_to contain_concat('slurm-topology.conf') }
     it { is_expected.not_to contain_concat('plugstack.conf') }
     it { is_expected.not_to contain_file('slurm-cgroup.conf') }
+    it { is_expected.not_to contain_file('slurm-oci.conf') }
     it { is_expected.not_to contain_file('cgroup_allowed_devices_file.conf') }
   end
 
@@ -478,5 +524,12 @@ shared_examples_for 'slurm::common::config' do
 
     it { is_expected.to contain_file('slurm-cgroup.conf').without_content }
     it { is_expected.to contain_file('slurm-cgroup.conf').with_source('file:///path/cgroup.conf') }
+  end
+
+  context 'when oci_conf_source => "file:///path/oci.conf"' do
+    let(:param_override) { { oci_conf_source: 'file:///path/oci.conf' } }
+
+    it { is_expected.to contain_file('slurm-oci.conf').without_content }
+    it { is_expected.to contain_file('slurm-oci.conf').with_source('file:///path/oci.conf') }
   end
 end

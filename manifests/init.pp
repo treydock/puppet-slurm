@@ -156,6 +156,28 @@
 # @param cgroup_max_swap_percent
 # @param cgroup_memory_swappiness
 # @param cgroup_min_ram_space
+# @param oci_conf_template
+# @param oci_conf_source
+# @param oci_container_path
+# @param oci_create_env_file
+# @param oci_debug_flags
+# @param oci_disable_cleanup
+# @param oci_disable_hooks
+# @param oci_env_exclude
+# @param oci_mount_spool_dir
+# @param oci_run_time_env_exclude
+# @param oci_file_debug
+# @param oci_ignore_file_config_json
+# @param oci_run_time_create
+# @param oci_run_time_delete
+# @param oci_run_time_kill
+# @param oci_run_time_query
+# @param oci_run_time_run
+# @param oci_run_time_start
+# @param oci_srun_path
+# @param oci_srun_args
+# @param oci_std_io_debug
+# @param oci_syslog_debug
 # @param slurm_sh_template
 # @param slurm_csh_template
 # @param profile_d_env_vars
@@ -373,6 +395,30 @@ class slurm (
   Optional[Integer[0,100]] $cgroup_memory_swappiness = undef,
   Integer $cgroup_min_ram_space             = 30,
 
+  # OCI
+  String $oci_conf_template             = 'slurm/oci.conf.erb',
+  Optional[String] $oci_conf_source               = undef,
+  Optional[String[1]] $oci_container_path = undef,
+  String[1] $oci_create_env_file = 'disabled',
+  Optional[String[1]] $oci_debug_flags = undef,
+  Boolean $oci_disable_cleanup = false,
+  Optional[String[1]] $oci_disable_hooks = undef,
+  Optional[String[1]] $oci_env_exclude = undef,
+  Stdlib::Absolutepath $oci_mount_spool_dir = '/var/run/slurm/',
+  Optional[String[1]] $oci_run_time_env_exclude = undef,
+  Optional[String[1]] $oci_file_debug = undef,
+  Boolean $oci_ignore_file_config_json = false,
+  Optional[String[1]] $oci_run_time_create = undef,
+  Optional[String[1]] $oci_run_time_delete = undef,
+  Optional[String[1]] $oci_run_time_kill = undef,
+  Optional[String[1]] $oci_run_time_query = undef,
+  Optional[String[1]] $oci_run_time_run = undef,
+  Optional[String[1]] $oci_run_time_start = undef,
+  Optional[Stdlib::Absolutepath] $oci_srun_path = undef,
+  Optional[String[1]] $oci_srun_args = undef,
+  Optional[String[1]] $oci_std_io_debug = undef,
+  Optional[String[1]] $oci_syslog_debug = undef,
+
   # profile.d
   String[1] $slurm_sh_template  = 'slurm/profile.d/slurm.sh.erb',
   String[1] $slurm_csh_template = 'slurm/profile.d/slurm.csh.erb',
@@ -419,6 +465,7 @@ class slurm (
   $gres_conf_path                     = "${conf_dir}/gres.conf"
   $slurmdbd_conf_path                 = "${conf_dir}/slurmdbd.conf"
   $cgroup_conf_path                   = "${conf_dir}/cgroup.conf"
+  $oci_conf_path                      = "${conf_dir}/oci.conf"
   $plugstack_conf_path                = "${conf_dir}/plugstack.conf"
   $job_container_conf_path            = "${conf_dir}/job_container.conf"
   $jwt_key_path                       = "${conf_dir}/jwt.key"
@@ -551,6 +598,12 @@ class slurm (
     $cgroup_conf_content = undef
   } else {
     $cgroup_conf_content = template($cgroup_conf_template)
+  }
+
+  if $oci_conf_source {
+    $oci_conf_content = undef
+  } else {
+    $oci_conf_content = template($oci_conf_template)
   }
 
   if $slurmd and $slurmd_service_ensure == 'running' and $reload_services and $facts['slurmd_version'] {

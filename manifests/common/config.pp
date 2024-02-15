@@ -128,6 +128,17 @@ class slurm::common::config {
       source  => $slurm::cgroup_conf_source,
       notify  => $slurm::service_notify,
     }
+
+    file { 'slurm-oci.conf':
+      ensure  => 'file',
+      path    => $slurm::oci_conf_path,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => $slurm::oci_conf_content,
+      source  => $slurm::oci_conf_source,
+      notify  => $slurm::service_notify,
+    }
   }
 
   if ($slurm::client or $slurm::slurmctld) and ($slurm::cli_filter_lua_source or $slurm::cli_filter_lua_content) {
