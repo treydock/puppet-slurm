@@ -3,11 +3,7 @@
 require 'spec_helper_acceptance'
 
 describe 'slurmdbd' do
-  if ['docker', 'hyperv'].include?(fact('virtual'))
-    let(:slurm_user) { 'root' }
-  else
-    let(:slurm_user) { 'slurm' }
-  end
+  let(:slurm_user) { 'slurm' }
 
   context 'with default parameters' do
     nodes = hosts_as('slurmdbd')
