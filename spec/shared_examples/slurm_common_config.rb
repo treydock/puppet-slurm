@@ -131,15 +131,11 @@ shared_examples_for 'slurm::common::config' do
   end
 
   it do
-    if slurmd || slurmctld
-      is_expected.to contain_concat('slurm-topology.conf').with(ensure: 'present',
-                                                                path: '/etc/slurm/topology.conf',
-                                                                owner: 'root',
-                                                                group: 'root',
-                                                                mode: '0644')
-    else
-      is_expected.not_to contain_concat('slurm-topology.conf')
-    end
+    is_expected.to contain_concat('slurm-topology.conf').with(ensure: 'present',
+                                                              path: '/etc/slurm/topology.conf',
+                                                              owner: 'root',
+                                                              group: 'root',
+                                                              mode: '0644')
   end
 
   it do
@@ -385,19 +381,15 @@ shared_examples_for 'slurm::common::config' do
     end
 
     it do
-      if slurmd || slurmctld
-        verify_exact_fragment_contents(catalogue, 'slurm-topology.conf-switch01', [
-                                         'SwitchName=switch01 Nodes=c01'
-                                       ])
-      end
+      verify_exact_fragment_contents(catalogue, 'slurm-topology.conf-switch01', [
+                                       'SwitchName=switch01 Nodes=c01'
+                                     ])
     end
 
     it do
-      if slurmd || slurmctld
-        verify_exact_fragment_contents(catalogue, 'slurm-topology.conf-switch00', [
-                                         'SwitchName=switch00 Switches=switch01'
-                                       ])
-      end
+      verify_exact_fragment_contents(catalogue, 'slurm-topology.conf-switch00', [
+                                       'SwitchName=switch00 Switches=switch01'
+                                     ])
     end
   end
 
@@ -467,9 +459,7 @@ shared_examples_for 'slurm::common::config' do
     let(:param_override) { { topology_source: 'file:///path/topology.conf' } }
 
     it do
-      if slurmd || slurmctld
-        is_expected.to contain_concat__fragment('slurm-topology.conf-source').with_source('file:///path/topology.conf')
-      end
+      is_expected.to contain_concat__fragment('slurm-topology.conf-source').with_source('file:///path/topology.conf')
     end
   end
 
