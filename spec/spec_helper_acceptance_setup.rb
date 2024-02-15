@@ -50,6 +50,8 @@ defaults:
   datadir: data
   data_hash: yaml_data
 hierarchy:
+  - name: osfamily-osmajor
+    path: "%{facts.os.family}%{facts.os.release.major}.yaml"
   - name: virtual
     path: "%{facts.virtual}.yaml"
   - name: "Munge"
@@ -80,9 +82,13 @@ slurm::nodes:
   slurmd:
     cpus: 1
     HIERA
+    rhel7_yaml = <<-RHEL7
+slurm::cgroup_plugin: 'cgroup/v1'
+    RHEL7
     create_remote_file(hosts, '/etc/puppetlabs/puppet/hiera.yaml', hiera_yaml)
     on hosts, 'mkdir -p /etc/puppetlabs/puppet/data'
     create_remote_file(hosts, '/etc/puppetlabs/puppet/data/common.yaml', common_yaml)
+    create_remote_file(hosts, '/etc/puppetlabs/puppet/data/RedHat7.yaml', rhel7_yaml)
     # Hack to work around issues with recent systemd and docker and running services as non-root
     if fact('os.family') == 'RedHat' && fact('os.release.major').to_i >= 7
       service_hack = <<-HACK
