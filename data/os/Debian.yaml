@@ -25,3 +25,4 @@ slurm::source_dependencies:
   - libyaml-dev
 slurm::env_dir: /etc/default
 slurm::slurmrestd_user_group: nogroup
+slurm::slurm_user_shell: /usr/sbin/nologin
