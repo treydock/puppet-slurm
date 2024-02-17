@@ -156,6 +156,21 @@ class slurm::common::config {
     }
   }
 
+  if ($slurm::client or $slurm::slurmctld) and ($slurm::scrun_lua_source or $slurm::scrun_lua_content) {
+    file { "${slurm::conf_dir}/scrun.lua":
+      ensure  => 'file',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      source  => $slurm::scrun_lua_source,
+      content => $slurm::scrun_lua_content,
+    }
+
+    if $slurm::slurmctld and $slurm::enable_configless {
+      File["${slurm::conf_dir}/scrun.lua"] ~> Exec['scontrol reconfig']
+    }
+  }
+
   if ('auth/jwt' in $slurm::auth_alt_types) and ($slurm::slurmctld or $slurm::slurmdbd) {
     file { $slurm::jwt_key_path:
       ensure  => 'file',

@@ -63,6 +63,8 @@
 # @param export_database_tag
 # @param cli_filter_lua_source
 # @param cli_filter_lua_content
+# @param scrun_lua_source
+# @param scrun_lua_content
 # @param state_dir_nfs_device
 # @param state_dir_nfs_options
 # @param job_submit_lua_source
@@ -276,6 +278,8 @@ class slurm (
   # client config
   Optional[String[1]] $cli_filter_lua_source  = undef,
   Optional[String[1]] $cli_filter_lua_content = undef,
+  Optional[String[1]] $scrun_lua_source  = undef,
+  Optional[String[1]] $scrun_lua_content = undef,
 
   # Config - controller
   Optional[String[1]] $state_dir_nfs_device           = undef,
