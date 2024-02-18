@@ -199,11 +199,72 @@ shared_examples_for 'slurm::common::config' do
                                ])
   end
 
+  it { is_expected.not_to contain_file('/etc/slurm/cli_filter.lua') }
+  it { is_expected.not_to contain_file('/etc/slurm/scrun.lua') }
+
   it { is_expected.not_to contain_file('/etc/slurm/jwt.key') }
 
   it do
     is_expected.to contain_sysctl('net.core.somaxconn').with(ensure: 'present',
                                                              value: '1024')
+  end
+
+  context 'when cli_filter source is defined' do
+    let(:param_override) { { cli_filter_lua_source: 'puppet:///cli_filter.lua' } }
+
+    it do
+      if client || slurmctld
+        is_expected.to contain_file('/etc/slurm/cli_filter.lua').with(
+          ensure: 'file',
+          owner: 'root',
+          group: 'root',
+          mode: '0644',
+          source: 'puppet:///cli_filter.lua',
+          content: nil,
+        )
+      else
+        is_expected.not_to contain_file('/etc/slurm/cli_filter.lua')
+      end
+    end
+
+    context 'when configless' do
+      let(:param_override) { { cli_filter_lua_source: 'puppet:///cli_filter.lua', enable_configless: true } }
+
+      it do
+        if slurmctld
+          is_expected.to contain_file('/etc/slurm/cli_filter.lua').that_notifies('Exec[scontrol reconfig]')
+        end
+      end
+    end
+  end
+
+  context 'when scrun lua source is defined' do
+    let(:param_override) { { scrun_lua_source: 'puppet:///scrun.lua' } }
+
+    it do
+      if client || slurmctld
+        is_expected.to contain_file('/etc/slurm/scrun.lua').with(
+          ensure: 'file',
+          owner: 'root',
+          group: 'root',
+          mode: '0644',
+          source: 'puppet:///scrun.lua',
+          content: nil,
+        )
+      else
+        is_expected.not_to contain_file('/etc/slurm/scrun.lua')
+      end
+    end
+
+    context 'when configless' do
+      let(:param_override) { { scrun_lua_source: 'puppet:///scrun.lua', enable_configless: true } }
+
+      it do
+        if slurmctld
+          is_expected.to contain_file('/etc/slurm/scrun.lua').that_notifies('Exec[scontrol reconfig]')
+        end
+      end
+    end
   end
 
   context 'when enable_configless => true' do
