@@ -131,6 +131,8 @@ The following parameters are available in the `slurm` class:
 * [`export_database_tag`](#-slurm--export_database_tag)
 * [`cli_filter_lua_source`](#-slurm--cli_filter_lua_source)
 * [`cli_filter_lua_content`](#-slurm--cli_filter_lua_content)
+* [`scrun_lua_source`](#-slurm--scrun_lua_source)
+* [`scrun_lua_content`](#-slurm--scrun_lua_content)
 * [`state_dir_nfs_device`](#-slurm--state_dir_nfs_device)
 * [`state_dir_nfs_options`](#-slurm--state_dir_nfs_options)
 * [`job_submit_lua_source`](#-slurm--job_submit_lua_source)
@@ -729,6 +731,22 @@ Data type: `Optional[String[1]]`
 Default value: `undef`
 
 ##### <a name="-slurm--cli_filter_lua_content"></a>`cli_filter_lua_content`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--scrun_lua_source"></a>`scrun_lua_source`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--scrun_lua_content"></a>`scrun_lua_content`
 
 Data type: `Optional[String[1]]`
 

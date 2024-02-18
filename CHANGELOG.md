@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v3.2.0](https://github.com/treydock/puppet-slurm/tree/v3.2.0) (2024-02-18)
+
+[Full Changelog](https://github.com/treydock/puppet-slurm/compare/v3.1.0...v3.2.0)
+
+### Added
+
+- Support deploying scrun.lua [\#56](https://github.com/treydock/puppet-slurm/pull/56) ([treydock](https://github.com/treydock))
+
 ## [v3.1.0](https://github.com/treydock/puppet-slurm/tree/v3.1.0) (2024-02-15)
 
 [Full Changelog](https://github.com/treydock/puppet-slurm/compare/v3.0.0...v3.1.0)
