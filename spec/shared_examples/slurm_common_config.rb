@@ -210,18 +210,14 @@ shared_examples_for 'slurm::common::config' do
     let(:param_override) { { cli_filter_lua_source: 'puppet:///cli_filter.lua' } }
 
     it do
-      if client || slurmctld
-        is_expected.to contain_file('/etc/slurm/cli_filter.lua').with(
-          ensure: 'file',
-          owner: 'root',
-          group: 'root',
-          mode: '0644',
-          source: 'puppet:///cli_filter.lua',
-          content: nil,
-        )
-      else
-        is_expected.not_to contain_file('/etc/slurm/cli_filter.lua')
-      end
+      is_expected.to contain_file('/etc/slurm/cli_filter.lua').with(
+        ensure: 'file',
+        owner: 'root',
+        group: 'root',
+        mode: '0644',
+        source: 'puppet:///cli_filter.lua',
+        content: nil,
+      )
     end
 
     context 'when configless' do
