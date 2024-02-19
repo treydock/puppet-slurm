@@ -11,7 +11,7 @@ describe 'slurm::job_container' do
                   ]).each do |_os, os_facts|
     let(:facts) { os_facts }
     let(:title) { '/dev/shm' }
-    let(:params) { { auto_base_path: true, base_path: '/dev/shm/slurm' } }
+    let(:params) { { auto_base_path: true, base_path: '/tmp', dirs: ['/dev/shm'] } }
 
     it { is_expected.to create_slurm__job_container('/dev/shm') }
     it { is_expected.to contain_class('slurm') }
@@ -19,7 +19,7 @@ describe 'slurm::job_container' do
     it do
       is_expected.to contain_concat__fragment('job_container.conf-/dev/shm').with(
         target: 'job_container.conf',
-        content: "AutoBasePath=true\nBasePath=/dev/shm/slurm",
+        content: "AutoBasePath=true\nBasePath=/tmp Dirs=/dev/shm",
         order: '50',
       )
     end

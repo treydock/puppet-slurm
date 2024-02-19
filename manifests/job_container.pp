@@ -4,6 +4,8 @@
 #   job_container.conf BasePath
 # @param auto_base_path
 #   job_container.conf AutoBasePath
+# @param dirs
+#   job_container.conf Dirs
 # @param init_script
 #   job_container.conf InitScript
 # @param node_name
@@ -14,6 +16,7 @@
 define slurm::job_container (
   Stdlib::Absolutepath $base_path,
   Boolean $auto_base_path                     = false,
+  Optional[Array[Stdlib::Absolutepath]] $dirs = undef,
   Optional[Stdlib::Absolutepath] $init_script = undef,
   Optional[String] $node_name                 = undef,
   Variant[String[1], Integer] $order = '50',
@@ -22,6 +25,12 @@ define slurm::job_container (
 
   $_base_path = "BasePath=${base_path}"
   $_auto_base_path = "AutoBasePath=${auto_base_path}"
+
+  if $dirs {
+    $_dirs = "Dirs=${dirs.join(',')}"
+  } else {
+    $_dirs = undef
+  }
 
   if $init_script {
     $_init_script = "InitScript=${init_script}"
@@ -35,17 +44,22 @@ define slurm::job_container (
     $node_param = undef
   }
 
-  $params = [
-    $node_param,
-    $_auto_base_path,
-    $_base_path,
-    $_init_script,
-  ].filter |$p| { $p =~ NotUndef }
-
   if $node_name {
+    $params = [
+      $node_param,
+      $_auto_base_path,
+      $_base_path,
+      $_dirs,
+      $_init_script,
+    ].filter |$p| { $p =~ NotUndef }
     $content = "${strip(join($params, ' '))}\n"
   } else {
-    $content = join($params, "\n")
+    $params = [
+      $_base_path,
+      $_dirs,
+      $_init_script,
+    ].filter |$p| { $p =~ NotUndef }
+    $content = "${_auto_base_path}\n${params.join(' ')}"
   }
 
   concat::fragment { "job_container.conf-${name}":
