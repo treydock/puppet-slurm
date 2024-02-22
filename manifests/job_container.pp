@@ -10,6 +10,8 @@
 #   job_container.conf InitScript
 # @param node_name
 #   job_container.conf NodeName
+# @param shared
+#   job_container.conf Shared
 # @param order
 #   Order in job_container.conf
 #
@@ -19,6 +21,7 @@ define slurm::job_container (
   Optional[Array[Stdlib::Absolutepath]] $dirs = undef,
   Optional[Stdlib::Absolutepath] $init_script = undef,
   Optional[String] $node_name                 = undef,
+  Optional[Boolean] $shared = undef,
   Variant[String[1], Integer] $order = '50',
 ) {
   include slurm
@@ -44,6 +47,12 @@ define slurm::job_container (
     $node_param = undef
   }
 
+  if $shared !~ Undef {
+    $shared_param = "Shared=${shared}"
+  } else {
+    $shared_param = undef
+  }
+
   if $node_name {
     $params = [
       $node_param,
@@ -51,6 +60,7 @@ define slurm::job_container (
       $_base_path,
       $_dirs,
       $_init_script,
+      $shared_param,
     ].filter |$p| { $p =~ NotUndef }
     $content = "${strip(join($params, ' '))}\n"
   } else {
@@ -58,6 +68,7 @@ define slurm::job_container (
       $_base_path,
       $_dirs,
       $_init_script,
+      $shared_param,
     ].filter |$p| { $p =~ NotUndef }
     $content = "${_auto_base_path}\n${params.join(' ')}"
   }
