@@ -174,8 +174,7 @@ shared_examples_for 'slurm::common::config' do
                                  'ConstrainSwapSpace=no',
                                  'MaxRAMPercent=100',
                                  'MaxSwapPercent=100',
-                                 'MinRAMSpace=30',
-                                 'SignalChildrenProcesses=no'
+                                 'MinRAMSpace=30'
                                ])
   end
 

@@ -397,7 +397,7 @@ class slurm (
   Integer $cgroup_max_swap_percent          = 100,
   Optional[Integer[0,100]] $cgroup_memory_swappiness = undef,
   Integer $cgroup_min_ram_space             = 30,
-  Boolean $cgroup_signal_child_processes = false,
+  Optional[Boolean] $cgroup_signal_child_processes = undef,
 
   # OCI
   String $oci_conf_template             = 'slurm/oci.conf.erb',
