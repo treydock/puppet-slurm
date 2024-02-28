@@ -1076,7 +1076,7 @@ Default value: `'slurmdbd'`
 
 ##### <a name="-slurm--slurmdbd_storage_port"></a>`slurmdbd_storage_port`
 
-Data type: `Stdlib::Port`
+Data type: `Variant[Stdlib::Port, String[0,0]]`
 
 
 

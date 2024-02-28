@@ -13,6 +13,8 @@
 # <%= key %>
 <%- elsif value.is_a?(Array) -%>
 <%= key %>=<%= value.join(',') %>
+<%- elsif value == '' -%>
+<%= key %>=""
 <%- elsif value.is_a?(Hash) -%>
 <%- v = value.map {|k,v| "#{k}=#{v}" }.join(',') %>
 <%= key %>=<%= v %>
