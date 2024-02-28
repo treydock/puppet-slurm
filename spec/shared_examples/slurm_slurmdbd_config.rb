@@ -74,6 +74,14 @@ shared_examples_for 'slurm::slurmdbd::config' do
     end
   end
 
+  context 'when slurmdbd_storage_port => ""' do
+    let(:param_override) { { slurmdbd_storage_port: '' } }
+
+    it 'overrides values' do
+      verify_contents(catalogue, 'slurmdbd.conf', ['StoragePort=""'])
+    end
+  end
+
   context 'when use_syslog => true' do
     let(:param_override) { { use_syslog: true } }
 
