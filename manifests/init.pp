@@ -37,6 +37,7 @@
 # @param reload_services
 # @param restart_services
 # @param slurmctld_conn_validator_timeout
+# @param reconfig_ignore_errors
 # @param manage_slurm_user
 # @param slurm_user_group
 # @param slurm_group_gid
@@ -240,6 +241,7 @@ class slurm (
   Boolean $reload_services                            = false,
   Boolean $restart_services                           = true,
   Integer $slurmctld_conn_validator_timeout           = 60,
+  Boolean $reconfig_ignore_errors = false,
 
   # User and group management
   Boolean $manage_slurm_user = true,
