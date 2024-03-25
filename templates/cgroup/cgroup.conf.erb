@@ -6,11 +6,8 @@
 # See man slurm.conf and man cgroup.conf for further
 # information on cgroup configuration parameters
 #--
-CgroupAutomount=<%= scope['slurm::cgroup_automount'] ? "yes" : "no" %>
 CgroupMountpoint=<%= scope['slurm::cgroup_mountpoint'] %>
-<%- if scope['slurm::cgroup_plugin'] -%>
 CgroupPlugin=<%= scope['slurm::cgroup_plugin'] %>
-<%- end -%>
 # task/cgroup plugin
 AllowedRAMSpace=<%= scope['slurm::cgroup_allowed_ram_space'] %>
 AllowedSwapSpace=<%= scope['slurm::cgroup_allowed_swap_space'] %>
@@ -24,3 +21,6 @@ MaxSwapPercent=<%= scope['slurm::cgroup_max_swap_percent'] %>
 MemorySwappiness=<%= scope['slurm::cgroup_memory_swappiness'] %>
 <%- end -%>
 MinRAMSpace=<%= scope['slurm::cgroup_min_ram_space'] %>
+<%- if scope['slurm::cgroup_signal_child_processes'] != nil %>
+SignalChildrenProcesses=<%= scope['slurm::cgroup_signal_child_processes'] ? 'yes' : 'no' %>
+<% end -%>

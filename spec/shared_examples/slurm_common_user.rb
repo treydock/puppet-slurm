@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
-shared_examples_for 'slurm::common::user' do
+shared_examples_for 'slurm::common::user' do |facts|
+  let(:slurm_user_shell) do
+    if facts[:os]['name'] == 'Debian'
+      '/usr/sbin/nologin'
+    else
+      '/sbin/nologin'
+    end
+  end
+
   it do
     is_expected.to contain_group('slurm').with(ensure: 'present',
                                                name: 'slurm',
@@ -14,7 +22,7 @@ shared_examples_for 'slurm::common::user' do
                                               name: 'slurm',
                                               uid: nil,
                                               gid: 'slurm',
-                                              shell: '/sbin/nologin',
+                                              shell: slurm_user_shell,
                                               home: '/var/lib/slurm',
                                               managehome: 'true',
                                               comment: 'SLURM User',

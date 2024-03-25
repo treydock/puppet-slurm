@@ -34,9 +34,7 @@ class slurm::common::config {
     $slurm::nodesets.each |$name, $_nodeset| {
       slurm::nodeset { $name: * => $_nodeset }
     }
-  }
 
-  if $slurm::manage_slurm_conf and ! $slurm::configless {
     concat { 'slurm-topology.conf':
       ensure => 'present',
       path   => $slurm::topology_conf_path,
@@ -139,35 +137,35 @@ class slurm::common::config {
       source  => $slurm::oci_conf_source,
       notify  => $slurm::service_notify,
     }
-  }
 
-  if ($slurm::client or $slurm::slurmctld) and ($slurm::cli_filter_lua_source or $slurm::cli_filter_lua_content) {
-    file { "${slurm::conf_dir}/cli_filter.lua":
-      ensure  => 'file',
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      source  => $slurm::cli_filter_lua_source,
-      content => $slurm::cli_filter_lua_content,
+    if $slurm::cli_filter_lua_source or $slurm::cli_filter_lua_content {
+      file { "${slurm::conf_dir}/cli_filter.lua":
+        ensure  => 'file',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        source  => $slurm::cli_filter_lua_source,
+        content => $slurm::cli_filter_lua_content,
+      }
+
+      if $slurm::slurmctld and $slurm::enable_configless {
+        File["${slurm::conf_dir}/cli_filter.lua"] ~> Exec['scontrol reconfig']
+      }
     }
 
-    if $slurm::slurmctld and $slurm::enable_configless {
-      File["${slurm::conf_dir}/cli_filter.lua"] ~> Exec['scontrol reconfig']
-    }
-  }
+    if $slurm::scrun_lua_source or $slurm::scrun_lua_content {
+      file { "${slurm::conf_dir}/scrun.lua":
+        ensure  => 'file',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        source  => $slurm::scrun_lua_source,
+        content => $slurm::scrun_lua_content,
+      }
 
-  if ($slurm::client or $slurm::slurmctld) and ($slurm::scrun_lua_source or $slurm::scrun_lua_content) {
-    file { "${slurm::conf_dir}/scrun.lua":
-      ensure  => 'file',
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      source  => $slurm::scrun_lua_source,
-      content => $slurm::scrun_lua_content,
-    }
-
-    if $slurm::slurmctld and $slurm::enable_configless {
-      File["${slurm::conf_dir}/scrun.lua"] ~> Exec['scontrol reconfig']
+      if $slurm::slurmctld and $slurm::enable_configless {
+        File["${slurm::conf_dir}/scrun.lua"] ~> Exec['scontrol reconfig']
+      }
     }
   }
 

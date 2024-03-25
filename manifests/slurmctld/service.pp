@@ -85,7 +85,14 @@ class slurm::slurmctld::service {
     hasrestart => true,
   }
 
+  if $slurm::reconfig_ignore_errors {
+    $reconfig_command = 'scontrol reconfig || exit 0'
+  } else {
+    $reconfig_command = 'scontrol reconfig'
+  }
+
   exec { 'scontrol reconfig':
+    command     => $reconfig_command,
     path        => '/usr/bin:/bin:/usr/sbin:/sbin',
     refreshonly => true,
   }

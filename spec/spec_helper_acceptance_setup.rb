@@ -11,7 +11,7 @@ RSpec.configure do |c|
   c.slurm_repo_baseurl = ENV['SLURM_BEAKER_repo_baseurl'] || nil
 
   c.add_setting :slurm_version
-  c.slurm_version = ENV['SLURM_BEAKER_version'] || '23.02.6'
+  c.slurm_version = ENV['SLURM_BEAKER_version'] || '23.11.5'
 
   if ENV['BEAKER_set'] =~ %r{cluster}
     slurmctld_host = 'slurmctld'
@@ -50,8 +50,12 @@ defaults:
   datadir: data
   data_hash: yaml_data
 hierarchy:
+  - name: osfamily-osmajor
+    path: "%{facts.os.family}%{facts.os.release.major}.yaml"
   - name: virtual
     path: "%{facts.virtual}.yaml"
+  - name: "Munge"
+    path: "munge.yaml"
   - name: "common"
     path: "common.yaml"
     HIERA
@@ -67,13 +71,9 @@ slurm::slurm_conf_override:
   JobAcctGatherType: 'jobacct_gather/linux'
   ProctrackType: 'proctrack/linuxproc'
   TaskPlugin: 'task/affinity'
-slurm::manage_slurm_user: false
-slurm::slurm_user: root
-slurm::slurm_user_group: root
 slurm::auth_alt_types:
   - auth/jwt
 slurm::jwt_key_source: 'puppet:///modules/site_slurm/jwt.key'
-slurm::cgroup_plugin: 'cgroup/v1'
 slurm::partitions:
   general:
     default: 'YES'
@@ -82,8 +82,33 @@ slurm::nodes:
   slurmd:
     cpus: 1
     HIERA
+    rhel7_yaml = <<-RHEL7
+slurm::cgroup_plugin: 'cgroup/v1'
+    RHEL7
     create_remote_file(hosts, '/etc/puppetlabs/puppet/hiera.yaml', hiera_yaml)
     on hosts, 'mkdir -p /etc/puppetlabs/puppet/data'
     create_remote_file(hosts, '/etc/puppetlabs/puppet/data/common.yaml', common_yaml)
+    create_remote_file(hosts, '/etc/puppetlabs/puppet/data/RedHat7.yaml', rhel7_yaml)
+    # Hack to work around issues with recent systemd and docker and running services as non-root
+    if fact('os.family') == 'RedHat' && fact('os.release.major').to_i >= 7
+      service_hack = <<-HACK
+[Service]
+User=root
+Group=root
+      HACK
+      on hosts, 'mkdir -p /etc/systemd/system/munge.service.d'
+      create_remote_file(hosts, '/etc/systemd/system/munge.service.d/hack.conf', service_hack)
+
+      munge_yaml = <<-MUNGE
+munge::manage_user: false
+munge::user: root
+munge::group: root
+munge::lib_dir: /var/lib/munge
+munge::log_dir: /var/log/munge
+munge::conf_dir: /etc/munge
+munge::run_dir: /run/munge
+      MUNGE
+      create_remote_file(hosts, '/etc/puppetlabs/puppet/data/munge.yaml', munge_yaml)
+    end
   end
 end

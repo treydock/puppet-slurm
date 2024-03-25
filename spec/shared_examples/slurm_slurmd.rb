@@ -10,7 +10,7 @@ shared_examples_for 'slurm::slurmd' do |facts|
   it { is_expected.to contain_class('slurm::slurmd::config').that_comes_before('Class[slurm::slurmd::service]') }
   it { is_expected.to contain_class('slurm::slurmd::service') }
 
-  it_behaves_like 'slurm::common::user'
+  it_behaves_like 'slurm::common::user', facts
   if facts[:os]['family'] == 'Debian'
     it_behaves_like 'slurm::common::install::apt', facts
     it_behaves_like 'slurm::common::install::apt-slurmd'
