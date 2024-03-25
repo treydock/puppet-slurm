@@ -337,7 +337,7 @@ class slurm (
   Stdlib::Host $slurmdbd_storage_host  = 'localhost',
   String[1] $slurmdbd_storage_loc   = 'slurm_acct_db',
   String[1] $slurmdbd_storage_pass  = 'slurmdbd',
-  Stdlib::Port $slurmdbd_storage_port  = 3306,
+  Variant[Stdlib::Port, String[0,0]] $slurmdbd_storage_port  = 3306,
   String[1] $slurmdbd_storage_type  = 'accounting_storage/mysql',
   String[1] $slurmdbd_storage_user  = 'slurmdbd',
   String[1] $slurmdbd_db_charset = 'utf8',
