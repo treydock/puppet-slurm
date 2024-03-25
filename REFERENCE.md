@@ -105,6 +105,7 @@ The following parameters are available in the `slurm` class:
 * [`reload_services`](#-slurm--reload_services)
 * [`restart_services`](#-slurm--restart_services)
 * [`slurmctld_conn_validator_timeout`](#-slurm--slurmctld_conn_validator_timeout)
+* [`reconfig_ignore_errors`](#-slurm--reconfig_ignore_errors)
 * [`manage_slurm_user`](#-slurm--manage_slurm_user)
 * [`slurm_user_group`](#-slurm--slurm_user_group)
 * [`slurm_group_gid`](#-slurm--slurm_group_gid)
@@ -213,7 +214,6 @@ The following parameters are available in the `slurm` class:
 * [`slurmrestd_restart_on_failure`](#-slurm--slurmrestd_restart_on_failure)
 * [`cgroup_conf_template`](#-slurm--cgroup_conf_template)
 * [`cgroup_conf_source`](#-slurm--cgroup_conf_source)
-* [`cgroup_automount`](#-slurm--cgroup_automount)
 * [`cgroup_mountpoint`](#-slurm--cgroup_mountpoint)
 * [`cgroup_plugin`](#-slurm--cgroup_plugin)
 * [`cgroup_allowed_ram_space`](#-slurm--cgroup_allowed_ram_space)
@@ -226,6 +226,7 @@ The following parameters are available in the `slurm` class:
 * [`cgroup_max_swap_percent`](#-slurm--cgroup_max_swap_percent)
 * [`cgroup_memory_swappiness`](#-slurm--cgroup_memory_swappiness)
 * [`cgroup_min_ram_space`](#-slurm--cgroup_min_ram_space)
+* [`cgroup_signal_child_processes`](#-slurm--cgroup_signal_child_processes)
 * [`oci_conf_template`](#-slurm--oci_conf_template)
 * [`oci_conf_source`](#-slurm--oci_conf_source)
 * [`oci_container_path`](#-slurm--oci_container_path)
@@ -368,7 +369,7 @@ Data type: `String`
 
 
 
-Default value: `'21.08.8'`
+Default value: `'23.11.5'`
 
 ##### <a name="-slurm--source_dependencies"></a>`source_dependencies`
 
@@ -529,6 +530,14 @@ Data type: `Integer`
 
 
 Default value: `60`
+
+##### <a name="-slurm--reconfig_ignore_errors"></a>`reconfig_ignore_errors`
+
+Data type: `Boolean`
+
+
+
+Default value: `false`
 
 ##### <a name="-slurm--manage_slurm_user"></a>`manage_slurm_user`
 
@@ -1394,14 +1403,6 @@ Data type: `Optional[String]`
 
 Default value: `undef`
 
-##### <a name="-slurm--cgroup_automount"></a>`cgroup_automount`
-
-Data type: `Boolean`
-
-
-
-Default value: `true`
-
 ##### <a name="-slurm--cgroup_mountpoint"></a>`cgroup_mountpoint`
 
 Data type: `Stdlib::Absolutepath`
@@ -1412,11 +1413,11 @@ Default value: `'/sys/fs/cgroup'`
 
 ##### <a name="-slurm--cgroup_plugin"></a>`cgroup_plugin`
 
-Data type: `Optional[String]`
+Data type: `String`
 
 
 
-Default value: `undef`
+Default value: `'autodetect'`
 
 ##### <a name="-slurm--cgroup_allowed_ram_space"></a>`cgroup_allowed_ram_space`
 
@@ -1497,6 +1498,14 @@ Data type: `Integer`
 
 
 Default value: `30`
+
+##### <a name="-slurm--cgroup_signal_child_processes"></a>`cgroup_signal_child_processes`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
 
 ##### <a name="-slurm--oci_conf_template"></a>`oci_conf_template`
 
@@ -2056,8 +2065,10 @@ The following parameters are available in the `slurm::job_container` defined typ
 
 * [`base_path`](#-slurm--job_container--base_path)
 * [`auto_base_path`](#-slurm--job_container--auto_base_path)
+* [`dirs`](#-slurm--job_container--dirs)
 * [`init_script`](#-slurm--job_container--init_script)
 * [`node_name`](#-slurm--job_container--node_name)
+* [`shared`](#-slurm--job_container--shared)
 * [`order`](#-slurm--job_container--order)
 
 ##### <a name="-slurm--job_container--base_path"></a>`base_path`
@@ -2074,6 +2085,14 @@ job_container.conf AutoBasePath
 
 Default value: `false`
 
+##### <a name="-slurm--job_container--dirs"></a>`dirs`
+
+Data type: `Optional[Array[Stdlib::Absolutepath]]`
+
+job_container.conf Dirs
+
+Default value: `undef`
+
 ##### <a name="-slurm--job_container--init_script"></a>`init_script`
 
 Data type: `Optional[Stdlib::Absolutepath]`
@@ -2087,6 +2106,14 @@ Default value: `undef`
 Data type: `Optional[String]`
 
 job_container.conf NodeName
+
+Default value: `undef`
+
+##### <a name="-slurm--job_container--shared"></a>`shared`
+
+Data type: `Optional[Boolean]`
+
+job_container.conf Shared
 
 Default value: `undef`
 
