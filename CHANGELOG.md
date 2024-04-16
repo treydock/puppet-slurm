@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v4.0.1](https://github.com/treydock/puppet-slurm/tree/v4.0.1) (2024-04-16)
+
+[Full Changelog](https://github.com/treydock/puppet-slurm/compare/v4.0.0...v4.0.1)
+
+### Fixed
+
+- allow slurmdbd\_storage\_port to be an empty string \(support socket connection to DB\) [\#58](https://github.com/treydock/puppet-slurm/pull/58) ([jakerundall](https://github.com/jakerundall))
+
 ## [v4.0.0](https://github.com/treydock/puppet-slurm/tree/v4.0.0) (2024-03-25)
 
 [Full Changelog](https://github.com/treydock/puppet-slurm/compare/v3.2.0...v4.0.0)
