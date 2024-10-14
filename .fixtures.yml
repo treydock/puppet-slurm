@@ -8,7 +8,7 @@ fixtures:
       repo: puppetlabs/stdlib
     firewall:
       repo: puppetlabs/firewall
-      ref: '5.0.0'
+      ref: '6.0.0'
     mysql:
       repo: puppetlabs/mysql
     concat:

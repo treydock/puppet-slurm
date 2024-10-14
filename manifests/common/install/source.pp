@@ -7,7 +7,7 @@ class slurm::common::install::source {
     $package_require = undef
   }
 
-  ensure_packages($slurm::source_dependencies)
+  stdlib::ensure_packages($slurm::source_dependencies)
   $slurm::source_dependencies.each |$package| {
     if $package_require {
       $package_require -> Package[$package]

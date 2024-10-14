@@ -10,23 +10,23 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">=4.25.1 <9.0.0"
+      "version_requirement": ">=9.0.0 <10.0.0"
     },
     {
       "name": "puppetlabs/firewall",
-      "version_requirement": ">=1.0.0 <6.0.0"
+      "version_requirement": ">=6.0.0 <7.0.0"
     },
     {
       "name": "puppetlabs/concat",
-      "version_requirement": ">=1.0.0 <9.0.0"
+      "version_requirement": ">=1.0.0 <10.0.0"
     },
     {
       "name": "puppetlabs/mysql",
-      "version_requirement": ">=2.3.0 <15.0.0"
+      "version_requirement": ">=2.3.0 <17.0.0"
     },
     {
       "name": "puppet/epel",
-      "version_requirement": ">= 3.0.0 <5.0.0"
+      "version_requirement": ">= 3.0.0 <6.0.0"
     },
     {
       "name": "puppet/augeasproviders_sysctl",
@@ -42,7 +42,7 @@
     },
     {
       "name": "puppet/systemd",
-      "version_requirement": ">= 3.1.0 <7.0.0"
+      "version_requirement": ">= 3.1.0 <8.0.0"
     },
     {
       "name": "puppet/archive",
@@ -50,7 +50,7 @@
     },
     {
       "name": "puppet/alternatives",
-      "version_requirement": ">= 2.1.0 <6.0.0"
+      "version_requirement": ">= 2.1.0 <7.0.0"
     },
     {
       "name": "treydock/slurm_providers",
