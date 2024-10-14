@@ -2,7 +2,7 @@
 .github/workflows/ci.yaml:
   acceptance_matrix:
     set:
-      - el7
+      - ---el7
       - el8
       - el9
       - debian-11

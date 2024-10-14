@@ -578,8 +578,8 @@ class slurm (
   }
 
   $_slurm_conf_override = $slurm_conf_override - ['SlurmctldParameters']
-  $slurm_conf_defaults  = merge($slurm::params::slurm_conf_defaults, $slurm_conf_local_defaults)
-  $slurm_conf           = merge($slurm_conf_defaults, $_slurm_conf_override)
+  $slurm_conf_defaults  = $slurm::params::slurm_conf_defaults + $slurm_conf_local_defaults
+  $slurm_conf           = $slurm_conf_defaults + $_slurm_conf_override
 
   $slurmdbd_conf_local_defaults = {
     'ArchiveDir' => $slurmdbd_archive_dir,
@@ -597,8 +597,8 @@ class slurm (
     'StorageUser' => $slurmdbd_storage_user,
   }
 
-  $slurmdbd_conf_defaults = merge($slurm::params::slurmdbd_conf_defaults, $slurmdbd_conf_local_defaults)
-  $slurmdbd_conf          = merge($slurmdbd_conf_defaults, $slurmdbd_conf_override)
+  $slurmdbd_conf_defaults = $slurm::params::slurmdbd_conf_defaults + $slurmdbd_conf_local_defaults
+  $slurmdbd_conf          = $slurmdbd_conf_defaults + $slurmdbd_conf_override
 
   if $cgroup_conf_source {
     $cgroup_conf_content = undef
