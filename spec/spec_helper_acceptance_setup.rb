@@ -95,9 +95,15 @@ slurm::cgroup_plugin: 'cgroup/v1'
 [Service]
 User=root
 Group=root
+ExecStart=
+ExecStart=/usr/sbin/munged --force
       HACK
       on hosts, 'mkdir -p /etc/systemd/system/munge.service.d'
       create_remote_file(hosts, '/etc/systemd/system/munge.service.d/hack.conf', service_hack)
+      tmp_hack = <<-HACK
+d /run/munge 0755 root root -
+      HACK
+      create_remote_file(hosts, '/usr/lib/tmpfiles.d/munge.conf', tmp_hack)
 
       munge_yaml = <<-MUNGE
 munge::manage_user: false
