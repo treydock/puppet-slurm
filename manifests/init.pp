@@ -259,7 +259,7 @@ class slurm (
   # Munge key
   Boolean $manage_munge                 = false,
   Optional[String] $munge_key_source    = undef,
-  Optional[String] $munge_key_content   = undef,
+  Optional[Variant[String,Binary]] $munge_key_content   = undef,
 
   # Behavior overrides
   Boolean $manage_slurm_conf             = true,
