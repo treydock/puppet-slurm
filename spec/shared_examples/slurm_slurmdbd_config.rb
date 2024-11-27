@@ -6,7 +6,7 @@ shared_examples_for 'slurm::slurmdbd::config' do
                                                       path: '/etc/slurm/slurmdbd.conf',
                                                       owner: 'slurm',
                                                       group: 'slurm',
-                                                      mode: '0600')
+                                                      mode: '0600',)
   end
 
   it do
@@ -38,8 +38,8 @@ shared_examples_for 'slurm::slurmdbd::config' do
                                  'StorageType=accounting_storage/mysql',
                                  'StorageUser=slurmdbd',
                                  'TCPTimeout=2',
-                                 'TrackSlurmctldDown=no'
-                               ])
+                                 'TrackSlurmctldDown=no',
+                               ],)
   end
 
   context 'when slurmdbd_conf_override defined' do
@@ -54,15 +54,15 @@ shared_examples_for 'slurm::slurmdbd::config' do
     let :param_override do
       {
         auth_alt_types: ['auth/jwt'],
-        jwt_key_source: 'puppet:///dne'
+        jwt_key_source: 'puppet:///dne',
       }
     end
 
     it 'overrides values' do
       verify_fragment_contents(catalogue, 'slurm.conf-config', [
                                  'AuthAltTypes=auth/jwt',
-                                 'AuthAltParameters=jwt_key=/etc/slurm/jwt.key'
-                               ])
+                                 'AuthAltParameters=jwt_key=/etc/slurm/jwt.key',
+                               ],)
     end
   end
 

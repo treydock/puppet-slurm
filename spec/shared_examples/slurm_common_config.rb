@@ -122,8 +122,8 @@ shared_examples_for 'slurm::common::config' do
                                      'UnkillableStepTimeout=60',
                                      'UsePAM=0',
                                      'VSizeFactor=0',
-                                     'WaitTime=0'
-                                   ])
+                                     'WaitTime=0',
+                                   ],)
   end
 
   it do
@@ -131,7 +131,7 @@ shared_examples_for 'slurm::common::config' do
                                                               path: '/etc/slurm/topology.conf',
                                                               owner: 'root',
                                                               group: 'root',
-                                                              mode: '0644')
+                                                              mode: '0644',)
   end
 
   it do
@@ -140,7 +140,7 @@ shared_examples_for 'slurm::common::config' do
                                                             path: '/etc/slurm/gres.conf',
                                                             owner: 'root',
                                                             group: 'root',
-                                                            mode: '0644')
+                                                            mode: '0644',)
     else
       is_expected.not_to contain_concat('slurm-gres.conf')
     end
@@ -151,7 +151,7 @@ shared_examples_for 'slurm::common::config' do
                                                          path: '/etc/slurm/plugstack.conf',
                                                          owner: 'root',
                                                          group: 'root',
-                                                         mode: '0644')
+                                                         mode: '0644',)
   end
 
   it do
@@ -159,7 +159,7 @@ shared_examples_for 'slurm::common::config' do
                                                           path: '/etc/slurm/cgroup.conf',
                                                           owner: 'root',
                                                           group: 'root',
-                                                          mode: '0644')
+                                                          mode: '0644',)
   end
 
   it 'has cgroup.conf with valid contents' do
@@ -174,8 +174,8 @@ shared_examples_for 'slurm::common::config' do
                                  'ConstrainSwapSpace=no',
                                  'MaxRAMPercent=100',
                                  'MaxSwapPercent=100',
-                                 'MinRAMSpace=30'
-                               ])
+                                 'MinRAMSpace=30',
+                               ],)
   end
 
   it do
@@ -183,7 +183,7 @@ shared_examples_for 'slurm::common::config' do
                                                        path: '/etc/slurm/oci.conf',
                                                        owner: 'root',
                                                        group: 'root',
-                                                       mode: '0644')
+                                                       mode: '0644',)
   end
 
   it 'has oci.conf with valid contents' do
@@ -191,8 +191,8 @@ shared_examples_for 'slurm::common::config' do
                                  'CreateEnvFile=disabled',
                                  'DisableCleanup=false',
                                  'MountSpoolDir="/var/run/slurm/"',
-                                 'IgnoreFileConfigJson=false'
-                               ])
+                                 'IgnoreFileConfigJson=false',
+                               ],)
   end
 
   it { is_expected.not_to contain_file('/etc/slurm/cli_filter.lua') }
@@ -202,7 +202,7 @@ shared_examples_for 'slurm::common::config' do
 
   it do
     is_expected.to contain_sysctl('net.core.somaxconn').with(ensure: 'present',
-                                                             value: '1024')
+                                                             value: '1024',)
   end
 
   context 'when cli_filter source is defined' do
@@ -308,10 +308,10 @@ shared_examples_for 'slurm::common::config' do
             'bf_continue' => '',
             'defer' => '',
             'batch_sched_delay' => '3',
-            'bf_max_job_start' => 0
+            'bf_max_job_start' => 0,
           },
-          'TaskPlugin' => ['task/affinity', 'task/cgroup']
-        }
+          'TaskPlugin' => ['task/affinity', 'task/cgroup'],
+        },
       }
     end
 
@@ -321,8 +321,8 @@ shared_examples_for 'slurm::common::config' do
                                  'PreemptType=preempt/partition_prio',
                                  'ProctrackType=proctrack/linuxproc',
                                  'SchedulerParameters=bf_continue,defer,batch_sched_delay=3,bf_max_job_start=0',
-                                 'TaskPlugin=task/affinity,task/cgroup'
-                               ])
+                                 'TaskPlugin=task/affinity,task/cgroup',
+                               ],)
     end
   end
 
@@ -330,7 +330,7 @@ shared_examples_for 'slurm::common::config' do
     let :param_override do
       {
         auth_alt_types: ['auth/jwt'],
-        jwt_key_source: 'puppet:///dne'
+        jwt_key_source: 'puppet:///dne',
       }
     end
     let(:slurmctld) { true }
@@ -338,8 +338,8 @@ shared_examples_for 'slurm::common::config' do
     it 'enables JWT auth' do
       verify_fragment_contents(catalogue, 'slurm.conf-config', [
                                  'AuthAltTypes=auth/jwt',
-                                 'AuthAltParameters=jwt_key=/etc/slurm/jwt.key'
-                               ])
+                                 'AuthAltParameters=jwt_key=/etc/slurm/jwt.key',
+                               ],)
     end
 
     it 'defines JWT key' do
@@ -359,16 +359,16 @@ shared_examples_for 'slurm::common::config' do
       {
         slurmctld_host: [
           'slurmctld1(10.0.0.1)',
-          'slurmctld2(10.0.0.2)'
-        ]
+          'slurmctld2(10.0.0.2)',
+        ],
       }
     end
 
     it 'overrides values' do
       verify_fragment_contents(catalogue, 'slurm.conf-config', [
                                  'SlurmctldHost=slurmctld1(10.0.0.1)',
-                                 'SlurmctldHost=slurmctld2(10.0.0.2)'
-                               ])
+                                 'SlurmctldHost=slurmctld2(10.0.0.2)',
+                               ],)
     end
   end
 
@@ -379,27 +379,27 @@ shared_examples_for 'slurm::common::config' do
           'DEFAULT' =>
              {
                'nodes' => 'c[0-9]',
-               'state' => 'UP'
+               'state' => 'UP',
              },
           'general' => {
             'max_nodes' => '1',
             'max_time' => '48:00:00',
-            'default' => 'YES'
-          }
-        }
+            'default' => 'YES',
+          },
+        },
       }
     end
 
     it do
       verify_exact_fragment_contents(catalogue, 'slurm.conf-partition-DEFAULT', [
-                                       'PartitionName=DEFAULT Nodes=c[0-9] State=UP'
-                                     ])
+                                       'PartitionName=DEFAULT Nodes=c[0-9] State=UP',
+                                     ],)
     end
 
     it do
       verify_exact_fragment_contents(catalogue, 'slurm.conf-partition-general', [
-                                       'PartitionName=general Default=YES MaxNodes=1 MaxTime=48:00:00 State=UP'
-                                     ])
+                                       'PartitionName=general Default=YES MaxNodes=1 MaxTime=48:00:00 State=UP',
+                                     ],)
     end
   end
 
@@ -410,26 +410,26 @@ shared_examples_for 'slurm::common::config' do
                    {
                      'cpus' => 4,
                      'node_hostname' => 'c01',
-                     'node_addr' => '10.0.0.1'
+                     'node_addr' => '10.0.0.1',
                    },
                  'c02' => {
                    'cpus' => 4,
                    'node_hostname' => 'c02',
-                   'node_addr' => '10.0.0.2'
-                 } }
+                   'node_addr' => '10.0.0.2',
+                 }, },
       }
     end
 
     it do
       verify_exact_fragment_contents(catalogue, 'slurm.conf-node-c01', [
-                                       'NodeName=c01 NodeHostname=c01 NodeAddr=10.0.0.1 CPUs=4 State=UNKNOWN'
-                                     ])
+                                       'NodeName=c01 NodeHostname=c01 NodeAddr=10.0.0.1 CPUs=4 State=UNKNOWN',
+                                     ],)
     end
 
     it do
       verify_exact_fragment_contents(catalogue, 'slurm.conf-node-c02', [
-                                       'NodeName=c02 NodeHostname=c02 NodeAddr=10.0.0.2 CPUs=4 State=UNKNOWN'
-                                     ])
+                                       'NodeName=c02 NodeHostname=c02 NodeAddr=10.0.0.2 CPUs=4 State=UNKNOWN',
+                                     ],)
     end
   end
 
@@ -438,24 +438,24 @@ shared_examples_for 'slurm::common::config' do
       {
         switches: { 'switch01' =>
                    {
-                     'nodes' => 'c01'
+                     'nodes' => 'c01',
                    },
                     'switch00' => {
-                      'switches' => 'switch01'
-                    } }
+                      'switches' => 'switch01',
+                    }, },
       }
     end
 
     it do
       verify_exact_fragment_contents(catalogue, 'slurm-topology.conf-switch01', [
-                                       'SwitchName=switch01 Nodes=c01'
-                                     ])
+                                       'SwitchName=switch01 Nodes=c01',
+                                     ],)
     end
 
     it do
       verify_exact_fragment_contents(catalogue, 'slurm-topology.conf-switch00', [
-                                       'SwitchName=switch00 Switches=switch01'
-                                     ])
+                                       'SwitchName=switch00 Switches=switch01',
+                                     ],)
     end
   end
 
@@ -465,29 +465,29 @@ shared_examples_for 'slurm::common::config' do
         greses: { 'gpu' =>
                    {
                      'node_name' => 'c0[1-2]',
-                     'file' => '/dev/nvidia[0-1]'
+                     'file' => '/dev/nvidia[0-1]',
                    },
                   'gpu2' => {
                     'gres_name' => 'gpu',
                     'node_name' => 'c0[3-4]',
-                    'file' => '/dev/nvidia[0-3]'
-                  } }
+                    'file' => '/dev/nvidia[0-3]',
+                  }, },
       }
     end
 
     it do
       if slurmd
         verify_exact_fragment_contents(catalogue, 'slurm-gres.conf-gpu', [
-                                         'NodeName=c0[1-2] Name=gpu File=/dev/nvidia[0-1]'
-                                       ])
+                                         'NodeName=c0[1-2] Name=gpu File=/dev/nvidia[0-1]',
+                                       ],)
       end
     end
 
     it do
       if slurmd
         verify_exact_fragment_contents(catalogue, 'slurm-gres.conf-gpu2', [
-                                         'NodeName=c0[3-4] Name=gpu File=/dev/nvidia[0-3]'
-                                       ])
+                                         'NodeName=c0[3-4] Name=gpu File=/dev/nvidia[0-3]',
+                                       ],)
       end
     end
   end
@@ -500,7 +500,7 @@ shared_examples_for 'slurm::common::config' do
         oci_run_time_delete: 'runc delete',
         oci_run_time_kill: 'runc kill',
         oci_run_time_query: 'runc query',
-        oci_run_time_run: 'runc run'
+        oci_run_time_run: 'runc run',
       }
     end
 
@@ -515,8 +515,8 @@ shared_examples_for 'slurm::common::config' do
                                    'RunTimeDelete="runc delete"',
                                    'RunTimeKill="runc kill"',
                                    'RunTimeQuery="runc query"',
-                                   'RunTimeRun="runc run"'
-                                 ])
+                                   'RunTimeRun="runc run"',
+                                 ],)
     end
   end
 

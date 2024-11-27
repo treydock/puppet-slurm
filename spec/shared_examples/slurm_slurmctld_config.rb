@@ -6,7 +6,7 @@ shared_examples_for 'slurm::slurmctld::config' do
                                                           path: '/var/spool/slurmctld.state',
                                                           owner: 'slurm',
                                                           group: 'slurm',
-                                                          mode: '0700')
+                                                          mode: '0700',)
   end
 
   it { is_expected.not_to contain_mount('StateSaveLocation') }
@@ -21,7 +21,7 @@ shared_examples_for 'slurm::slurmctld::config' do
                                                              device: '192.168.1.1:/slurm/state',
                                                              fstype: 'nfs',
                                                              options: 'rw,sync,noexec,nolock,auto',
-                                                             before: 'File[StateSaveLocation]')
+                                                             before: 'File[StateSaveLocation]',)
     end
   end
 end

@@ -14,13 +14,13 @@ shared_examples_for 'slurm::common::setup' do |facts|
                                                                 path: '/etc/profile.d/slurm.sh',
                                                                 owner: 'root',
                                                                 group: 'root',
-                                                                mode: '0644')
+                                                                mode: '0644',)
   end
 
   it do
     verify_contents(catalogue, '/etc/profile.d/slurm.sh', [
-                      'export SLURM_CONF="/etc/slurm/slurm.conf"'
-                    ])
+                      'export SLURM_CONF="/etc/slurm/slurm.conf"',
+                    ],)
   end
 
   it do
@@ -28,13 +28,13 @@ shared_examples_for 'slurm::common::setup' do |facts|
                                                                  path: '/etc/profile.d/slurm.csh',
                                                                  owner: 'root',
                                                                  group: 'root',
-                                                                 mode: '0644')
+                                                                 mode: '0644',)
   end
 
   it do
     verify_contents(catalogue, '/etc/profile.d/slurm.csh', [
-                      'setenv SLURM_CONF "/etc/slurm/slurm.conf"'
-                    ])
+                      'setenv SLURM_CONF "/etc/slurm/slurm.conf"',
+                    ],)
   end
 
   it do
@@ -42,7 +42,7 @@ shared_examples_for 'slurm::common::setup' do |facts|
                                                       path: '/etc/slurm',
                                                       owner: 'root',
                                                       group: 'root',
-                                                      mode: '0755')
+                                                      mode: '0755',)
   end
 
   it do
@@ -50,7 +50,7 @@ shared_examples_for 'slurm::common::setup' do |facts|
       is_expected.to contain_file('/var/log/slurm').with(ensure: 'directory',
                                                          owner: 'slurm',
                                                          group: 'slurm',
-                                                         mode: '0700')
+                                                         mode: '0700',)
     else
       is_expected.not_to contain_file('/var/log/slurm')
     end
@@ -75,8 +75,8 @@ shared_examples_for 'slurm::common::setup' do |facts|
                                                              'pkill -x --signal SIGUSR2 slurmctld',
                                                              'pkill -x --signal SIGUSR2 slurmd',
                                                              'pkill -x --signal SIGUSR2 slurmdbd',
-                                                             'exit 0'
-                                                           ])
+                                                             'exit 0',
+                                                           ],)
     else
       is_expected.not_to contain_logrotate__rule('slurm')
     end
@@ -87,14 +87,14 @@ shared_examples_for 'slurm::common::setup' do |facts|
 
     it do
       verify_contents(catalogue, '/etc/profile.d/slurm.sh', [
-                        'export FOO="bar"'
-                      ])
+                        'export FOO="bar"',
+                      ],)
     end
 
     it do
       verify_contents(catalogue, '/etc/profile.d/slurm.csh', [
-                        'setenv FOO "bar"'
-                      ])
+                        'setenv FOO "bar"',
+                      ],)
     end
   end
 
@@ -112,7 +112,7 @@ shared_examples_for 'slurm::common::setup' do |facts|
         is_expected.to contain_logrotate__rule('slurm').with(
           postrotate: [
             "/bin/kill -HUP `cat #{syslog_pid} 2> /dev/null` 2> /dev/null || true",
-            'exit 0'
+            'exit 0',
           ],
         )
       else
@@ -129,7 +129,7 @@ shared_examples_for 'slurm::common::setup' do |facts|
             postrotate: [
               "/bin/kill -HUP `cat #{syslog_pid} 2> /dev/null` 2> /dev/null || true",
               'pkill -x --signal SIGUSR2 slurmctld',
-              'exit 0'
+              'exit 0',
             ],
           )
         end
