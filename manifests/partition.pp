@@ -18,6 +18,7 @@
 # @param deny_qos
 # @param default_time
 # @param disable_root_jobs
+# @param exclusive_topo
 # @param exclusive_user
 # @param grace_time
 # @param hidden
@@ -64,6 +65,7 @@ define slurm::partition (
   Optional[Variant[String[1], Array[String[1]]]] $deny_qos = undef,
   Optional[String[1]] $default_time = undef,
   Optional[Slurm::YesNo] $disable_root_jobs = undef,
+  Optional[Slurm::YesNo] $exclusive_topo = undef,
   Optional[Slurm::YesNo] $exclusive_user = undef,
   Optional[Variant[String[1], Integer]] $grace_time = undef,
   Optional[Slurm::YesNo] $hidden = undef,
@@ -112,6 +114,7 @@ define slurm::partition (
     'DenyAccounts' => $deny_accounts,
     'DenyQos' => $deny_qos,
     'DisableRootJobs' => $disable_root_jobs,
+    'ExclusiveTopo' => $exclusive_topo,
     'ExclusiveUser' => $exclusive_user,
     'GraceTime' => $grace_time,
     'Hidden' => $hidden,
