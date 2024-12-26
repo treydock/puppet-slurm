@@ -645,7 +645,7 @@ Default value: `undef`
 
 ##### <a name="-slurm--munge_key_content"></a>`munge_key_content`
 
-Data type: `Optional[String]`
+Data type: `Optional[Variant[String,Binary]]`
 
 
 
@@ -2428,6 +2428,7 @@ The following parameters are available in the `slurm::partition` defined type:
 * [`deny_qos`](#-slurm--partition--deny_qos)
 * [`default_time`](#-slurm--partition--default_time)
 * [`disable_root_jobs`](#-slurm--partition--disable_root_jobs)
+* [`exclusive_topo`](#-slurm--partition--exclusive_topo)
 * [`exclusive_user`](#-slurm--partition--exclusive_user)
 * [`grace_time`](#-slurm--partition--grace_time)
 * [`hidden`](#-slurm--partition--hidden)
@@ -2578,6 +2579,14 @@ Data type: `Optional[String[1]]`
 Default value: `undef`
 
 ##### <a name="-slurm--partition--disable_root_jobs"></a>`disable_root_jobs`
+
+Data type: `Optional[Slurm::YesNo]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--partition--exclusive_topo"></a>`exclusive_topo`
 
 Data type: `Optional[Slurm::YesNo]`
 
