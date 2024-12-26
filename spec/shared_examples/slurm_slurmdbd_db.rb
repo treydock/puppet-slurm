@@ -5,7 +5,7 @@ shared_examples_for 'slurm::slurmdbd::db' do
     is_expected.to contain_mysql__db('slurm_acct_db').with(user: 'slurmdbd',
                                                            password: 'slurmdbd',
                                                            host: 'localhost',
-                                                           grant: ['ALL'])
+                                                           grant: ['ALL'],)
   end
 
   context 'when export_database => true' do

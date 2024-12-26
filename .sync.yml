@@ -1,5 +1,6 @@
 ---
 .github/workflows/ci.yaml:
+  acceptance_name: '${{ matrix.puppet }} ${{ matrix.set }} (slurm=${{ matrix.slurm_version }})'
   acceptance_matrix:
     set:
       - ---el7
@@ -11,6 +12,16 @@
     puppet:
       - puppet7
       - puppet8
+    slurm_version:
+      - '23.11.10'
+      - '24.05.4'
+  #acceptance_includes:
+  #  - set: el8
+  #    puppet: puppet7
+  #    slurm_version: '24.05.4'
+  #  - set: el9
+  #    puppet: puppet7
+  #    slurm_version: '24.05.4'
 .gitlab-ci.yml:
   delete: true
 .rubocop.yml:

@@ -5,7 +5,7 @@ shared_examples_for 'slurm::slurmctld::service' do
     is_expected.to contain_service('slurmctld').with(ensure: 'running',
                                                      enable: 'true',
                                                      hasstatus: 'true',
-                                                     hasrestart: 'true')
+                                                     hasrestart: 'true',)
   end
 
   it do

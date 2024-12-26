@@ -11,7 +11,7 @@ RSpec.configure do |c|
   c.slurm_repo_baseurl = ENV['SLURM_BEAKER_repo_baseurl'] || nil
 
   c.add_setting :slurm_version
-  c.slurm_version = ENV['SLURM_BEAKER_version'] || '23.11.5'
+  c.slurm_version = ENV['BEAKER_slurm_version'] || '23.11.5'
 
   if ENV['BEAKER_set'] =~ %r{cluster}
     slurmctld_host = 'slurmctld'
@@ -82,39 +82,10 @@ slurm::nodes:
   slurmd:
     cpus: 1
     HIERA
-    rhel7_yaml = <<-RHEL7
-slurm::cgroup_plugin: 'cgroup/v1'
-    RHEL7
     create_remote_file(hosts, '/etc/puppetlabs/puppet/hiera.yaml', hiera_yaml)
     on hosts, 'mkdir -p /etc/puppetlabs/puppet/data'
     create_remote_file(hosts, '/etc/puppetlabs/puppet/data/common.yaml', common_yaml)
-    create_remote_file(hosts, '/etc/puppetlabs/puppet/data/RedHat7.yaml', rhel7_yaml)
-    # Hack to work around issues with recent systemd and docker and running services as non-root
-    if fact('os.family') == 'RedHat' && fact('os.release.major').to_i >= 7
-      service_hack = <<-HACK
-[Service]
-User=root
-Group=root
-ExecStart=
-ExecStart=/usr/sbin/munged --force
-      HACK
-      on hosts, 'mkdir -p /etc/systemd/system/munge.service.d'
-      create_remote_file(hosts, '/etc/systemd/system/munge.service.d/hack.conf', service_hack)
-      tmp_hack = <<-HACK
-d /run/munge 0755 root root -
-      HACK
-      create_remote_file(hosts, '/usr/lib/tmpfiles.d/munge.conf', tmp_hack)
-
-      munge_yaml = <<-MUNGE
-munge::manage_user: false
-munge::user: root
-munge::group: root
-munge::lib_dir: /var/lib/munge
-munge::log_dir: /var/log/munge
-munge::conf_dir: /etc/munge
-munge::run_dir: /run/munge
-      MUNGE
-      create_remote_file(hosts, '/etc/puppetlabs/puppet/data/munge.yaml', munge_yaml)
-    end
+    # For some reason /etc ends up with wrong permissions.
+    on hosts, 'chmod 0755 /etc'
   end
 end

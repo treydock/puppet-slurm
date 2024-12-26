@@ -6,8 +6,8 @@ describe 'slurm::spank' do
   on_supported_os(supported_os: [
                     {
                       'operatingsystem' => 'RedHat',
-                      'operatingsystemrelease' => ['7']
-                    }
+                      'operatingsystemrelease' => ['7'],
+                    },
                   ]).each do |_os, os_facts|
     let(:facts) { os_facts }
     let(:title) { 'x11' }
@@ -20,7 +20,7 @@ describe 'slurm::spank' do
     it do
       is_expected.to contain_package('SLURM SPANK x11 package').only_with(ensure: 'installed',
                                                                           name: 'slurm-spank-x11',
-                                                                          notify: ['Service[slurmd]'])
+                                                                          notify: ['Service[slurmd]'],)
     end
 
     it do
@@ -37,8 +37,8 @@ describe 'slurm::spank' do
 
       it do
         verify_fragment_contents(catalogue, 'plugstack.conf-x11', [
-                                   'required x11.so'
-                                 ])
+                                   'required x11.so',
+                                 ],)
       end
     end
 
@@ -53,8 +53,8 @@ describe 'slurm::spank' do
 
       it do
         verify_fragment_contents(catalogue, 'plugstack.conf-x11', [
-                                   'optional x11.so ssh_cmd=ssh helpertask_cmd=2>/tmp/log'
-                                 ])
+                                   'optional x11.so ssh_cmd=ssh helpertask_cmd=2>/tmp/log',
+                                 ],)
       end
     end
 
@@ -63,8 +63,8 @@ describe 'slurm::spank' do
 
       it do
         verify_fragment_contents(catalogue, 'plugstack.conf-x11', [
-                                   'optional x11.so ssh_cmd=ssh helpertask_cmd=2>/tmp/log'
-                                 ])
+                                   'optional x11.so ssh_cmd=ssh helpertask_cmd=2>/tmp/log',
+                                 ],)
       end
     end
 
@@ -73,8 +73,8 @@ describe 'slurm::spank' do
 
       it do
         verify_fragment_contents(catalogue, 'plugstack.conf-x11', [
-                                   'optional x11.so helpertask_cmd=2>/tmp/log ssh_cmd=ssh'
-                                 ])
+                                   'optional x11.so helpertask_cmd=2>/tmp/log ssh_cmd=ssh',
+                                 ],)
       end
     end
 
@@ -95,9 +95,9 @@ describe 'slurm::spank' do
             'conf' => '/etc/auks/auks.conf',
             'default' => 'enabled',
             'spankstackcred' => 'no',
-            'minimum_uid' => '0'
+            'minimum_uid' => '0',
           },
-          package_name: 'auks-slurm'
+          package_name: 'auks-slurm',
         }
       end
 
@@ -105,8 +105,8 @@ describe 'slurm::spank' do
 
       it do
         verify_fragment_contents(catalogue, 'plugstack.conf-auks', [
-                                   'required auks.so conf=/etc/auks/auks.conf default=enabled spankstackcred=no minimum_uid=0'
-                                 ])
+                                   'required auks.so conf=/etc/auks/auks.conf default=enabled spankstackcred=no minimum_uid=0',
+                                 ],)
       end
     end
 

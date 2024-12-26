@@ -8,12 +8,12 @@ def packages
         'libslurm-perl',
         'libpmi0',
         'libpmi2-0',
-        'slurm-client'
+        'slurm-client',
       ],
       slurmd: 'slurmd',
       slurmctld: 'slurmctld',
       slurmdbd: 'slurmdbd',
-      slurmrestd: nil
+      slurmrestd: nil,
     }
   else
     {
@@ -24,12 +24,12 @@ def packages
         'slurm-example-configs',
         'slurm-perlapi',
         'slurm-libpmi',
-        'slurm-pam_slurm'
+        'slurm-pam_slurm',
       ],
       slurmd: 'slurm-slurmd',
       slurmctld: 'slurm-slurmctld',
       slurmdbd: 'slurm-slurmdbd',
-      slurmrestd: 'slurm-slurmrestd'
+      slurmrestd: 'slurm-slurmrestd',
     }
   end
 end

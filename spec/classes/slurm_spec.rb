@@ -23,7 +23,7 @@ describe 'slurm' do
           slurmdbd: slurmdbd,
           database: database,
           slurmrestd: slurmrestd,
-          install_method: 'package'
+          install_method: 'package',
         }
       end
       let(:params) { default_params.merge(param_override) }

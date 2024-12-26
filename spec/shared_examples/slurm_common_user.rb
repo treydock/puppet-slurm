@@ -14,7 +14,7 @@ shared_examples_for 'slurm::common::user' do |facts|
                                                name: 'slurm',
                                                gid: nil,
                                                forcelocal: 'true',
-                                               system: 'true')
+                                               system: 'true',)
   end
 
   it do
@@ -27,7 +27,7 @@ shared_examples_for 'slurm::common::user' do |facts|
                                               managehome: 'true',
                                               comment: 'SLURM User',
                                               forcelocal: 'true',
-                                              system: 'true')
+                                              system: 'true',)
   end
 
   context 'when slurm_group_gid => 400' do

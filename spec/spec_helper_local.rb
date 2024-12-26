@@ -13,7 +13,7 @@ def base_packages(facts)
       'libslurm-perl',
       'libpmi0',
       'libpmi2-0',
-      'slurm-client'
+      'slurm-client',
     ]
   else
     [
@@ -23,7 +23,7 @@ def base_packages(facts)
       'slurm-example-configs',
       'slurm-perlapi',
       'slurm-libpmi',
-      'slurm-pam_slurm'
+      'slurm-pam_slurm',
     ]
   end
 end

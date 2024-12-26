@@ -32,7 +32,6 @@ class slurm::params {
     'CliFilterPlugins' => undef,
     'CommunicationParameters' => undef,
     'CompleteWait' => '0',
-    'CoreSpecPlugin' => undef,
     'CpuFreqDef' => undef,
     'CpuFreqGovernors' => 'OnDemand,Performance,UserSpace',
     'CredType' => 'cred/munge',
