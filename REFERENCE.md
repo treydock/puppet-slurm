@@ -2149,6 +2149,7 @@ The following parameters are available in the `slurm::node` defined type:
 * [`port`](#-slurm--node--port)
 * [`real_memory`](#-slurm--node--real_memory)
 * [`reason`](#-slurm--node--reason)
+* [`restricted_cores_per_gpu`](#-slurm--node--restricted_cores_per_gpu)
 * [`sockets`](#-slurm--node--sockets)
 * [`sockets_per_board`](#-slurm--node--sockets_per_board)
 * [`state`](#-slurm--node--state)
@@ -2281,6 +2282,14 @@ Default value: `undef`
 ##### <a name="-slurm--node--reason"></a>`reason`
 
 Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--node--restricted_cores_per_gpu"></a>`restricted_cores_per_gpu`
+
+Data type: `Optional[Integer]`
 
 
 
