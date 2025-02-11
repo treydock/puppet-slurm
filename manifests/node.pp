@@ -18,6 +18,7 @@
 # @param port
 # @param real_memory
 # @param reason
+# @param restricted_cores_per_gpu
 # @param sockets
 # @param sockets_per_board
 # @param state
@@ -44,6 +45,7 @@ define slurm::node (
   Optional[Stdlib::Port] $port = undef,
   Optional[Variant[String[1], Integer]] $real_memory = undef,
   Optional[String[1]] $reason = undef,
+  Optional[Integer] $restricted_cores_per_gpu = undef,
   Optional[Variant[String[1], Integer]] $sockets = undef,
   Optional[Variant[String[1], Integer]] $sockets_per_board = undef,
   Slurm::NodeState $state = 'UNKNOWN',
@@ -72,6 +74,7 @@ define slurm::node (
     'Port'  => $port,
     'RealMemory'  => $real_memory,
     'Reason' => $reason,
+    'RestrictedCoresPerGPU' => $restricted_cores_per_gpu,
     'Sockets' => $sockets,
     'SocketsPerBoard' => $sockets_per_board,
     'State' => $state,
