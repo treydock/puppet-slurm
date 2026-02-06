@@ -36,12 +36,22 @@ RSpec.configure do |c|
     # Install module and dependencies
     copy_module_to(hosts, source: File.join(proj_root, 'spec/fixtures/site_slurm'), module_name: 'site_slurm', ignore_list: [])
 
+    # Dependencies for acceptance
+    on hosts, puppet('module', 'install', 'puppetlabs-host_core', '--version=">=1.0.0 <3.0.0"')
     # Dependencies for NHC
-    on hosts, puppet('module', 'install', 'puppetlabs-vcsrepo'), acceptable_exit_codes: [0, 1]
-    on hosts, puppet('module', 'install', 'puppet-yum', '--version=">=6.0.0 <7.0.0"'), acceptable_exit_codes: [0, 1]
+    on hosts, puppet('module', 'install', 'puppetlabs-vcsrepo', '--version=">=6.0.0 <7.0.0"')
+    on hosts, puppet('module', 'install', 'puppet-yum', '--version=">=6.0.0 <8.0.0"')
     # Add soft dependencies
-    on hosts, puppet('module', 'install', 'treydock-nhc', '--version=5.0.0'), acceptable_exit_codes: [0, 1]
-    on hosts, puppet('module', 'install', 'saz-rsyslog'), acceptable_exit_codes: [0, 1]
+    on hosts, puppet('module', 'install', 'treydock-nhc', '--version=5.0.0')
+    on hosts, puppet('module', 'install', 'saz-rsyslog')
+
+    puppet_dir = if fact('os.name') == 'Debian' && fact('os.release.major').to_i >= 12
+                   '/etc/puppet'
+                 elsif fact('os.name') == 'Ubuntu' && fact('os.release.major').to_s.split('.')[0].to_i >= 24
+                   '/etc/puppet'
+                 else
+                   '/etc/puppetlabs/puppet'
+                 end
 
     hiera_yaml = <<-HIERA
 ---
@@ -82,9 +92,9 @@ slurm::nodes:
   slurmd:
     cpus: 1
     HIERA
-    create_remote_file(hosts, '/etc/puppetlabs/puppet/hiera.yaml', hiera_yaml)
+    create_remote_file(hosts, File.join(puppet_dir, 'hiera.yaml'), hiera_yaml)
     on hosts, 'mkdir -p /etc/puppetlabs/puppet/data'
-    create_remote_file(hosts, '/etc/puppetlabs/puppet/data/common.yaml', common_yaml)
+    create_remote_file(hosts, File.join(puppet_dir, 'data/common.yaml'), common_yaml)
     # For some reason /etc ends up with wrong permissions.
     on hosts, 'chmod 0755 /etc'
   end
