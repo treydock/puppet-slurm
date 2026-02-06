@@ -1,0 +1,3 @@
+---
+slurm::slurmdbd_db_charset: utf8mb3
+slurm::slurmdbd_db_collate: utf8mb3_general_ci

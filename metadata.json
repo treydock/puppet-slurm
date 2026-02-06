@@ -61,15 +61,8 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "7",
         "8",
         "9"
-      ]
-    },
-    {
-      "operatingsystem": "CentOS",
-      "operatingsystemrelease": [
-        "7"
       ]
     },
     {
@@ -89,21 +82,22 @@
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "11"
+        "11",
+        "12"
       ]
     },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "20.04",
-        "22.04"
+        "22.04",
+        "24.04"
       ]
     }
   ],
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 7.0.0 < 9.0.0"
+      "version_requirement": ">= 8.0.0 < 9.0.0"
     }
   ],
   "tags": [
@@ -111,7 +105,7 @@
     "hpc",
     "batch"
   ],
-  "pdk-version": "2.7.1",
+  "pdk-version": "3.4.0",
   "template-url": "https://github.com/treydock/pdk-templates.git#master",
-  "template-ref": "heads/master-0-gd2de99e"
+  "template-ref": "heads/master-0-g9d10bc7"
 }
