@@ -256,7 +256,9 @@ slurm::conf { 'ascend':
 
 This module has been tested on:
 
-* RedHat/CentOS 7 x86_64
 * RedHat/Rocky/AlmaLinux 8 x86_64
-* Debian 10 x86_64
-* Ubuntu 20.04 x86_64
+* RedHat/Rocky/AlmaLinux 9 x86_64
+* Debian 11 x86_64
+* Debian 12 x86_64
+* Ubuntu 22.04 x86_64
+* Ubuntu 24.04 x86_64

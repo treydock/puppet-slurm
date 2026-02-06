@@ -16,10 +16,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - ruby: 2.7.8
-            puppet: 7
-            fixtures: .fixtures.yml
-            allow_failure: false
           - ruby: 3.2.3
             puppet: 8
             fixtures: .fixtures.yml
@@ -43,7 +39,8 @@ jobs:
       - name: Run tests
         run: bundle exec rake parallel_spec
   acceptance:
-    runs-on: ubuntu-latest
+    # Run on 22.04 until newer doesn't cause ioctl errors for el10 tests
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
@@ -51,10 +48,10 @@ jobs:
           - "el8"
           - "el9"
           - "debian-11"
-          - "ubuntu-2004"
+          - "debian-12"
           - "ubuntu-2204"
+          - "ubuntu-2404"
         puppet:
-          - "puppet7"
           - "puppet8"
         slurm_version:
           - "23.11.10"

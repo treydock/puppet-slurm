@@ -27,8 +27,9 @@ fixtures:
       repo: treydock/munge
     systemd:
       repo: puppet/systemd
-    rsyslog:
-      repo: saz/rsyslog
+    # Use git till released without legacy facts
+    #rsyslog:
+    #  repo: saz/rsyslog
     nhc:
       repo: treydock/nhc
     archive:
@@ -37,6 +38,9 @@ fixtures:
       repo: puppet/alternatives
     slurm_providers:
       repo: treydock/slurm_providers
+  repositories:
+    rsyslog:
+      repo: https://github.com/saz/puppet-rsyslog.git
   symlinks:
     slurm: "#{source_dir}"
     site_slurm: "#{File.join(source_dir, 'spec/fixtures', 'site_slurm')}"

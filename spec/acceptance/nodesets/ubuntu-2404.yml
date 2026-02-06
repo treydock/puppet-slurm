@@ -7,9 +7,9 @@ HOSTS:
       - slurmdbd
       - slurmd
       - slurm-client
-    platform: ubuntu-20.04-amd64
+    platform: ubuntu-24.04-amd64
     hypervisor : docker
-    image: ubuntu:20.04
+    image: ubuntu:24.04
     docker_preserve_image: true
     docker_cmd: '["/sbin/init"]'
     docker_image_commands:
@@ -20,12 +20,11 @@ HOSTS:
       - LANG=en_US.UTF-8
       - LANGUAGE=en_US.UTF-8
       - LC_ALL=en_US.UTF-8
-    ip: 192.168.4.2
-    docker_container_name: 'slurm-ubuntu2004'
+    ip: 192.168.8.2
+    docker_container_name: 'slurm-ubuntu2404'
 CONFIG:
   log_level: debug
   type: foss
 ssh:
   password: root
   auth_methods: ["password"]
-
