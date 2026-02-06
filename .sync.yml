@@ -48,6 +48,7 @@ spec/acceptance/nodesets/debian-11.yml:
 spec/acceptance/nodesets/debian-12.yml:
   unmanaged: true
   packages:
+    - cron
     - iproute2
 spec/acceptance/nodesets/ubuntu-2204.yml:
   unmanaged: true
