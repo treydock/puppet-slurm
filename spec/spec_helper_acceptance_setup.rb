@@ -93,7 +93,7 @@ slurm::nodes:
     cpus: 1
     HIERA
     create_remote_file(hosts, File.join(puppet_dir, 'hiera.yaml'), hiera_yaml)
-    on hosts, 'mkdir -p /etc/puppetlabs/puppet/data'
+    on hosts, "mkdir -p #{File.join(puppet_dir, 'data')}"
     create_remote_file(hosts, File.join(puppet_dir, 'data/common.yaml'), common_yaml)
     # For some reason /etc ends up with wrong permissions.
     on hosts, 'chmod 0755 /etc'

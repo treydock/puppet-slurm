@@ -47,6 +47,8 @@ spec/acceptance/nodesets/debian-11.yml:
   unmanaged: true
 spec/acceptance/nodesets/debian-12.yml:
   unmanaged: true
+  packages:
+    - iproute2
 spec/acceptance/nodesets/ubuntu-2204.yml:
   unmanaged: true
   packages:
