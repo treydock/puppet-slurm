@@ -21,10 +21,6 @@ RSpec.configure do |c|
     slurmdbd_host = 'slurm'
   end
 
-  slurmd_ip = find_only_one(:slurmd).ip
-  on hosts, puppet('resource', 'host', 'slurmd', 'ensure=absent')
-  on hosts, puppet('resource', 'host', 'slurmd', "ip=#{slurmd_ip}", 'host_aliases=slurm')
-
   install_method_hiera = if RSpec.configuration.slurm_repo_baseurl.nil?
                            'slurm::install_method: source'
                          else
@@ -44,6 +40,10 @@ RSpec.configure do |c|
     # Add soft dependencies
     on hosts, puppet('module', 'install', 'treydock-nhc', '--version=5.0.0')
     on hosts, puppet('module', 'install', 'saz-rsyslog')
+
+    slurmd_ip = find_only_one(:slurmd).ip
+    on hosts, puppet('resource', 'host', 'slurmd', 'ensure=absent')
+    on hosts, puppet('resource', 'host', 'slurmd', "ip=#{slurmd_ip}", 'host_aliases=slurm')
 
     puppet_dir = if fact('os.name') == 'Debian' && fact('os.release.major').to_i >= 12
                    '/etc/puppet'
