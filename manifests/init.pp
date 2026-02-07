@@ -218,7 +218,7 @@ class slurm (
   Boolean $install_pam            = true,
 
   # Source install
-  String $version = '23.11.5',
+  String $version = '25.11.2',
   Array $source_dependencies = [],
   Array $configure_flags = [],
   Boolean $source_install_manage_alternatives = true,

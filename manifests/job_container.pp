@@ -6,6 +6,16 @@
 #   job_container.conf AutoBasePath
 # @param dirs
 #   job_container.conf Dirs
+# @param clone_ns_script
+#   job_container.conf CloneNSScript
+# @param clone_ns_script_wait
+#   job_container.conf CloneNSScript_Wait
+# @param clone_ns_epilog
+#   job_contaner.conf CloneNSEpilog
+# @param clone_ns_epilog_wait
+#   job_contaner.conf CloneNSEpilog_Wait
+# @param entire_step_in_ns
+#   job_container.conf EntireStepInNS
 # @param init_script
 #   job_container.conf InitScript
 # @param node_name
@@ -18,7 +28,12 @@
 define slurm::job_container (
   Stdlib::Absolutepath $base_path,
   Boolean $auto_base_path                     = false,
-  Optional[Array[Stdlib::Absolutepath]] $dirs = undef,
+  Array[Stdlib::Absolutepath] $dirs = [],
+  Optional[Stdlib::Absolutepath] $clone_ns_script = undef,
+  Optional[Integer] $clone_ns_script_wait = undef,
+  Optional[Stdlib::Absolutepath] $clone_ns_epilog = undef,
+  Optional[Integer] $clone_ns_epilog_wait = undef,
+  Optional[Boolean] $entire_step_in_ns = undef,
   Optional[Stdlib::Absolutepath] $init_script = undef,
   Optional[String] $node_name                 = undef,
   Optional[Boolean] $shared = undef,
@@ -26,52 +41,34 @@ define slurm::job_container (
 ) {
   include slurm
 
-  $_base_path = "BasePath=${base_path}"
-  $_auto_base_path = "AutoBasePath=${auto_base_path}"
-
-  if $dirs {
-    $_dirs = "Dirs=${dirs.join(',')}"
-  } else {
-    $_dirs = undef
-  }
-
-  if $init_script {
-    $_init_script = "InitScript=${init_script}"
-  } else {
-    $_init_script = undef
-  }
-
   if $node_name {
-    $node_param = "NodeName=${node_name}"
+    $start_values = {
+      'NodeName' => $node_name,
+      'AutoBasePath' => $auto_base_path,
+    }
+    $first_line = ''
   } else {
-    $node_param = undef
+    $start_values = {}
+    $first_line = "AutoBasePath=${auto_base_path}\n"
   }
 
-  if $shared !~ Undef {
-    $shared_param = "Shared=${shared}"
-  } else {
-    $shared_param = undef
-  }
+  $conf_values = $start_values + {
+    'BasePath' => $base_path,
+    'Dirs' => $dirs.join(','),
+    'CloneNSScript' => $clone_ns_script,
+    'CloneNSScript_Wait' => $clone_ns_script_wait,
+    'CloneNSEpilog' => $clone_ns_epilog,
+    'CloneNSEpilog_Wait' => $clone_ns_epilog_wait,
+    'EntireStepInNS' => $entire_step_in_ns,
+    'InitScript' => $init_script,
+    'Shared' => $shared,
+  }.filter |$k, $v| { $v =~ NotUndef and $v != '' }
 
-  if $node_name {
-    $params = [
-      $node_param,
-      $_auto_base_path,
-      $_base_path,
-      $_dirs,
-      $_init_script,
-      $shared_param,
-    ].filter |$p| { $p =~ NotUndef }
-    $content = "${strip(join($params, ' '))}\n"
-  } else {
-    $params = [
-      $_base_path,
-      $_dirs,
-      $_init_script,
-      $shared_param,
-    ].filter |$p| { $p =~ NotUndef }
-    $content = "${_auto_base_path}\n${params.join(' ')}"
-  }
+  $conf = $conf_values.map |$k, $v| {
+    "${k}=${v}"
+  }.join(' ')
+
+  $content = "${first_line}${strip($conf)}\n"
 
   concat::fragment { "job_container.conf-${name}":
     target  => 'job_container.conf',

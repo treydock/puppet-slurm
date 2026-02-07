@@ -12,8 +12,8 @@
     puppet:
       - puppet8
     slurm_version:
-      - '23.11.10'
-      - '24.05.4'
+      - '25.05.6'
+      - '25.11.2'
   #acceptance_includes:
   #  - set: el8
   #    puppet: puppet7

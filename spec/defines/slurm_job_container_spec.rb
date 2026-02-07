@@ -6,7 +6,7 @@ describe 'slurm::job_container' do
   on_supported_os(supported_os: [
                     {
                       'operatingsystem' => 'RedHat',
-                      'operatingsystemrelease' => ['7'],
+                      'operatingsystemrelease' => ['9'],
                     },
                   ]).each do |_os, os_facts|
     let(:facts) { os_facts }
@@ -19,7 +19,7 @@ describe 'slurm::job_container' do
     it do
       is_expected.to contain_concat__fragment('job_container.conf-/dev/shm').with(
         target: 'job_container.conf',
-        content: "AutoBasePath=true\nBasePath=/tmp Dirs=/dev/shm Shared=true",
+        content: "AutoBasePath=true\nBasePath=/tmp Dirs=/dev/shm Shared=true\n",
         order: '50',
       )
     end

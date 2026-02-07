@@ -11,6 +11,8 @@ shared_examples_for 'slurm::slurmdbd::config' do
 
   it do
     verify_exact_file_contents(catalogue, 'slurmdbd.conf', [
+                                 'AllowNoDefAcct=no',
+                                 'AllResourcesAbsolute=no',
                                  'ArchiveDir=/var/lib/slurmdbd.archive',
                                  'ArchiveEvents=no',
                                  'ArchiveJobs=no',
@@ -24,6 +26,8 @@ shared_examples_for 'slurm::slurmdbd::config' do
                                  'DbdPort=6819',
                                  'DebugLevel=info',
                                  'DebugLevelSyslog=info',
+                                 'DisableCoordDBD=no',
+                                 'HashPlugin=hash/k12',
                                  'LogFile=/var/log/slurm/slurmdbd.log',
                                  'LogTimeFormat=iso8601_ms',
                                  'MaxQueryTimeRange=INFINITE',
