@@ -143,6 +143,19 @@ shared_examples_for 'slurm::common::config' do
   end
 
   it do
+    if slurmd || slurmctld
+      is_expected.to contain_file('/etc/slurm/namespace.yaml').with(
+        owner: 'root',
+        group: 'root',
+        mode: '0644',
+        content: "---\n",
+      )
+    else
+      is_expected.not_to contain_file('/etc/slurm/namespace.yaml')
+    end
+  end
+
+  it do
     is_expected.to contain_concat('plugstack.conf').with(ensure: 'present',
                                                          path: '/etc/slurm/plugstack.conf',
                                                          owner: 'root',
@@ -484,6 +497,60 @@ shared_examples_for 'slurm::common::config' do
         verify_exact_fragment_contents(catalogue, 'slurm-gres.conf-gpu2', [
                                          'NodeName=c0[3-4] Name=gpu File=/dev/nvidia[0-3]',
                                        ],)
+      end
+    end
+  end
+
+  context 'when namespace configs defined' do
+    let(:param_override) do
+      {
+        namespace_defaults: {
+          'auto_base_path' => true,
+          'base_path' => '/tmp-private',
+        },
+        namespace_node_confs: {
+          'base' => {
+            'nodes' => ['test[0-1]'],
+            'options' => {
+              'base_path' => '/test1',
+            },
+          },
+          'base2' => {
+            'nodes' => ['test[2-3]'],
+            'options' => {
+              'base_path' => '/test2',
+            },
+          },
+        },
+      }
+    end
+
+    it 'defines namespace.yaml' do
+      expected_yaml = {
+        'defaults' => {
+          'auto_base_path' => true,
+          'base_path' => '/tmp-private',
+        },
+        'node_confs' => [
+          {
+            'nodes' => ['test[0-1]'],
+            'options' => {
+              'base_path' => '/test1',
+            },
+          },
+          {
+            'nodes' => ['test[2-3]'],
+            'options' => {
+              'base_path' => '/test2',
+            },
+          },
+        ],
+      }
+      if slurmd || slurmctld
+        content = catalogue.resource('file', '/etc/slurm/namespace.yaml').send(:parameters)[:content]
+        expect(YAML.safe_load(content)).to eq(expected_yaml)
+      else
+        is_expected.not_to contain_file('/etc/slurm/namespace.yaml')
       end
     end
   end

@@ -12,6 +12,8 @@ fixtures:
       repo: puppetlabs/mysql
     concat:
       repo: puppetlabs/concat
+    collections:
+      repo: puppet/collections
     augeasproviders_core:
       repo: puppet/augeasproviders_core
     augeasproviders_sysctl:
