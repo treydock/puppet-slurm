@@ -10,13 +10,13 @@
 # @param database
 # @param client
 # @param slurmrestd
+# @param version
 # @param repo_baseurl
 # @param install_method
 # @param install_prefix
 # @param package_ensure
 # @param install_torque_wrapper
 # @param install_pam
-# @param version
 # @param source_dependencies
 # @param configure_flags
 # @param source_install_manage_alternatives
@@ -209,6 +209,8 @@ class slurm (
   Boolean $client     = true,
   Boolean $slurmrestd = false,
 
+  String $version = '25.11.2',
+
   # Repo (optional)
   Optional[Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl, Pattern[/^file:\/\//]]] $repo_baseurl = undef,
   Optional[Enum['package','source','none']] $install_method = undef,
@@ -220,7 +222,6 @@ class slurm (
   Boolean $install_pam            = true,
 
   # Source install
-  String $version = '25.11.2',
   Array $source_dependencies = [],
   Array $configure_flags = [],
   Boolean $source_install_manage_alternatives = true,
