@@ -12,9 +12,9 @@ class slurm::slurmrestd {
 
   if $slurm::manage_firewall {
     firewall { '100 allow access to slurmrestd':
-      proto  => 'tcp',
-      dport  => $slurm::slurmrestd_port,
-      action => 'accept',
+      proto => 'tcp',
+      dport => $slurm::slurmrestd_port,
+      jump  => 'accept',
     }
   }
 }

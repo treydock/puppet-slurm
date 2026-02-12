@@ -23,10 +23,12 @@ class slurm::slurmd::service {
   }
 
   if ! empty($slurm::slurmd_service_limits) {
-    systemd::service_limits { 'slurmd.service':
-      limits          => $slurm::slurmd_service_limits,
-      restart_service => false,
-      notify          => Service['slurmd'],
+    systemd::manage_dropin { 'slurmd.service-90-limits.conf':
+      ensure         => present,
+      unit           => 'slurmd.service',
+      filename       => '90-limits.conf',
+      service_entry  => $slurm::slurmd_service_limits,
+      notify_service => true,
     }
   }
 

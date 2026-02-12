@@ -26,7 +26,7 @@ shared_examples_for 'slurm::slurmd' do |facts|
   it do
     is_expected.to contain_firewall('100 allow access to slurmd').with(proto: 'tcp',
                                                                        dport: '6818',
-                                                                       action: 'accept',)
+                                                                       jump: 'accept',)
   end
 
   context 'when manage_firewall => false' do

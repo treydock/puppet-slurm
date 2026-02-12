@@ -15,10 +15,12 @@ class slurm::slurmctld::service {
   }
 
   if ! empty($slurm::slurmctld_service_limits) {
-    systemd::service_limits { 'slurmctld.service':
-      limits          => $slurm::sslurmctld_service_limits,
-      restart_service => false,
-      notify          => Service['slurmctld'],
+    systemd::manage_dropin { 'slurmctld.service-90-limits.conf':
+      ensure         => present,
+      unit           => 'slurmctld.service',
+      filename       => '90-limits.conf',
+      service_entry  => $slurm::slurmctld_service_limits,
+      notify_service => true,
     }
   }
 
