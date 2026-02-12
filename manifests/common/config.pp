@@ -108,20 +108,24 @@ class slurm::common::config {
           'defaults' => $slurm::namespace_defaults,
         }
       }
-      if versioncmp($slurm::version, '25.11.0') >= 0 {
-        collections::file { $slurm::namespace_conf_path:
-          collector => 'namespace',
-          template  => 'collections/yaml.epp',
-          file      => {
-            owner => 'root',
-            group => 'root',
-            mode  => '0644',
-          },
-          data      => $namespace_data,
-        }
-        $slurm::namespace_node_confs.each |$name, $node_conf| {
-          slurm::namespace::node_conf { $name: * => $node_conf }
-        }
+      if $namespace_data =~ Undef and empty($slurm::namespace_node_confs) {
+        $namespace_ensure = 'absent'
+      } else {
+        $namespace_ensure = 'file'
+      }
+      collections::file { $slurm::namespace_conf_path:
+        collector => 'namespace',
+        template  => 'collections/yaml.epp',
+        file      => {
+          ensure => $namespace_ensure,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0644',
+        },
+        data      => $namespace_data,
+      }
+      $slurm::namespace_node_confs.each |$name, $node_conf| {
+        slurm::namespace::node_conf { $name: * => $node_conf }
       }
     }
 

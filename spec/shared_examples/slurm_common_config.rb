@@ -145,6 +145,7 @@ shared_examples_for 'slurm::common::config' do
   it do
     if slurmd || slurmctld
       is_expected.to contain_file('/etc/slurm/namespace.yaml').with(
+        ensure: 'absent',
         owner: 'root',
         group: 'root',
         mode: '0644',
@@ -547,6 +548,7 @@ shared_examples_for 'slurm::common::config' do
         ],
       }
       if slurmd || slurmctld
+        is_expected.to contain_file('/etc/slurm/namespace.yaml').with_ensure('file')
         content = catalogue.resource('file', '/etc/slurm/namespace.yaml').send(:parameters)[:content]
         expect(YAML.safe_load(content)).to eq(expected_yaml)
       else
