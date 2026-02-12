@@ -38,7 +38,7 @@ RSpec.configure do |c|
     on hosts, puppet('module', 'install', 'puppetlabs-vcsrepo', '--version=">=6.0.0 <7.0.0"')
     on hosts, puppet('module', 'install', 'puppet-yum', '--version=">=6.0.0 <8.0.0"')
     # Add soft dependencies
-    on hosts, puppet('module', 'install', 'treydock-nhc', '--version=5.0.0')
+    on hosts, puppet('module', 'install', 'treydock-nhc', '--version=7.0.0')
     on hosts, puppet('module', 'install', 'saz-rsyslog')
 
     slurmd_ip = find_only_one(:slurmd).ip
