@@ -42,6 +42,7 @@
 * [`slurm::down_node`](#slurm--down_node): Manage SLURM down node configuration
 * [`slurm::gres`](#slurm--gres): Manage SLURM GRES configuration
 * [`slurm::job_container`](#slurm--job_container): Manage SLURM job_container.conf entry
+* [`slurm::namespace::node_conf`](#slurm--namespace--node_conf): Manage SLURM namespace.yaml node_conf entry
 * [`slurm::node`](#slurm--node): Manage SLURM node configuration
 * [`slurm::nodeset`](#slurm--nodeset): Manage SLURM nodeset configuration
 * [`slurm::partition`](#slurm--partition): Manage a SLURM partition configuration
@@ -52,6 +53,7 @@
 
 * [`Slurm::CPUBind`](#Slurm--CPUBind): Type for CPU bind settings
 * [`Slurm::DownNodeState`](#Slurm--DownNodeState)
+* [`Slurm::Namespace::Options`](#Slurm--Namespace--Options)
 * [`Slurm::NodeState`](#Slurm--NodeState)
 * [`Slurm::PartitionState`](#Slurm--PartitionState)
 * [`Slurm::PreemptMode`](#Slurm--PreemptMode)
@@ -165,6 +167,8 @@ The following parameters are available in the `slurm` class:
 * [`switches`](#-slurm--switches)
 * [`greses`](#-slurm--greses)
 * [`job_containers`](#-slurm--job_containers)
+* [`namespace_defaults`](#-slurm--namespace_defaults)
+* [`namespace_node_confs`](#-slurm--namespace_node_confs)
 * [`slurmd_log_file`](#-slurm--slurmd_log_file)
 * [`slurmd_spool_dir`](#-slurm--slurmd_spool_dir)
 * [`slurmctld_log_file`](#-slurm--slurmctld_log_file)
@@ -369,7 +373,7 @@ Data type: `String`
 
 
 
-Default value: `'23.11.5'`
+Default value: `'25.11.2'`
 
 ##### <a name="-slurm--source_dependencies"></a>`source_dependencies`
 
@@ -1004,6 +1008,22 @@ Data type: `Hash`
 Default value: `{}`
 
 ##### <a name="-slurm--job_containers"></a>`job_containers`
+
+Data type: `Hash`
+
+
+
+Default value: `{}`
+
+##### <a name="-slurm--namespace_defaults"></a>`namespace_defaults`
+
+Data type: `Slurm::Namespace::Options`
+
+
+
+Default value: `{}`
+
+##### <a name="-slurm--namespace_node_confs"></a>`namespace_node_confs`
 
 Data type: `Hash`
 
@@ -2066,6 +2086,11 @@ The following parameters are available in the `slurm::job_container` defined typ
 * [`base_path`](#-slurm--job_container--base_path)
 * [`auto_base_path`](#-slurm--job_container--auto_base_path)
 * [`dirs`](#-slurm--job_container--dirs)
+* [`clone_ns_script`](#-slurm--job_container--clone_ns_script)
+* [`clone_ns_script_wait`](#-slurm--job_container--clone_ns_script_wait)
+* [`clone_ns_epilog`](#-slurm--job_container--clone_ns_epilog)
+* [`clone_ns_epilog_wait`](#-slurm--job_container--clone_ns_epilog_wait)
+* [`entire_step_in_ns`](#-slurm--job_container--entire_step_in_ns)
 * [`init_script`](#-slurm--job_container--init_script)
 * [`node_name`](#-slurm--job_container--node_name)
 * [`shared`](#-slurm--job_container--shared)
@@ -2087,9 +2112,49 @@ Default value: `false`
 
 ##### <a name="-slurm--job_container--dirs"></a>`dirs`
 
-Data type: `Optional[Array[Stdlib::Absolutepath]]`
+Data type: `Array[Stdlib::Absolutepath]`
 
 job_container.conf Dirs
+
+Default value: `[]`
+
+##### <a name="-slurm--job_container--clone_ns_script"></a>`clone_ns_script`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+job_container.conf CloneNSScript
+
+Default value: `undef`
+
+##### <a name="-slurm--job_container--clone_ns_script_wait"></a>`clone_ns_script_wait`
+
+Data type: `Optional[Integer]`
+
+job_container.conf CloneNSScript_Wait
+
+Default value: `undef`
+
+##### <a name="-slurm--job_container--clone_ns_epilog"></a>`clone_ns_epilog`
+
+Data type: `Optional[Stdlib::Absolutepath]`
+
+job_contaner.conf CloneNSEpilog
+
+Default value: `undef`
+
+##### <a name="-slurm--job_container--clone_ns_epilog_wait"></a>`clone_ns_epilog_wait`
+
+Data type: `Optional[Integer]`
+
+job_contaner.conf CloneNSEpilog_Wait
+
+Default value: `undef`
+
+##### <a name="-slurm--job_container--entire_step_in_ns"></a>`entire_step_in_ns`
+
+Data type: `Optional[Boolean]`
+
+job_container.conf EntireStepInNS
 
 Default value: `undef`
 
@@ -2125,6 +2190,29 @@ Order in job_container.conf
 
 Default value: `'50'`
 
+### <a name="slurm--namespace--node_conf"></a>`slurm::namespace::node_conf`
+
+Manage SLURM namespace.yaml node_conf entry
+
+#### Parameters
+
+The following parameters are available in the `slurm::namespace::node_conf` defined type:
+
+* [`nodes`](#-slurm--namespace--node_conf--nodes)
+* [`options`](#-slurm--namespace--node_conf--options)
+
+##### <a name="-slurm--namespace--node_conf--nodes"></a>`nodes`
+
+Data type: `Array[String[1]]`
+
+namespace.yaml node_conf nodes
+
+##### <a name="-slurm--namespace--node_conf--options"></a>`options`
+
+Data type: `Slurm::Namespace::Options`
+
+namespace.yaml node_conf options
+
 ### <a name="slurm--node"></a>`slurm::node`
 
 Manage SLURM node configuration
@@ -2146,6 +2234,7 @@ The following parameters are available in the `slurm::node` defined type:
 * [`features`](#-slurm--node--features)
 * [`gres`](#-slurm--node--gres)
 * [`mem_spec_limit`](#-slurm--node--mem_spec_limit)
+* [`parameters`](#-slurm--node--parameters)
 * [`port`](#-slurm--node--port)
 * [`real_memory`](#-slurm--node--real_memory)
 * [`reason`](#-slurm--node--reason)
@@ -2258,6 +2347,14 @@ Default value: `undef`
 ##### <a name="-slurm--node--mem_spec_limit"></a>`mem_spec_limit`
 
 Data type: `Optional[Variant[String[1], Integer]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--node--parameters"></a>`parameters`
+
+Data type: `Optional[Variant[String[1], Array[String[1]]]]`
 
 
 
@@ -2429,13 +2526,13 @@ The following parameters are available in the `slurm::partition` defined type:
 * [`alternate`](#-slurm--partition--alternate)
 * [`cpu_bind`](#-slurm--partition--cpu_bind)
 * [`default`](#-slurm--partition--default)
+* [`default_time`](#-slurm--partition--default_time)
 * [`def_cpu_per_gpu`](#-slurm--partition--def_cpu_per_gpu)
 * [`def_mem_per_cpu`](#-slurm--partition--def_mem_per_cpu)
 * [`def_mem_per_gpu`](#-slurm--partition--def_mem_per_gpu)
 * [`def_mem_per_node`](#-slurm--partition--def_mem_per_node)
 * [`deny_accounts`](#-slurm--partition--deny_accounts)
 * [`deny_qos`](#-slurm--partition--deny_qos)
-* [`default_time`](#-slurm--partition--default_time)
 * [`disable_root_jobs`](#-slurm--partition--disable_root_jobs)
 * [`exclusive_topo`](#-slurm--partition--exclusive_topo)
 * [`exclusive_user`](#-slurm--partition--exclusive_user)
@@ -2451,6 +2548,7 @@ The following parameters are available in the `slurm::partition` defined type:
 * [`nodes`](#-slurm--partition--nodes)
 * [`over_subscribe`](#-slurm--partition--over_subscribe)
 * [`over_time_limit`](#-slurm--partition--over_time_limit)
+* [`power_down_on_idle`](#-slurm--partition--power_down_on_idle)
 * [`preempt_mode`](#-slurm--partition--preempt_mode)
 * [`priority_job_factor`](#-slurm--partition--priority_job_factor)
 * [`priority_tier`](#-slurm--partition--priority_tier)
@@ -2463,6 +2561,7 @@ The following parameters are available in the `slurm::partition` defined type:
 * [`state`](#-slurm--partition--state)
 * [`suspend_time`](#-slurm--partition--suspend_time)
 * [`suspend_timeout`](#-slurm--partition--suspend_timeout)
+* [`topology`](#-slurm--partition--topology)
 * [`tres_billing_weights`](#-slurm--partition--tres_billing_weights)
 * [`target`](#-slurm--partition--target)
 * [`order`](#-slurm--partition--order)
@@ -2531,6 +2630,14 @@ Data type: `Optional[Slurm::YesNo]`
 
 Default value: `undef`
 
+##### <a name="-slurm--partition--default_time"></a>`default_time`
+
+Data type: `Optional[String[1]]`
+
+
+
+Default value: `undef`
+
 ##### <a name="-slurm--partition--def_cpu_per_gpu"></a>`def_cpu_per_gpu`
 
 Data type: `Optional[Variant[String[1], Integer]]`
@@ -2574,14 +2681,6 @@ Default value: `undef`
 ##### <a name="-slurm--partition--deny_qos"></a>`deny_qos`
 
 Data type: `Optional[Variant[String[1], Array[String[1]]]]`
-
-
-
-Default value: `undef`
-
-##### <a name="-slurm--partition--default_time"></a>`default_time`
-
-Data type: `Optional[String[1]]`
 
 
 
@@ -2707,6 +2806,14 @@ Data type: `Optional[Variant[String[1], Integer]]`
 
 Default value: `undef`
 
+##### <a name="-slurm--partition--power_down_on_idle"></a>`power_down_on_idle`
+
+Data type: `Optional[Enum['YES','NO']]`
+
+
+
+Default value: `undef`
+
 ##### <a name="-slurm--partition--preempt_mode"></a>`preempt_mode`
 
 Data type: `Optional[Slurm::PreemptMode]`
@@ -2798,6 +2905,14 @@ Default value: `undef`
 ##### <a name="-slurm--partition--suspend_timeout"></a>`suspend_timeout`
 
 Data type: `Optional[Variant[String[1], Integer]]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--partition--topology"></a>`topology`
+
+Data type: `Optional[String[1]]`
 
 
 
@@ -2993,6 +3108,28 @@ Alias of `Enum['none', 'socket', 'ldom', 'core', 'thread', 'UNSET']`
 The Slurm::DownNodeState data type.
 
 Alias of `Enum['DOWN', 'DRAIN', 'FAIL', 'FAILING', 'UNKNOWN']`
+
+### <a name="Slurm--Namespace--Options"></a>`Slurm::Namespace::Options`
+
+The Slurm::Namespace::Options data type.
+
+Alias of
+
+```puppet
+Struct[{
+    Optional['auto_base_path'] => Boolean,
+    Optional['base_path'] => Variant[Stdlib::Absolutepath, Enum['none']],
+    Optional['clone_ns_script'] => Stdlib::Absolutepath,
+    Optional['clone_ns_script_wait'] => Integer,
+    Optional['clone_ns_epilog'] => Stdlib::Absolutepath,
+    Optional['clone_ns_epilog_wait'] => Integer,
+    Optional['clone_ns_flags'] => Array[Enum['CLONE_NEWPID','CLONE_NEWUSER','CLONE_NEWNS']],
+    Optional['dirs'] => String[1],
+    Optional['init_script'] => Stdlib::Absolutepath,
+    Optional['shared'] => Boolean,
+    Optional['user_ns_script'] => Stdlib::Absolutepath,
+  }]
+```
 
 ### <a name="Slurm--NodeState"></a>`Slurm::NodeState`
 

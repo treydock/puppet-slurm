@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.0.0](https://github.com/treydock/puppet-slurm/tree/v6.0.0) (2026-02-13)
+
+[Full Changelog](https://github.com/treydock/puppet-slurm/compare/v5.2.0...v6.0.0)
+
+### Changed
+
+- Support Slurm 25.11.x and 25.05.x [\#69](https://github.com/treydock/puppet-slurm/pull/69) ([treydock](https://github.com/treydock))
+- Major updates - read description [\#68](https://github.com/treydock/puppet-slurm/pull/68) ([treydock](https://github.com/treydock))
+
+### Added
+
+- Update several modules  to support latest releases [\#70](https://github.com/treydock/puppet-slurm/pull/70) ([treydock](https://github.com/treydock))
+- Improve compatibility with Puppet 8 and current forge module dependencies [\#65](https://github.com/treydock/puppet-slurm/pull/65) ([optiz0r](https://github.com/optiz0r))
+
 ## [v5.2.0](https://github.com/treydock/puppet-slurm/tree/v5.2.0) (2025-02-11)
 
 [Full Changelog](https://github.com/treydock/puppet-slurm/compare/v5.1.0...v5.2.0)
