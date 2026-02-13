@@ -97,6 +97,8 @@
 # @param switches
 # @param greses
 # @param job_containers
+# @param namespace_defaults
+# @param namespace_node_confs
 # @param slurmd_log_file
 # @param slurmd_spool_dir
 # @param slurmctld_log_file
@@ -218,7 +220,7 @@ class slurm (
   Boolean $install_pam            = true,
 
   # Source install
-  String $version = '23.11.5',
+  String $version = '25.11.2',
   Array $source_dependencies = [],
   Array $configure_flags = [],
   Boolean $source_install_manage_alternatives = true,
@@ -322,6 +324,8 @@ class slurm (
   Hash $switches               = {},
   Hash $greses                 = {},
   Hash $job_containers         = {},
+  Slurm::Namespace::Options $namespace_defaults = {},
+  Hash $namespace_node_confs = {},
 
   # slurm.conf - node
   Optional[Stdlib::Absolutepath] $slurmd_log_file = undef,
@@ -474,6 +478,7 @@ class slurm (
   $oci_conf_path                      = "${conf_dir}/oci.conf"
   $plugstack_conf_path                = "${conf_dir}/plugstack.conf"
   $job_container_conf_path            = "${conf_dir}/job_container.conf"
+  $namespace_conf_path                = "${conf_dir}/namespace.yaml"
   $jwt_key_path                       = "${conf_dir}/jwt.key"
   $src_file                           = "/usr/local/src/slurm-${slurm::version}.tar.bz2"
   $src_dir                            = "/usr/local/src/slurm-${slurm::version}"

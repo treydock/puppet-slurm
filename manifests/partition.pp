@@ -10,13 +10,13 @@
 # @param alternate
 # @param cpu_bind
 # @param default
+# @param default_time
 # @param def_cpu_per_gpu
 # @param def_mem_per_cpu
 # @param def_mem_per_gpu
 # @param def_mem_per_node
 # @param deny_accounts
 # @param deny_qos
-# @param default_time
 # @param disable_root_jobs
 # @param exclusive_topo
 # @param exclusive_user
@@ -32,6 +32,7 @@
 # @param nodes
 # @param over_subscribe
 # @param over_time_limit
+# @param power_down_on_idle
 # @param preempt_mode
 # @param priority_job_factor
 # @param priority_tier
@@ -44,6 +45,7 @@
 # @param state
 # @param suspend_time
 # @param suspend_timeout
+# @param topology
 # @param tres_billing_weights
 # @param target
 # @param order
@@ -57,13 +59,13 @@ define slurm::partition (
   Optional[String[1]] $alternate = undef,
   Optional[Slurm::CPUBind] $cpu_bind = undef,
   Optional[Slurm::YesNo] $default = undef,
+  Optional[String[1]] $default_time = undef,
   Optional[Variant[String[1], Integer]] $def_cpu_per_gpu = undef,
   Optional[Variant[String[1], Integer]] $def_mem_per_cpu = undef,
   Optional[Variant[String[1], Integer]] $def_mem_per_gpu = undef,
   Optional[Variant[String[1], Integer]] $def_mem_per_node = undef,
   Optional[Variant[String[1], Array[String[1]]]] $deny_accounts = undef,
   Optional[Variant[String[1], Array[String[1]]]] $deny_qos = undef,
-  Optional[String[1]] $default_time = undef,
   Optional[Slurm::YesNo] $disable_root_jobs = undef,
   Optional[Slurm::YesNo] $exclusive_topo = undef,
   Optional[Slurm::YesNo] $exclusive_user = undef,
@@ -79,6 +81,7 @@ define slurm::partition (
   Optional[Variant[String[1], Array[String[1]]]] $nodes = undef,
   Optional[Enum['EXCLUSIVE','FORCE','YES','NO']] $over_subscribe = undef,
   Optional[Variant[String[1], Integer]] $over_time_limit = undef,
+  Optional[Enum['YES','NO']] $power_down_on_idle = undef,
   Optional[Slurm::PreemptMode] $preempt_mode = undef,
   Optional[Variant[String[1], Integer]] $priority_job_factor = undef,
   Optional[Variant[String[1], Integer]] $priority_tier = undef,
@@ -91,6 +94,7 @@ define slurm::partition (
   Slurm::PartitionState $state = 'UP',
   Optional[Variant[String[1], Integer]] $suspend_time = undef,
   Optional[Variant[String[1], Integer]] $suspend_timeout = undef,
+  Optional[String[1]] $topology = undef,
   Optional[Variant[String[1], Array[String[1]]]] $tres_billing_weights = undef,
   String[1] $target = 'slurm.conf',
   Variant[String[1], Integer] $order = '50',
@@ -128,6 +132,7 @@ define slurm::partition (
     'Nodes' => $nodes,
     'OverSubscribe' => $over_subscribe,
     'OverTimeLimit' => $over_time_limit,
+    'PowerDownOnIdle' => $power_down_on_idle,
     'PreemptMode' => $preempt_mode,
     'PriorityJobFactor' => $priority_job_factor,
     'PriorityTier' => $priority_tier,
@@ -140,6 +145,7 @@ define slurm::partition (
     'State' => $state,
     'SuspendTime' => $suspend_time,
     'SuspendTimeout' => $suspend_timeout,
+    'Topology' => $topology,
     'TRESBillingWeights' => $tres_billing_weights,
   }
 

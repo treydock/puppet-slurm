@@ -6,7 +6,7 @@ describe 'slurm::conf' do
   on_supported_os(supported_os: [
                     {
                       'operatingsystem' => 'RedHat',
-                      'operatingsystemrelease' => ['7'],
+                      'operatingsystemrelease' => ['9'],
                     },
                   ]).each do |_os, os_facts|
     let(:facts) { os_facts }

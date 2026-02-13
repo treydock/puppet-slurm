@@ -54,8 +54,8 @@ jobs:
         puppet:
           - "puppet8"
         slurm_version:
-          - "23.11.10"
-          - "24.05.4"
+          - "25.05.6"
+          - "25.11.2"
     env:
       BUNDLE_WITHOUT: development:release
       BEAKER_debug: true

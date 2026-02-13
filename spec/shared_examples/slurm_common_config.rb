@@ -39,10 +39,10 @@ shared_examples_for 'slurm::common::config' do
                                      'EpilogMsgTime=2000',
                                      'FairShareDampeningFactor=1',
                                      'FirstJobId=1',
-                                     'GetEnvTimeout=2',
                                      'GroupUpdateForce=1',
                                      'GroupUpdateTime=600',
                                      'GpuFreqDef=high,memory=high',
+                                     'HashPlugin=hash/k12',
                                      'HealthCheckInterval=0',
                                      'HealthCheckNodeState=ANY',
                                      'InactiveLimit=0',
@@ -52,7 +52,7 @@ shared_examples_for 'slurm::common::config' do
                                      'JobRequeue=1',
                                      'KillOnBadExit=0',
                                      'KillWait=30',
-                                     'LaunchType=launch/slurm',
+                                     'MaxBatchRequeue=5',
                                      'LogTimeFormat=iso8601_ms',
                                      'MailProg=/bin/mail',
                                      'MaxArraySize=1001',
@@ -61,19 +61,15 @@ shared_examples_for 'slurm::common::config' do
                                      'MaxJobId=67043328',
                                      'MaxStepCount=40000',
                                      'MaxTasksPerNode=512',
-                                     'MCSPlugin=mcs/none',
                                      'MessageTimeout=10',
                                      'MinJobAge=300',
-                                     'MpiDefault=none',
                                      'OverTimeLimit=0',
                                      'PluginDir=/usr/lib64/slurm',
                                      'PreemptMode=OFF',
-                                     'PreemptType=preempt/none',
                                      'PriorityCalcPeriod=5',
                                      'PriorityDecayHalfLife=7-0',
                                      'PriorityFavorSmall=NO',
                                      'PriorityMaxAge=7-0',
-                                     'PrioritySiteFactorPlugin=site_factor/none',
                                      'PriorityType=priority/multifactor',
                                      'PriorityUsageResetPeriod=NONE',
                                      'PriorityWeightAge=0',
@@ -143,6 +139,20 @@ shared_examples_for 'slurm::common::config' do
                                                             mode: '0644',)
     else
       is_expected.not_to contain_concat('slurm-gres.conf')
+    end
+  end
+
+  it do
+    if slurmd || slurmctld
+      is_expected.to contain_file('/etc/slurm/namespace.yaml').with(
+        ensure: 'absent',
+        owner: 'root',
+        group: 'root',
+        mode: '0644',
+        content: "---\n",
+      )
+    else
+      is_expected.not_to contain_file('/etc/slurm/namespace.yaml')
     end
   end
 
@@ -488,6 +498,61 @@ shared_examples_for 'slurm::common::config' do
         verify_exact_fragment_contents(catalogue, 'slurm-gres.conf-gpu2', [
                                          'NodeName=c0[3-4] Name=gpu File=/dev/nvidia[0-3]',
                                        ],)
+      end
+    end
+  end
+
+  context 'when namespace configs defined' do
+    let(:param_override) do
+      {
+        namespace_defaults: {
+          'auto_base_path' => true,
+          'base_path' => '/tmp-private',
+        },
+        namespace_node_confs: {
+          'base' => {
+            'nodes' => ['test[0-1]'],
+            'options' => {
+              'base_path' => '/test1',
+            },
+          },
+          'base2' => {
+            'nodes' => ['test[2-3]'],
+            'options' => {
+              'base_path' => '/test2',
+            },
+          },
+        },
+      }
+    end
+
+    it 'defines namespace.yaml' do
+      expected_yaml = {
+        'defaults' => {
+          'auto_base_path' => true,
+          'base_path' => '/tmp-private',
+        },
+        'node_confs' => [
+          {
+            'nodes' => ['test[0-1]'],
+            'options' => {
+              'base_path' => '/test1',
+            },
+          },
+          {
+            'nodes' => ['test[2-3]'],
+            'options' => {
+              'base_path' => '/test2',
+            },
+          },
+        ],
+      }
+      if slurmd || slurmctld
+        is_expected.to contain_file('/etc/slurm/namespace.yaml').with_ensure('file')
+        content = catalogue.resource('file', '/etc/slurm/namespace.yaml').send(:parameters)[:content]
+        expect(YAML.safe_load(content)).to eq(expected_yaml)
+      else
+        is_expected.not_to contain_file('/etc/slurm/namespace.yaml')
       end
     end
   end

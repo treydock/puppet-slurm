@@ -15,6 +15,7 @@
 # @param features
 # @param gres
 # @param mem_spec_limit
+# @param parameters
 # @param port
 # @param real_memory
 # @param reason
@@ -42,6 +43,7 @@ define slurm::node (
   Optional[Variant[String[1], Array[String[1]]]] $features = undef,
   Optional[Variant[String[1], Array[String[1]]]] $gres = undef,
   Optional[Variant[String[1], Integer]] $mem_spec_limit = undef,
+  Optional[Variant[String[1], Array[String[1]]]] $parameters = undef,
   Optional[Stdlib::Port] $port = undef,
   Optional[Variant[String[1], Integer]] $real_memory = undef,
   Optional[String[1]] $reason = undef,
@@ -71,6 +73,7 @@ define slurm::node (
     'Features' => $features,
     'Gres'  => $gres,
     'MemSpecLimit'  => $mem_spec_limit,
+    'Parameters' => $parameters,
     'Port'  => $port,
     'RealMemory'  => $real_memory,
     'Reason' => $reason,

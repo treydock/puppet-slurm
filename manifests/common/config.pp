@@ -100,6 +100,33 @@ class slurm::common::config {
       $slurm::job_containers.each |$name, $job_container| {
         slurm::job_container { $name: * => $job_container }
       }
+
+      if empty($slurm::namespace_defaults) {
+        $namespace_data = undef
+      } else {
+        $namespace_data = {
+          'defaults' => $slurm::namespace_defaults,
+        }
+      }
+      if $namespace_data =~ Undef and empty($slurm::namespace_node_confs) {
+        $namespace_ensure = 'absent'
+      } else {
+        $namespace_ensure = 'file'
+      }
+      collections::file { $slurm::namespace_conf_path:
+        collector => 'namespace',
+        template  => 'collections/yaml.epp',
+        file      => {
+          ensure => $namespace_ensure,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0644',
+        },
+        data      => $namespace_data,
+      }
+      $slurm::namespace_node_confs.each |$name, $node_conf| {
+        slurm::namespace::node_conf { $name: * => $node_conf }
+      }
     }
 
     concat { 'plugstack.conf':
