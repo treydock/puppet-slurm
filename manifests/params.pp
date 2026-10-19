@@ -227,6 +227,8 @@ class slurm::params {
     'DefaultQOS' => undef,
     'DisableArchiveCommands' => undef,
     'DisableCoordDBD' => 'no',
+    # Only 26.05
+    'DisableRollups' => undef,
     'HashPlugin' => 'hash/k12',
     'LogTimeFormat' => 'iso8601_ms',
     # Not in 25.05

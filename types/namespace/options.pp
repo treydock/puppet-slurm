@@ -9,6 +9,7 @@ type Slurm::Namespace::Options = Struct[
     Optional['clone_ns_epilog_wait'] => Integer,
     Optional['clone_ns_flags'] => Array[Enum['CLONE_NEWPID','CLONE_NEWUSER','CLONE_NEWNS']],
     Optional['dirs'] => String[1],
+    Optional['dir_confs'] => Array[Slurm::Namespace::DirConf],
     Optional['init_script'] => Stdlib::Absolutepath,
     Optional['shared'] => Boolean,
     Optional['user_ns_script'] => Stdlib::Absolutepath,

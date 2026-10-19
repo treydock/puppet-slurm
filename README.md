@@ -27,7 +27,7 @@ Manage SLURM.
 
 ### Supported Versions of SLURM
 
-This module is designed to work with SLURM 25.05.x and 25.11.x.
+This module is designed to work with SLURM 25.05.x, 25.11.x and 26.05.x.
 
 | SLURM Version     | SLURM Puppet module versions |
 | ----------------- | -----------------------------|
@@ -38,6 +38,7 @@ This module is designed to work with SLURM 25.05.x and 25.11.x.
 | 23.11.x           | 4.x                          |
 | 23.11.x - 24.05.x | 5.x                          |
 | 25.05.x - 25.11.x | 6.x                          |
+| 25.05.x - 26.05.x | 7.x                          |
 
 ## Usage
 
@@ -259,7 +260,6 @@ This module has been tested on:
 
 * RedHat/Rocky/AlmaLinux 8 x86_64
 * RedHat/Rocky/AlmaLinux 9 x86_64
-* Debian 11 x86_64
 * Debian 12 x86_64
 * Ubuntu 22.04 x86_64
 * Ubuntu 24.04 x86_64

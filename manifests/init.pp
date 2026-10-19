@@ -98,6 +98,7 @@
 # @param greses
 # @param job_containers
 # @param namespace_defaults
+# @param namespace_disable_bpf_token
 # @param namespace_node_confs
 # @param slurmd_log_file
 # @param slurmd_spool_dir
@@ -325,6 +326,7 @@ class slurm (
   Hash $greses                 = {},
   Hash $job_containers         = {},
   Slurm::Namespace::Options $namespace_defaults = {},
+  Optional[Boolean] $namespace_disable_bpf_token = undef,
   Hash $namespace_node_confs = {},
 
   # slurm.conf - node

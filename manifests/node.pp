@@ -22,6 +22,7 @@
 # @param restricted_cores_per_gpu
 # @param sockets
 # @param sockets_per_board
+# @param suspend_time
 # @param state
 # @param threads_per_core
 # @param tmp_disk
@@ -50,6 +51,7 @@ define slurm::node (
   Optional[Integer] $restricted_cores_per_gpu = undef,
   Optional[Variant[String[1], Integer]] $sockets = undef,
   Optional[Variant[String[1], Integer]] $sockets_per_board = undef,
+  Optional[Variant[String[1], Integer]] $suspend_time = undef,
   Slurm::NodeState $state = 'UNKNOWN',
   Optional[Variant[String[1], Integer]] $threads_per_core = undef,
   Optional[Integer] $tmp_disk = undef,
@@ -80,6 +82,7 @@ define slurm::node (
     'RestrictedCoresPerGPU' => $restricted_cores_per_gpu,
     'Sockets' => $sockets,
     'SocketsPerBoard' => $sockets_per_board,
+    'SuspendTime' => $suspend_time,
     'State' => $state,
     'ThreadsPerCore'  => $threads_per_core,
     'TmpDisk' => $tmp_disk,

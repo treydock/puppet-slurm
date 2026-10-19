@@ -106,7 +106,8 @@ class slurm::common::config {
       } else {
         $namespace_data = {
           'defaults' => $slurm::namespace_defaults,
-        }
+          'disable_bpf_token' => $slurm::namespace_disable_bpf_token,
+        }.filter |$k,$v| { $v =~ NotUndef }
       }
       if $namespace_data =~ Undef and empty($slurm::namespace_node_confs) {
         $namespace_ensure = 'absent'
