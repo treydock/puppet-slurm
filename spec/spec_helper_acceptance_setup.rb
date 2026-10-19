@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'beaker-puppet'
+
 RSpec.configure do |c|
   # Project root
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
@@ -36,7 +38,7 @@ RSpec.configure do |c|
     on hosts, puppet('module', 'install', 'puppetlabs-host_core', '--version=">=1.0.0 <3.0.0"')
     # Dependencies for NHC
     on hosts, puppet('module', 'install', 'puppetlabs-vcsrepo', '--version=">=6.0.0 <8.0.0"')
-    on hosts, puppet('module', 'install', 'puppet-yum', '--version=">=6.0.0 <8.0.0"')
+    on hosts, puppet('module', 'install', 'puppet-yum', '--version=">=6.0.0 <9.0.0"')
     # Add soft dependencies
     on hosts, puppet('module', 'install', 'treydock-nhc', '--version=7.0.0')
     on hosts, puppet('module', 'install', 'saz-rsyslog')

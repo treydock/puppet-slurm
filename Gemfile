@@ -25,6 +25,7 @@ group :development do
 end
 group :system_tests do
   gem "voxpupuli-acceptance", '~> 4.4.0', require: false
+  gem "beaker-puppet", '~> 4.0',          require: false
 end
 
 puppet_version = ENV['PUPPET_GEM_VERSION']

@@ -31,6 +31,11 @@
           Enabled: false
         RSpec/RepeatedExampleGroupBody:
           Enabled: false
+Gemfile:
+  required:
+    ':system_tests':
+      - gem: beaker-puppet
+        version: '~> 4.0'
 appveyor.yml:
   delete: true
 spec/acceptance/nodesets/el8.yml:
