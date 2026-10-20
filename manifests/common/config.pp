@@ -87,7 +87,7 @@ class slurm::common::config {
       if empty($slurm::job_containers) {
         $job_container_ensure = 'absent'
       } else {
-        $job_container_ensure = 'file'
+        $job_container_ensure = 'present'
       }
       # TODO: Remove this file once 25.05 not supported
       concat { 'job_container.conf':
