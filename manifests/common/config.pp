@@ -84,8 +84,14 @@ class slurm::common::config {
         slurm::gres { $name: * => $gres }
       }
 
+      if empty($slurm::job_containers) {
+        $job_container_ensure = 'absent'
+      } else {
+        $job_container_ensure = 'file'
+      }
+      # TODO: Remove this file once 25.05 not supported
       concat { 'job_container.conf':
-        ensure => 'present',
+        ensure => $job_container_ensure,
         path   => $slurm::job_container_conf_path,
         owner  => 'root',
         group  => 'root',
