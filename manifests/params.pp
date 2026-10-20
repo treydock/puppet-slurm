@@ -102,6 +102,8 @@ class slurm::params {
     'MCSParameters' => undef,
     'MCSPlugin' => undef,
     'MessageTimeout' => '10',
+    'MetricsAuthUsers' => undef,
+    'MetricsParameters' => undef,
     'MetricsType' => undef,
     'MinJobAge' => '300',
     'MpiDefault' => undef,
