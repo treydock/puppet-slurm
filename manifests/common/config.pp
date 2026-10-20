@@ -212,6 +212,20 @@ class slurm::common::config {
       content => $slurm::jwt_key_content,
       source  => $slurm::jwt_key_source,
     }
+    if $slurm::jwks_url {
+      exec { 'get-jwks.json':
+        path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+        command => "curl -sSf -o ${slurm::jwks_json_path} ${slurm::jwks_url}",
+        creates => $slurm::jwks_json_path,
+      }
+      file { $slurm::jwks_json_path:
+        ensure  => 'file',
+        owner   => $slurm::slurm_user,
+        group   => $slurm::slurm_user,
+        mode    => '0600',
+        require => Exec['get-jwks.json'],
+      }
+    }
   }
 
   if $slurm::tuning_net_core_somaxconn {
