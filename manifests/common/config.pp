@@ -110,8 +110,16 @@ class slurm::common::config {
       if empty($slurm::namespace_defaults) {
         $namespace_data = undef
       } else {
+        if $slurm::namespace_defaults['dirs'] =~ Array {
+          $default_dirs = $slurm::namespace_defaults['dirs'].join(',')
+        } else {
+          $default_dirs = $slurm::namespace_defaults['dirs']
+        }
+        $namespace_defaults = $slurm::namespace_defaults + {
+          'dirs' => $default_dirs,
+        }
         $namespace_data = {
-          'defaults' => $slurm::namespace_defaults,
+          'defaults' => $namespace_defaults,
           'disable_bpf_token' => $slurm::namespace_disable_bpf_token,
         }.filter |$k,$v| { $v =~ NotUndef }
       }
@@ -132,7 +140,22 @@ class slurm::common::config {
         data      => $namespace_data,
       }
       $slurm::namespace_node_confs.each |$name, $node_conf| {
-        slurm::namespace::node_conf { $name: * => $node_conf }
+        if 'options' in $node_conf {
+          if $node_conf['options']['dirs'] =~ Array {
+            $dirs = $node_conf['options']['dirs'].join(',')
+          } else {
+            $dirs = $node_conf['options']['dirs']
+          }
+          $options = $node_conf['options'] + {
+            'dirs' => $dirs,
+          }
+        } else {
+          $options = undef
+        }
+        slurm::namespace::node_conf { $name:
+          options => $options,
+          *       => $node_conf - ['options'],
+        }
       }
     }
 
