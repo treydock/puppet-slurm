@@ -84,8 +84,14 @@ class slurm::common::config {
         slurm::gres { $name: * => $gres }
       }
 
+      if empty($slurm::job_containers) {
+        $job_container_ensure = 'absent'
+      } else {
+        $job_container_ensure = 'present'
+      }
+      # TODO: Remove this file once 25.05 not supported
       concat { 'job_container.conf':
-        ensure => 'present',
+        ensure => $job_container_ensure,
         path   => $slurm::job_container_conf_path,
         owner  => 'root',
         group  => 'root',
@@ -104,9 +110,18 @@ class slurm::common::config {
       if empty($slurm::namespace_defaults) {
         $namespace_data = undef
       } else {
-        $namespace_data = {
-          'defaults' => $slurm::namespace_defaults,
+        if $slurm::namespace_defaults['dirs'] =~ Array {
+          $default_dirs = $slurm::namespace_defaults['dirs'].join(',')
+        } else {
+          $default_dirs = $slurm::namespace_defaults['dirs']
         }
+        $namespace_defaults = $slurm::namespace_defaults + {
+          'dirs' => $default_dirs,
+        }
+        $namespace_data = {
+          'defaults' => $namespace_defaults,
+          'disable_bpf_token' => $slurm::namespace_disable_bpf_token,
+        }.filter |$k,$v| { $v =~ NotUndef }
       }
       if $namespace_data =~ Undef and empty($slurm::namespace_node_confs) {
         $namespace_ensure = 'absent'
@@ -125,7 +140,22 @@ class slurm::common::config {
         data      => $namespace_data,
       }
       $slurm::namespace_node_confs.each |$name, $node_conf| {
-        slurm::namespace::node_conf { $name: * => $node_conf }
+        if 'options' in $node_conf {
+          if $node_conf['options']['dirs'] =~ Array {
+            $dirs = $node_conf['options']['dirs'].join(',')
+          } else {
+            $dirs = $node_conf['options']['dirs']
+          }
+          $options = $node_conf['options'] + {
+            'dirs' => $dirs,
+          }
+        } else {
+          $options = undef
+        }
+        slurm::namespace::node_conf { $name:
+          options => $options,
+          *       => $node_conf - ['options'],
+        }
       }
     }
 
@@ -204,6 +234,20 @@ class slurm::common::config {
       mode    => '0600',
       content => $slurm::jwt_key_content,
       source  => $slurm::jwt_key_source,
+    }
+    if $slurm::jwks_url {
+      exec { 'get-jwks.json':
+        path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+        command => "curl -sSf -o ${slurm::jwks_json_path} ${slurm::jwks_url}",
+        creates => $slurm::jwks_json_path,
+      }
+      file { $slurm::jwks_json_path:
+        ensure  => 'file',
+        owner   => $slurm::slurm_user,
+        group   => $slurm::slurm_user,
+        mode    => '0600',
+        require => Exec['get-jwks.json'],
+      }
     }
   }
 

@@ -28,7 +28,7 @@ define slurm::gres (
   String[1] $gres_name = $name,
   Optional[String[1]] $type = undef,
   Optional[Variant[String[1], Array[String[1]]]] $node_name = undef,
-  Optional[Enum['nvml','rsmi','oneapi','off']] $auto_detect = undef,
+  Optional[Enum['nvml','rsmi','oneapi','off', 'full']] $auto_detect = undef,
   Optional[Variant[String[1], Integer]] $count = undef,
   Optional[Variant[String[1], Integer, Array[Variant[String[1],Integer]]]] $cores = undef,
   Optional[Stdlib::Absolutepath] $file = undef,

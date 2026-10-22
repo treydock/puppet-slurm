@@ -5,7 +5,6 @@
     set:
       - el8
       - el9
-      - debian-11
       - debian-12
       - ubuntu-2204
       - ubuntu-2404
@@ -14,6 +13,7 @@
     slurm_version:
       - '25.05.6'
       - '25.11.2'
+      - '26.05.5'
   #acceptance_includes:
   #  - set: el8
   #    puppet: puppet7
@@ -31,6 +31,11 @@
           Enabled: false
         RSpec/RepeatedExampleGroupBody:
           Enabled: false
+Gemfile:
+  required:
+    ':system_tests':
+      - gem: beaker-puppet
+        version: '~> 4.0'
 appveyor.yml:
   delete: true
 spec/acceptance/nodesets/el8.yml:
@@ -44,12 +49,14 @@ spec/acceptance/nodesets/el9.yml:
 spec/acceptance/nodesets/el10.yml:
   delete: true
 spec/acceptance/nodesets/debian-11.yml:
-  unmanaged: true
+  delete: true
 spec/acceptance/nodesets/debian-12.yml:
   unmanaged: true
   packages:
     - cron
     - iproute2
+spec/acceptance/nodesets/debian-13.yml:
+  delete: true
 spec/acceptance/nodesets/ubuntu-2204.yml:
   unmanaged: true
   packages:
@@ -58,3 +65,5 @@ spec/acceptance/nodesets/ubuntu-2404.yml:
   unmanaged: true
   packages:
     - cron
+spec/acceptance/nodesets/ubuntu-2604.yml:
+  delete: true

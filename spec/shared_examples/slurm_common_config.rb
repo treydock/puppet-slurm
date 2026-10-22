@@ -508,18 +508,21 @@ shared_examples_for 'slurm::common::config' do
         namespace_defaults: {
           'auto_base_path' => true,
           'base_path' => '/tmp-private',
+          'dirs' => ['/tmp', '/var/tmp', '/dev/shm'],
         },
         namespace_node_confs: {
           'base' => {
             'nodes' => ['test[0-1]'],
             'options' => {
               'base_path' => '/test1',
+              'dirs' => '/tmp',
             },
           },
           'base2' => {
             'nodes' => ['test[2-3]'],
             'options' => {
               'base_path' => '/test2',
+              'dirs' => ['/dev/shm', '/tmp'],
             },
           },
         },
@@ -531,18 +534,21 @@ shared_examples_for 'slurm::common::config' do
         'defaults' => {
           'auto_base_path' => true,
           'base_path' => '/tmp-private',
+          'dirs' => '/tmp,/var/tmp,/dev/shm',
         },
         'node_confs' => [
           {
             'nodes' => ['test[0-1]'],
             'options' => {
               'base_path' => '/test1',
+              'dirs' => '/tmp',
             },
           },
           {
             'nodes' => ['test[2-3]'],
             'options' => {
               'base_path' => '/test2',
+              'dirs' => '/dev/shm,/tmp',
             },
           },
         ],
