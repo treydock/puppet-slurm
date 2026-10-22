@@ -8,7 +8,19 @@ describe 'slurm_version fact' do
     allow(Facter.fact(:kernel)).to receive(:value).and_return('Linux')
   end
 
-  it 'returns 19.05.3' do
+  it 'returns 19.05.3 from rpm' do
+    allow(Facter).to receive(:value).with('os.family').and_return('RedHat')
+    allow(Facter::Core::Execution).to receive(:execute).with("rpm -q slurm --qf '%{VERSION}' 2>/dev/null").and_return('19.05.3')
+    expect(Facter.fact(:slurm_version).value).to eq({ 'full' => '19.05.3', 'major' => '19.05' })
+  end
+
+  it 'returns 19.05.3 from dpkg' do
+    allow(Facter).to receive(:value).with('os.family').and_return('Debian')
+    allow(Facter::Core::Execution).to receive(:execute).with("dpkg-query --showformat='${Version}' --show slurm 2>/dev/null").and_return('19.05.3')
+    expect(Facter.fact(:slurm_version).value).to eq({ 'full' => '19.05.3', 'major' => '19.05' })
+  end
+
+  it 'returns 19.05.3 from sinfo' do
     allow(Facter::Core::Execution).to receive(:which).with('sinfo').and_return('/usr/bin/sinfo')
     allow(Facter::Core::Execution).to receive(:execute).with('timeout 2 /usr/bin/sinfo -V 2>/dev/null').and_return('slurm 19.05.3')
     expect(Facter.fact(:slurm_version).value).to eq({ 'full' => '19.05.3', 'major' => '19.05' })
