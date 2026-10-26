@@ -153,6 +153,8 @@
 # @param cgroup_conf_source
 # @param cgroup_mountpoint
 # @param cgroup_plugin
+# @param cgroup_slice
+# @param cgroup_job_id_paths
 # @param cgroup_allowed_ram_space
 # @param cgroup_allowed_swap_space
 # @param cgroup_constrain_cores
@@ -401,6 +403,8 @@ class slurm (
   Optional[String] $cgroup_conf_source               = undef,
   Stdlib::Absolutepath $cgroup_mountpoint                = '/sys/fs/cgroup',
   String $cgroup_plugin = 'autodetect',
+  String $cgroup_slice = 'system.slice',
+  Optional[Boolean] $cgroup_job_id_paths = undef,
   Integer $cgroup_allowed_ram_space         = 100,
   Integer $cgroup_allowed_swap_space        = 0,
   Boolean $cgroup_constrain_cores           = false,

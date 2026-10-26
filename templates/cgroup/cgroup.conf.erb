@@ -8,6 +8,10 @@
 #--
 CgroupMountpoint=<%= scope['slurm::cgroup_mountpoint'] %>
 CgroupPlugin=<%= scope['slurm::cgroup_plugin'] %>
+CgroupSlice=<%= scope['slurm::cgroup_slice'] %>
+<% if scope['slurm::cgroup_job_id_paths'] != nil -%>
+CgroupJobIdPaths=<%= scope['slurm::cgroup_job_id_paths'] ? 'yes' : 'no' %>
+<% end -%>
 # task/cgroup plugin
 AllowedRAMSpace=<%= scope['slurm::cgroup_allowed_ram_space'] %>
 AllowedSwapSpace=<%= scope['slurm::cgroup_allowed_swap_space'] %>
