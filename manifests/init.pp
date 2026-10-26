@@ -403,7 +403,8 @@ class slurm (
   Optional[String] $cgroup_conf_source               = undef,
   Stdlib::Absolutepath $cgroup_mountpoint                = '/sys/fs/cgroup',
   String $cgroup_plugin = 'autodetect',
-  String $cgroup_slice = 'system.slice',
+  # TODO: Default to 'system.slice' once off 25.05 support
+  Optional[String] $cgroup_slice = undef,
   Optional[Boolean] $cgroup_job_id_paths = undef,
   Integer $cgroup_allowed_ram_space         = 100,
   Integer $cgroup_allowed_swap_space        = 0,

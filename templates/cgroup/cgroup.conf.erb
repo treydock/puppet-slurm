@@ -8,7 +8,9 @@
 #--
 CgroupMountpoint=<%= scope['slurm::cgroup_mountpoint'] %>
 CgroupPlugin=<%= scope['slurm::cgroup_plugin'] %>
+<% if scope['slurm::cgroup_slice'] -%>
 CgroupSlice=<%= scope['slurm::cgroup_slice'] %>
+<% end -%>
 <% if scope['slurm::cgroup_job_id_paths'] != nil -%>
 CgroupJobIdPaths=<%= scope['slurm::cgroup_job_id_paths'] ? 'yes' : 'no' %>
 <% end -%>
