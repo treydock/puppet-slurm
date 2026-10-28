@@ -41,7 +41,7 @@ class slurm::common::config {
       owner  => 'root',
       group  => 'root',
       mode   => '0644',
-      notify => $slurm::service_notify,
+      notify => $slurm::slurmd_slurmctld_service_notify,
     }
     concat::fragment { 'slurm-topology.conf-header':
       target  => 'slurm-topology.conf',
@@ -66,7 +66,7 @@ class slurm::common::config {
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
-        notify => $slurm::service_notify,
+        notify => $slurm::slurmd_slurmctld_service_notify,
       }
       concat::fragment { 'slurm-gres.conf-header':
         target  => 'slurm-gres.conf',
@@ -96,7 +96,7 @@ class slurm::common::config {
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
-        notify => $slurm::service_notify,
+        notify => $slurm::slurmd_slurmctld_service_notify,
       }
       concat::fragment { 'job_container.conf-header':
         target  => 'job_container.conf',
@@ -139,6 +139,7 @@ class slurm::common::config {
         },
         data      => $namespace_data,
       }
+      File[$slurm::namespace_conf_path] ~> $slurm::slurmd_slurmctld_service_notify
       $slurm::namespace_node_confs.each |$name, $node_conf| {
         if 'options' in $node_conf {
           if $node_conf['options']['dirs'] =~ Array {
@@ -181,7 +182,7 @@ class slurm::common::config {
       mode    => '0644',
       content => $slurm::cgroup_conf_content,
       source  => $slurm::cgroup_conf_source,
-      notify  => $slurm::service_notify,
+      notify  => $slurm::slurmd_slurmctld_service_notify,
     }
 
     file { 'slurm-oci.conf':
@@ -192,7 +193,7 @@ class slurm::common::config {
       mode    => '0644',
       content => $slurm::oci_conf_content,
       source  => $slurm::oci_conf_source,
-      notify  => $slurm::service_notify,
+      notify  => $slurm::slurmd_slurmctld_service_notify,
     }
 
     if $slurm::cli_filter_lua_source or $slurm::cli_filter_lua_content {

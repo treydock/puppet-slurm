@@ -669,6 +669,7 @@ class slurm (
     $slurmdbd_notify = undef
   }
   $service_notify = delete_undef_values(flatten([$slurmd_notify, $slurmctld_notify, $slurmdbd_notify]))
+  $slurmd_slurmctld_service_notify = delete_undef_values(flatten([$slurmd_notify, $slurmctld_notify]))
 
   if $state_dir_nfs_device {
     $state_dir_systemd = "RequiresMountsFor=${slurm::state_save_location}"

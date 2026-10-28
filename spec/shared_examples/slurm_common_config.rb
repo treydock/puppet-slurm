@@ -151,6 +151,9 @@ shared_examples_for 'slurm::common::config' do
         mode: '0644',
         content: "---\n",
       )
+      if slurmd
+        is_expected.to contain_file('/etc/slurm/namespace.yaml').that_notifies('Service[slurmd]')
+      end
     else
       is_expected.not_to contain_file('/etc/slurm/namespace.yaml')
     end
