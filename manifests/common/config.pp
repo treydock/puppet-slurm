@@ -59,7 +59,7 @@ class slurm::common::config {
       slurm::switch { $name: * => $switch }
     }
 
-    if $slurm::slurmd or $slurm::slurmctld {
+    if $slurm::client or $slurm::slurmd or $slurm::slurmctld {
       concat { 'slurm-gres.conf':
         ensure => 'present',
         path   => $slurm::gres_conf_path,

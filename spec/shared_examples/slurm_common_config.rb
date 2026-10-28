@@ -131,7 +131,7 @@ shared_examples_for 'slurm::common::config' do
   end
 
   it do
-    if slurmd || slurmctld
+    if client || slurmd || slurmctld
       is_expected.to contain_concat('slurm-gres.conf').with(ensure: 'present',
                                                             path: '/etc/slurm/gres.conf',
                                                             owner: 'root',
@@ -143,7 +143,7 @@ shared_examples_for 'slurm::common::config' do
   end
 
   it do
-    if slurmd || slurmctld
+    if client || slurmd || slurmctld
       is_expected.to contain_file('/etc/slurm/namespace.yaml').with(
         ensure: 'absent',
         owner: 'root',
@@ -553,7 +553,7 @@ shared_examples_for 'slurm::common::config' do
           },
         ],
       }
-      if slurmd || slurmctld
+      if client || slurmd || slurmctld
         is_expected.to contain_file('/etc/slurm/namespace.yaml').with_ensure('file')
         content = catalogue.resource('file', '/etc/slurm/namespace.yaml').send(:parameters)[:content]
         expect(YAML.safe_load(content)).to eq(expected_yaml)
