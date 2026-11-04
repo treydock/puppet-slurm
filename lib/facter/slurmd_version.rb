@@ -7,9 +7,9 @@ Facter.add(:slurmd_version) do
 
   setcode do
     value = nil
-    slurmd = Facter::Util::Resolution.which('slurmd')
+    slurmd = Facter::Core::Execution.which('slurmd')
     if slurmd
-      output = Facter::Util::Resolution.exec("timeout 2 #{slurmd} -V 2>/dev/null")
+      output = Facter::Core::Execution.execute("timeout 2 #{slurmd} -V 2>/dev/null")
       unless output.nil?
         value = output[%r{^slurm (.*)$}, 1]
       end

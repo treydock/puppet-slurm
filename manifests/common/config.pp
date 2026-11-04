@@ -41,7 +41,7 @@ class slurm::common::config {
       owner  => 'root',
       group  => 'root',
       mode   => '0644',
-      notify => $slurm::service_notify,
+      notify => $slurm::slurmd_slurmctld_service_notify,
     }
     concat::fragment { 'slurm-topology.conf-header':
       target  => 'slurm-topology.conf',
@@ -59,14 +59,14 @@ class slurm::common::config {
       slurm::switch { $name: * => $switch }
     }
 
-    if $slurm::slurmd or $slurm::slurmctld {
+    if $slurm::client or $slurm::slurmd or $slurm::slurmctld {
       concat { 'slurm-gres.conf':
         ensure => 'present',
         path   => $slurm::gres_conf_path,
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
-        notify => $slurm::service_notify,
+        notify => $slurm::slurmd_slurmctld_service_notify,
       }
       concat::fragment { 'slurm-gres.conf-header':
         target  => 'slurm-gres.conf',
@@ -84,13 +84,19 @@ class slurm::common::config {
         slurm::gres { $name: * => $gres }
       }
 
+      if empty($slurm::job_containers) {
+        $job_container_ensure = 'absent'
+      } else {
+        $job_container_ensure = 'present'
+      }
+      # TODO: Remove this file once 25.05 not supported
       concat { 'job_container.conf':
-        ensure => 'present',
+        ensure => $job_container_ensure,
         path   => $slurm::job_container_conf_path,
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
-        notify => $slurm::service_notify,
+        notify => $slurm::slurmd_slurmctld_service_notify,
       }
       concat::fragment { 'job_container.conf-header':
         target  => 'job_container.conf',
@@ -104,9 +110,18 @@ class slurm::common::config {
       if empty($slurm::namespace_defaults) {
         $namespace_data = undef
       } else {
-        $namespace_data = {
-          'defaults' => $slurm::namespace_defaults,
+        if $slurm::namespace_defaults['dirs'] =~ Array {
+          $default_dirs = $slurm::namespace_defaults['dirs'].join(',')
+        } else {
+          $default_dirs = $slurm::namespace_defaults['dirs']
         }
+        $namespace_defaults = $slurm::namespace_defaults + {
+          'dirs' => $default_dirs,
+        }
+        $namespace_data = {
+          'defaults' => $namespace_defaults,
+          'disable_bpf_token' => $slurm::namespace_disable_bpf_token,
+        }.filter |$k,$v| { $v =~ NotUndef }
       }
       if $namespace_data =~ Undef and empty($slurm::namespace_node_confs) {
         $namespace_ensure = 'absent'
@@ -124,8 +139,24 @@ class slurm::common::config {
         },
         data      => $namespace_data,
       }
+      File[$slurm::namespace_conf_path] ~> $slurm::slurmd_slurmctld_service_notify
       $slurm::namespace_node_confs.each |$name, $node_conf| {
-        slurm::namespace::node_conf { $name: * => $node_conf }
+        if 'options' in $node_conf {
+          if $node_conf['options']['dirs'] =~ Array {
+            $dirs = $node_conf['options']['dirs'].join(',')
+          } else {
+            $dirs = $node_conf['options']['dirs']
+          }
+          $options = $node_conf['options'] + {
+            'dirs' => $dirs,
+          }
+        } else {
+          $options = undef
+        }
+        slurm::namespace::node_conf { $name:
+          options => $options,
+          *       => $node_conf - ['options'],
+        }
       }
     }
 
@@ -151,7 +182,7 @@ class slurm::common::config {
       mode    => '0644',
       content => $slurm::cgroup_conf_content,
       source  => $slurm::cgroup_conf_source,
-      notify  => $slurm::service_notify,
+      notify  => $slurm::slurmd_slurmctld_service_notify,
     }
 
     file { 'slurm-oci.conf':
@@ -162,7 +193,7 @@ class slurm::common::config {
       mode    => '0644',
       content => $slurm::oci_conf_content,
       source  => $slurm::oci_conf_source,
-      notify  => $slurm::service_notify,
+      notify  => $slurm::slurmd_slurmctld_service_notify,
     }
 
     if $slurm::cli_filter_lua_source or $slurm::cli_filter_lua_content {
@@ -204,6 +235,20 @@ class slurm::common::config {
       mode    => '0600',
       content => $slurm::jwt_key_content,
       source  => $slurm::jwt_key_source,
+    }
+    if $slurm::jwks_url {
+      exec { 'get-jwks.json':
+        path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+        command => "curl -sSf -o ${slurm::jwks_json_path} ${slurm::jwks_url}",
+        creates => $slurm::jwks_json_path,
+      }
+      file { $slurm::jwks_json_path:
+        ensure  => 'file',
+        owner   => $slurm::slurm_user,
+        group   => $slurm::slurm_user,
+        mode    => '0600',
+        require => Exec['get-jwks.json'],
+      }
     }
   }
 

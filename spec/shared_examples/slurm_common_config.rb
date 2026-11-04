@@ -131,7 +131,7 @@ shared_examples_for 'slurm::common::config' do
   end
 
   it do
-    if slurmd || slurmctld
+    if client || slurmd || slurmctld
       is_expected.to contain_concat('slurm-gres.conf').with(ensure: 'present',
                                                             path: '/etc/slurm/gres.conf',
                                                             owner: 'root',
@@ -143,7 +143,7 @@ shared_examples_for 'slurm::common::config' do
   end
 
   it do
-    if slurmd || slurmctld
+    if client || slurmd || slurmctld
       is_expected.to contain_file('/etc/slurm/namespace.yaml').with(
         ensure: 'absent',
         owner: 'root',
@@ -151,6 +151,9 @@ shared_examples_for 'slurm::common::config' do
         mode: '0644',
         content: "---\n",
       )
+      if slurmd
+        is_expected.to contain_file('/etc/slurm/namespace.yaml').that_notifies('Service[slurmd]')
+      end
     else
       is_expected.not_to contain_file('/etc/slurm/namespace.yaml')
     end
@@ -508,18 +511,21 @@ shared_examples_for 'slurm::common::config' do
         namespace_defaults: {
           'auto_base_path' => true,
           'base_path' => '/tmp-private',
+          'dirs' => ['/tmp', '/var/tmp', '/dev/shm'],
         },
         namespace_node_confs: {
           'base' => {
             'nodes' => ['test[0-1]'],
             'options' => {
               'base_path' => '/test1',
+              'dirs' => '/tmp',
             },
           },
           'base2' => {
             'nodes' => ['test[2-3]'],
             'options' => {
               'base_path' => '/test2',
+              'dirs' => ['/dev/shm', '/tmp'],
             },
           },
         },
@@ -531,23 +537,26 @@ shared_examples_for 'slurm::common::config' do
         'defaults' => {
           'auto_base_path' => true,
           'base_path' => '/tmp-private',
+          'dirs' => '/tmp,/var/tmp,/dev/shm',
         },
         'node_confs' => [
           {
             'nodes' => ['test[0-1]'],
             'options' => {
               'base_path' => '/test1',
+              'dirs' => '/tmp',
             },
           },
           {
             'nodes' => ['test[2-3]'],
             'options' => {
               'base_path' => '/test2',
+              'dirs' => '/dev/shm,/tmp',
             },
           },
         ],
       }
-      if slurmd || slurmctld
+      if client || slurmd || slurmctld
         is_expected.to contain_file('/etc/slurm/namespace.yaml').with_ensure('file')
         content = catalogue.resource('file', '/etc/slurm/namespace.yaml').send(:parameters)[:content]
         expect(YAML.safe_load(content)).to eq(expected_yaml)

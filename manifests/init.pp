@@ -98,6 +98,7 @@
 # @param greses
 # @param job_containers
 # @param namespace_defaults
+# @param namespace_disable_bpf_token
 # @param namespace_node_confs
 # @param slurmd_log_file
 # @param slurmd_spool_dir
@@ -137,6 +138,8 @@
 # @param auth_alt_types
 # @param jwt_key_content
 # @param jwt_key_source
+# @param jwks_url
+# @param jwks_userclaimfield
 # @param slurmrestd_listen_address
 # @param slurmrestd_disable_token_creation
 # @param slurmrestd_user
@@ -150,6 +153,8 @@
 # @param cgroup_conf_source
 # @param cgroup_mountpoint
 # @param cgroup_plugin
+# @param cgroup_slice
+# @param cgroup_job_id_paths
 # @param cgroup_allowed_ram_space
 # @param cgroup_allowed_swap_space
 # @param cgroup_constrain_cores
@@ -325,6 +330,7 @@ class slurm (
   Hash $greses                 = {},
   Hash $job_containers         = {},
   Slurm::Namespace::Options $namespace_defaults = {},
+  Optional[Boolean] $namespace_disable_bpf_token = undef,
   Hash $namespace_node_confs = {},
 
   # slurm.conf - node
@@ -374,10 +380,14 @@ class slurm (
   Optional[String[1]] $task_prolog = undef,
   Optional[Variant[String[1], Array[String[1]]]] $task_prolog_source = undef,
 
-  # slurmrestd
+  # JWT
   Array $auth_alt_types = [],
   Optional[String] $jwt_key_content = undef,
   Optional[String] $jwt_key_source = undef,
+  Optional[String] $jwks_url = undef,
+  Optional[String] $jwks_userclaimfield = undef,
+
+  # slurmrestd
   String $slurmrestd_listen_address = $facts['networking']['ip'],
   Boolean $slurmrestd_disable_token_creation = false,
   String $slurmrestd_user = 'daemon',
@@ -393,6 +403,9 @@ class slurm (
   Optional[String] $cgroup_conf_source               = undef,
   Stdlib::Absolutepath $cgroup_mountpoint                = '/sys/fs/cgroup',
   String $cgroup_plugin = 'autodetect',
+  # TODO: Default to 'system.slice' once off 25.05 support
+  Optional[String] $cgroup_slice = undef,
+  Optional[Boolean] $cgroup_job_id_paths = undef,
   Integer $cgroup_allowed_ram_space         = 100,
   Integer $cgroup_allowed_swap_space        = 0,
   Boolean $cgroup_constrain_cores           = false,
@@ -480,6 +493,7 @@ class slurm (
   $job_container_conf_path            = "${conf_dir}/job_container.conf"
   $namespace_conf_path                = "${conf_dir}/namespace.yaml"
   $jwt_key_path                       = "${conf_dir}/jwt.key"
+  $jwks_json_path                     = "${conf_dir}/jwks.json"
   $src_file                           = "/usr/local/src/slurm-${slurm::version}.tar.bz2"
   $src_dir                            = "/usr/local/src/slurm-${slurm::version}"
 
@@ -523,12 +537,28 @@ class slurm (
 
   if 'auth/jwt' in $auth_alt_types {
     if $slurmrestd_disable_token_creation {
-      $_slurmrestd_disable_token_creation = 'disable_token_creation,'
+      $_slurmrestd_disable_token_creation = ['disable_token_creation']
     } else {
-      $_slurmrestd_disable_token_creation = ''
+      $_slurmrestd_disable_token_creation = []
     }
-    $auth_alt_parameters = "${_slurmrestd_disable_token_creation}jwt_key=${jwt_key_path}"
-    $auth_alt_parameters_dbd = "jwt_key=${jwt_key_path}"
+    if $jwks_url {
+      $jwks_setting = [
+        "jwks=${jwks_json_path}",
+      ]
+    } else {
+      $jwks_setting = []
+    }
+    if $jwks_userclaimfield {
+      $userclaimfield = ["userclaimfield=${jwks_userclaimfield}"]
+    } else {
+      $userclaimfield = []
+    }
+    $auth_alt_parameters = $_slurmrestd_disable_token_creation + [
+      "jwt_key=${jwt_key_path}",
+    ] + $jwks_setting + $userclaimfield
+    $auth_alt_parameters_dbd = [
+      "jwt_key=${jwt_key_path}",
+    ] + $jwks_setting + $userclaimfield
   } else {
     $auth_alt_parameters = undef
     $auth_alt_parameters_dbd = undef
@@ -639,6 +669,7 @@ class slurm (
     $slurmdbd_notify = undef
   }
   $service_notify = delete_undef_values(flatten([$slurmd_notify, $slurmctld_notify, $slurmdbd_notify]))
+  $slurmd_slurmctld_service_notify = delete_undef_values(flatten([$slurmd_notify, $slurmctld_notify]))
 
   if $state_dir_nfs_device {
     $state_dir_systemd = "RequiresMountsFor=${slurm::state_save_location}"
