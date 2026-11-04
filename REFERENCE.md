@@ -53,6 +53,7 @@
 
 * [`Slurm::CPUBind`](#Slurm--CPUBind): Type for CPU bind settings
 * [`Slurm::DownNodeState`](#Slurm--DownNodeState)
+* [`Slurm::Namespace::DirConf`](#Slurm--Namespace--DirConf)
 * [`Slurm::Namespace::Options`](#Slurm--Namespace--Options)
 * [`Slurm::NodeState`](#Slurm--NodeState)
 * [`Slurm::PartitionState`](#Slurm--PartitionState)
@@ -168,6 +169,7 @@ The following parameters are available in the `slurm` class:
 * [`greses`](#-slurm--greses)
 * [`job_containers`](#-slurm--job_containers)
 * [`namespace_defaults`](#-slurm--namespace_defaults)
+* [`namespace_disable_bpf_token`](#-slurm--namespace_disable_bpf_token)
 * [`namespace_node_confs`](#-slurm--namespace_node_confs)
 * [`slurmd_log_file`](#-slurm--slurmd_log_file)
 * [`slurmd_spool_dir`](#-slurm--slurmd_spool_dir)
@@ -207,6 +209,8 @@ The following parameters are available in the `slurm` class:
 * [`auth_alt_types`](#-slurm--auth_alt_types)
 * [`jwt_key_content`](#-slurm--jwt_key_content)
 * [`jwt_key_source`](#-slurm--jwt_key_source)
+* [`jwks_url`](#-slurm--jwks_url)
+* [`jwks_userclaimfield`](#-slurm--jwks_userclaimfield)
 * [`slurmrestd_listen_address`](#-slurm--slurmrestd_listen_address)
 * [`slurmrestd_disable_token_creation`](#-slurm--slurmrestd_disable_token_creation)
 * [`slurmrestd_user`](#-slurm--slurmrestd_user)
@@ -220,6 +224,8 @@ The following parameters are available in the `slurm` class:
 * [`cgroup_conf_source`](#-slurm--cgroup_conf_source)
 * [`cgroup_mountpoint`](#-slurm--cgroup_mountpoint)
 * [`cgroup_plugin`](#-slurm--cgroup_plugin)
+* [`cgroup_slice`](#-slurm--cgroup_slice)
+* [`cgroup_job_id_paths`](#-slurm--cgroup_job_id_paths)
 * [`cgroup_allowed_ram_space`](#-slurm--cgroup_allowed_ram_space)
 * [`cgroup_allowed_swap_space`](#-slurm--cgroup_allowed_swap_space)
 * [`cgroup_constrain_cores`](#-slurm--cgroup_constrain_cores)
@@ -1023,6 +1029,14 @@ Data type: `Slurm::Namespace::Options`
 
 Default value: `{}`
 
+##### <a name="-slurm--namespace_disable_bpf_token"></a>`namespace_disable_bpf_token`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
+
 ##### <a name="-slurm--namespace_node_confs"></a>`namespace_node_confs`
 
 Data type: `Hash`
@@ -1335,6 +1349,22 @@ Data type: `Optional[String]`
 
 Default value: `undef`
 
+##### <a name="-slurm--jwks_url"></a>`jwks_url`
+
+Data type: `Optional[String]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--jwks_userclaimfield"></a>`jwks_userclaimfield`
+
+Data type: `Optional[String]`
+
+
+
+Default value: `undef`
+
 ##### <a name="-slurm--slurmrestd_listen_address"></a>`slurmrestd_listen_address`
 
 Data type: `String`
@@ -1438,6 +1468,22 @@ Data type: `String`
 
 
 Default value: `'autodetect'`
+
+##### <a name="-slurm--cgroup_slice"></a>`cgroup_slice`
+
+Data type: `Optional[String]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--cgroup_job_id_paths"></a>`cgroup_job_id_paths`
+
+Data type: `Optional[Boolean]`
+
+
+
+Default value: `undef`
 
 ##### <a name="-slurm--cgroup_allowed_ram_space"></a>`cgroup_allowed_ram_space`
 
@@ -2021,7 +2067,7 @@ Default value: `undef`
 
 ##### <a name="-slurm--gres--auto_detect"></a>`auto_detect`
 
-Data type: `Optional[Enum['nvml','rsmi','oneapi','off']]`
+Data type: `Optional[Enum['nvml','rsmi','oneapi','off', 'full']]`
 
 
 
@@ -2241,6 +2287,7 @@ The following parameters are available in the `slurm::node` defined type:
 * [`restricted_cores_per_gpu`](#-slurm--node--restricted_cores_per_gpu)
 * [`sockets`](#-slurm--node--sockets)
 * [`sockets_per_board`](#-slurm--node--sockets_per_board)
+* [`suspend_time`](#-slurm--node--suspend_time)
 * [`state`](#-slurm--node--state)
 * [`threads_per_core`](#-slurm--node--threads_per_core)
 * [`tmp_disk`](#-slurm--node--tmp_disk)
@@ -2408,6 +2455,14 @@ Data type: `Optional[Variant[String[1], Integer]]`
 
 Default value: `undef`
 
+##### <a name="-slurm--node--suspend_time"></a>`suspend_time`
+
+Data type: `Optional[Variant[String[1], Integer]]`
+
+
+
+Default value: `undef`
+
 ##### <a name="-slurm--node--state"></a>`state`
 
 Data type: `Slurm::NodeState`
@@ -2534,6 +2589,7 @@ The following parameters are available in the `slurm::partition` defined type:
 * [`deny_accounts`](#-slurm--partition--deny_accounts)
 * [`deny_qos`](#-slurm--partition--deny_qos)
 * [`disable_root_jobs`](#-slurm--partition--disable_root_jobs)
+* [`exclusive`](#-slurm--partition--exclusive)
 * [`exclusive_topo`](#-slurm--partition--exclusive_topo)
 * [`exclusive_user`](#-slurm--partition--exclusive_user)
 * [`grace_time`](#-slurm--partition--grace_time)
@@ -2689,6 +2745,14 @@ Default value: `undef`
 ##### <a name="-slurm--partition--disable_root_jobs"></a>`disable_root_jobs`
 
 Data type: `Optional[Slurm::YesNo]`
+
+
+
+Default value: `undef`
+
+##### <a name="-slurm--partition--exclusive"></a>`exclusive`
+
+Data type: `Optional[Enum['NO', 'NODE', 'USER', 'TOPO']]`
 
 
 
@@ -3109,6 +3173,21 @@ The Slurm::DownNodeState data type.
 
 Alias of `Enum['DOWN', 'DRAIN', 'FAIL', 'FAILING', 'UNKNOWN']`
 
+### <a name="Slurm--Namespace--DirConf"></a>`Slurm::Namespace::DirConf`
+
+The Slurm::Namespace::DirConf data type.
+
+Alias of
+
+```puppet
+Struct[{
+    NotUndef['path'] => String[1],
+    Optional['base_path'] => Variant[Stdlib::Absolutepath, Enum['none']],
+    Optional['options'] => String[1],
+    Optional['tmpfs'] => Boolean,
+  }]
+```
+
 ### <a name="Slurm--Namespace--Options"></a>`Slurm::Namespace::Options`
 
 The Slurm::Namespace::Options data type.
@@ -3124,7 +3203,8 @@ Struct[{
     Optional['clone_ns_epilog'] => Stdlib::Absolutepath,
     Optional['clone_ns_epilog_wait'] => Integer,
     Optional['clone_ns_flags'] => Array[Enum['CLONE_NEWPID','CLONE_NEWUSER','CLONE_NEWNS']],
-    Optional['dirs'] => String[1],
+    Optional['dirs'] => Variant[String[1], Array[String[1]]],
+    Optional['dir_confs'] => Array[Slurm::Namespace::DirConf],
     Optional['init_script'] => Stdlib::Absolutepath,
     Optional['shared'] => Boolean,
     Optional['user_ns_script'] => Stdlib::Absolutepath,

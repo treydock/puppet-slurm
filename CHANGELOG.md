@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.0.0](https://github.com/treydock/puppet-slurm/tree/v7.0.0) (2026-11-04)
+
+[Full Changelog](https://github.com/treydock/puppet-slurm/compare/v6.0.0...v7.0.0)
+
+### Changed
+
+- Support Slurm 26.05, Drop Debian 11 and support latest module dependencies [\#72](https://github.com/treydock/puppet-slurm/pull/72) ([treydock](https://github.com/treydock))
+
 ## [v6.0.0](https://github.com/treydock/puppet-slurm/tree/v6.0.0) (2026-02-13)
 
 [Full Changelog](https://github.com/treydock/puppet-slurm/compare/v5.2.0...v6.0.0)
