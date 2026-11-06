@@ -603,6 +603,7 @@ class slurm (
     'SlurmdPort' => $slurmd_port,
     'SlurmdSpoolDir' => $slurmd_spool_dir,
     'SlurmSchedLogFile' => "${log_dir}/slurmsched.log",
+    'SlurmctldHttpAuthParameters' => $auth_alt_parameters,
     'SlurmctldParameters' => $slurmctld_parameters,
     'SlurmdUser' => $slurmd_user,
     'SrunEpilog' => undef, #TODO

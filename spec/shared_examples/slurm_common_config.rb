@@ -355,6 +355,12 @@ shared_examples_for 'slurm::common::config' do
                                ],)
     end
 
+    it 'enables JWT auth for HTTP' do
+      verify_fragment_contents(catalogue, 'slurm.conf-config', [
+                                 'SlurmctldHttpAuthParameters=jwt_key=/etc/slurm/jwt.key',
+                               ],)
+    end
+
     it 'defines JWT key' do
       is_expected.to contain_file('/etc/slurm/jwt.key').with(
         ensure: 'file',
