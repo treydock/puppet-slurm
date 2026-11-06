@@ -3,6 +3,7 @@
 #
 #
 #
+# @param version
 # Roles
 # @param slurmd
 # @param slurmctld
@@ -16,7 +17,6 @@
 # @param package_ensure
 # @param install_torque_wrapper
 # @param install_pam
-# @param version
 # @param source_dependencies
 # @param configure_flags
 # @param source_install_manage_alternatives
@@ -206,6 +206,7 @@
 # @param purge_qos
 # @param slurmdbd_conn_validator_timeout
 class slurm (
+  String $version = '25.11.2',
   # Roles
   Boolean $slurmd     = false,
   Boolean $slurmctld  = false,
@@ -225,7 +226,6 @@ class slurm (
   Boolean $install_pam            = true,
 
   # Source install
-  String $version = '25.11.2',
   Array $source_dependencies = [],
   Array $configure_flags = [],
   Boolean $source_install_manage_alternatives = true,
@@ -579,6 +579,11 @@ class slurm (
   } else {
     $slurmctld_parameters = $slurm_conf_override['SlurmctldParameters']
   }
+  if versioncmp($version, '26.05') >= 0 and $slurmctld {
+    $http_auth_parameters = $auth_alt_parameters
+  } else {
+    $http_auth_parameters = undef
+  }
 
   $slurm_conf_local_defaults = {
     'AccountingStorageHost' => $slurmdbd_host,
@@ -603,6 +608,7 @@ class slurm (
     'SlurmdPort' => $slurmd_port,
     'SlurmdSpoolDir' => $slurmd_spool_dir,
     'SlurmSchedLogFile' => "${log_dir}/slurmsched.log",
+    'SlurmctldHttpAuthParameters' => $http_auth_parameters,
     'SlurmctldParameters' => $slurmctld_parameters,
     'SlurmdUser' => $slurmd_user,
     'SrunEpilog' => undef, #TODO
