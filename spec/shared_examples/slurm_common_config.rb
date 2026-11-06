@@ -342,6 +342,7 @@ shared_examples_for 'slurm::common::config' do
   context 'when auth_alt_types contains auth/jwt' do
     let :param_override do
       {
+        version: '26.05.5',
         auth_alt_types: ['auth/jwt'],
         jwt_key_source: 'puppet:///dne',
       }

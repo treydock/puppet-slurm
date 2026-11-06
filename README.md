@@ -81,6 +81,7 @@ The following parameter changes can be made to avoid dependencies on several mod
 The following could be included in `common.yaml`. This assumes your site has access to SLURM RPMs.
 
 ```yaml
+slurm::version: '26.05.5'
 slurm::repo_baseurl: "https://repo.hpc.osc.edu/internal/slurm/%{facts.os.release.major}/"
 slurm::install_torque_wrapper: true
 slurm::install_pam: true
