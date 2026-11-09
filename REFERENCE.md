@@ -75,6 +75,7 @@ Roles
 
 The following parameters are available in the `slurm` class:
 
+* [`version`](#-slurm--version)
 * [`slurmd`](#-slurm--slurmd)
 * [`slurmctld`](#-slurm--slurmctld)
 * [`slurmdbd`](#-slurm--slurmdbd)
@@ -87,7 +88,6 @@ The following parameters are available in the `slurm` class:
 * [`package_ensure`](#-slurm--package_ensure)
 * [`install_torque_wrapper`](#-slurm--install_torque_wrapper)
 * [`install_pam`](#-slurm--install_pam)
-* [`version`](#-slurm--version)
 * [`source_dependencies`](#-slurm--source_dependencies)
 * [`configure_flags`](#-slurm--configure_flags)
 * [`source_install_manage_alternatives`](#-slurm--source_install_manage_alternatives)
@@ -277,6 +277,14 @@ The following parameters are available in the `slurm` class:
 * [`purge_qos`](#-slurm--purge_qos)
 * [`slurmdbd_conn_validator_timeout`](#-slurm--slurmdbd_conn_validator_timeout)
 
+##### <a name="-slurm--version"></a>`version`
+
+Data type: `String`
+
+
+
+Default value: `'25.11.2'`
+
 ##### <a name="-slurm--slurmd"></a>`slurmd`
 
 Data type: `Boolean`
@@ -372,14 +380,6 @@ Data type: `Boolean`
 
 
 Default value: `true`
-
-##### <a name="-slurm--version"></a>`version`
-
-Data type: `String`
-
-
-
-Default value: `'25.11.2'`
 
 ##### <a name="-slurm--source_dependencies"></a>`source_dependencies`
 

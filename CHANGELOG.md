@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.1.0](https://github.com/treydock/puppet-slurm/tree/v7.1.0) (2026-11-09)
+
+[Full Changelog](https://github.com/treydock/puppet-slurm/compare/v7.0.1...v7.1.0)
+
+### Added
+
+- Set SlurmctldHttpAuthParameters when AuthAltParameters is set [\#74](https://github.com/treydock/puppet-slurm/pull/74) ([treydock](https://github.com/treydock))
+
 ## [v7.0.1](https://github.com/treydock/puppet-slurm/tree/v7.0.1) (2026-11-05)
 
 [Full Changelog](https://github.com/treydock/puppet-slurm/compare/v7.0.0...v7.0.1)
