@@ -95,7 +95,7 @@ class slurm::slurmctld::service {
 
   exec { 'scontrol reconfig':
     command     => $reconfig_command,
-    path        => '/usr/bin:/bin:/usr/sbin:/sbin',
+    path        => "${slurm::install_prefix}/bin:/usr/bin:/bin:/usr/sbin:/sbin",
     refreshonly => true,
   }
 
