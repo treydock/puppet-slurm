@@ -8,7 +8,7 @@ describe 'slurm::job_container' do
                       'operatingsystem' => 'RedHat',
                       'operatingsystemrelease' => ['9'],
                     },
-                  ]).each do |_os, os_facts|
+                  ]).each_value do |os_facts|
     let(:facts) { os_facts }
     let(:title) { '/dev/shm' }
     let(:params) { { auto_base_path: true, base_path: '/tmp', dirs: ['/dev/shm'], shared: true } }
