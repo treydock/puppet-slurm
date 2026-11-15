@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'beaker-puppet'
-
 RSpec.configure do |c|
   # Project root
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
@@ -32,7 +30,10 @@ RSpec.configure do |c|
   # Configure all nodes in nodeset
   c.before :suite do
     # Install module and dependencies
-    copy_module_to(hosts, source: File.join(proj_root, 'spec/fixtures/site_slurm'), module_name: 'site_slurm', ignore_list: [])
+    module_dir = '/etc/puppetlabs/code/environments/production/modules'
+    on hosts, "mkdir -p #{File.join(module_dir, 'site_slurm/files')}"
+    copy_to(File.join(proj_root, 'spec/fixtures/site_slurm/files/jwt.key'), File.join(module_dir, 'site_slurm/files/jwt.key'))
+    copy_to(File.join(proj_root, 'spec/fixtures/site_slurm/files/munge.key'), File.join(module_dir, 'site_slurm/files/munge.key'))
 
     # Dependencies for acceptance
     on hosts, puppet('module', 'install', 'puppetlabs-host_core', '--version=">=1.0.0 <3.0.0"')
