@@ -32,8 +32,8 @@ RSpec.configure do |c|
     # Install module and dependencies
     module_dir = '/etc/puppetlabs/code/environments/production/modules'
     on hosts, "mkdir -p #{File.join(module_dir, 'site_slurm/files')}"
-    scp_to(File.join(proj_root, 'spec/fixtures/site_slurm/files/jwt.key'), File.join(module_dir, 'site_slurm/files/jwt.key'))
-    scp_to(File.join(proj_root, 'spec/fixtures/site_slurm/files/munge.key'), File.join(module_dir, 'site_slurm/files/munge.key'))
+    scp_to(hosts, File.join(proj_root, 'spec/fixtures/site_slurm/files/jwt.key'), File.join(module_dir, 'site_slurm/files/jwt.key'))
+    scp_to(hosts, File.join(proj_root, 'spec/fixtures/site_slurm/files/munge.key'), File.join(module_dir, 'site_slurm/files/munge.key'))
 
     # Dependencies for acceptance
     on hosts, puppet('module', 'install', 'puppetlabs-host_core', '--version=">=1.0.0 <3.0.0"')
