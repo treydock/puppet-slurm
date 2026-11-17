@@ -61,8 +61,7 @@ class slurm::params {
     'HashPlugin' => 'hash/k12',
     'HealthCheckInterval' => '0',
     'HealthCheckNodeState' => 'ANY',
-    # Not available in 25.05
-    # 'HttpParserType' => 'http_parser/libhttp_parser',
+    'HttpParserType' => 'http_parser/libhttp_parser',
     'InactiveLimit' => '0',
     'InteractiveStepOptions' => '"--interactive --preserve-env --pty $SHELL"',
     'JobAcctGatherType' => 'jobacct_gather/cgroup',
@@ -76,8 +75,6 @@ class slurm::params {
     'JobCompPort' => undef,
     'JobCompType' => undef,
     'JobCompUser' => undef,
-    # 25.05 only
-    'JobContainerType' => undef,
     'JobFileAppend' => undef,
     'JobRequeue' => '1',
     'JobSubmitPlugins' => undef,
@@ -153,7 +150,6 @@ class slurm::params {
     'ResumeTimeout' => '60',
     'ResvOverRun' => '0',
     'ReturnToService' => '0',
-    'RoutePlugin' => 'route/default',
     'SchedulerParameters' => undef,
     'SchedulerTimeSlice' => '30',
     'SchedulerType' => 'sched/backfill',
@@ -233,8 +229,7 @@ class slurm::params {
     'DisableRollups' => undef,
     'HashPlugin' => 'hash/k12',
     'LogTimeFormat' => 'iso8601_ms',
-    # Not in 25.05
-    # 'MaxPurgeLimit' => '50000',
+    'MaxPurgeLimit' => '50000',
     'MaxQueryTimeRange' => 'INFINITE',
     'MessageTimeout' => '10',
     'Parameters' => undef,

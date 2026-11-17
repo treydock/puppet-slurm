@@ -45,6 +45,7 @@ shared_examples_for 'slurm::common::config' do
                                      'HashPlugin=hash/k12',
                                      'HealthCheckInterval=0',
                                      'HealthCheckNodeState=ANY',
+                                     'HttpParserType=http_parser/libhttp_parser',
                                      'InactiveLimit=0',
                                      'InteractiveStepOptions="--interactive --preserve-env --pty $SHELL"',
                                      'JobAcctGatherType=jobacct_gather/cgroup',
@@ -85,7 +86,6 @@ shared_examples_for 'slurm::common::config' do
                                      'ResumeTimeout=60',
                                      'ResvOverRun=0',
                                      'ReturnToService=0',
-                                     'RoutePlugin=route/default',
                                      'SchedulerTimeSlice=30',
                                      'SchedulerType=sched/backfill',
                                      'SelectType=select/cons_tres',
@@ -179,6 +179,7 @@ shared_examples_for 'slurm::common::config' do
     verify_exact_file_contents(catalogue, 'slurm-cgroup.conf', [
                                  'CgroupMountpoint=/sys/fs/cgroup',
                                  'CgroupPlugin=autodetect',
+                                 'CgroupSlice=system.slice',
                                  'AllowedRAMSpace=100',
                                  'AllowedSwapSpace=0',
                                  'ConstrainCores=no',
@@ -371,6 +372,28 @@ shared_examples_for 'slurm::common::config' do
         content: nil,
         source: 'puppet:///dne',
       )
+    end
+
+    context 'when 25.11.x' do
+      let :param_override do
+        {
+          version: '25.11.9',
+          auth_alt_types: ['auth/jwt'],
+          jwt_key_source: 'puppet:///dne',
+        }
+      end
+      let(:slurmctld) { true }
+
+      it 'enables JWT auth' do
+        verify_fragment_contents(catalogue, 'slurm.conf-config', [
+                                   'AuthAltTypes=auth/jwt',
+                                   'AuthAltParameters=jwt_key=/etc/slurm/jwt.key',
+                                 ],)
+      end
+
+      it 'does not enable JWT auth for HTTP' do
+        is_expected.to contain_concat__fragment('slurm.conf-config').without_content(%r{^SlurmctldHttpAuthParameters=.*})
+      end
     end
   end
 

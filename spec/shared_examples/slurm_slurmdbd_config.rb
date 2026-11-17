@@ -30,6 +30,7 @@ shared_examples_for 'slurm::slurmdbd::config' do
                                  'HashPlugin=hash/k12',
                                  'LogFile=/var/log/slurm/slurmdbd.log',
                                  'LogTimeFormat=iso8601_ms',
+                                 'MaxPurgeLimit=50000',
                                  'MaxQueryTimeRange=INFINITE',
                                  'MessageTimeout=10',
                                  'PidFile=/var/run/slurmdbd.pid',

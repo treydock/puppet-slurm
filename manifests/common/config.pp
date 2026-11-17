@@ -89,7 +89,6 @@ class slurm::common::config {
       } else {
         $job_container_ensure = 'present'
       }
-      # TODO: Remove this file once 25.05 not supported
       concat { 'job_container.conf':
         ensure => $job_container_ensure,
         path   => $slurm::job_container_conf_path,

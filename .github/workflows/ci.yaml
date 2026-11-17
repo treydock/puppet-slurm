@@ -56,7 +56,6 @@ jobs:
           - "openvox8"
           - "openvox9"
         slurm_version:
-          - "25.05.6"
           - "25.11.2"
           - "26.05.5"
     env:
