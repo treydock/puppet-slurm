@@ -28,28 +28,12 @@ def base_packages(facts)
   end
 end
 
-def cpuinfo_fixtures(filename)
-  fixtures('cpuinfo', filename)
-end
-
 def cpuinfo_fixture_read(filename)
-  File.read(cpuinfo_fixtures(filename))
+  File.read(File.join('spec/fixtures/cpuinfo', filename))
 end
 
 def cpuinfo_fixture_readlines(filename)
   cpuinfo_fixture_read(filename).split(%r{\n})
-end
-
-def meminfo_fixtures(filename)
-  fixtures('meminfo', filename)
-end
-
-def meminfo_fixture_read(filename)
-  File.read(meminfo_fixtures(filename))
-end
-
-def meminfo_fixture_readlines(filename)
-  meminfo_fixture_read(filename).split(%r{\n})
 end
 
 class String

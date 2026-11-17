@@ -8,7 +8,7 @@ describe 'slurm::gres' do
                       'operatingsystem' => 'RedHat',
                       'operatingsystemrelease' => ['9'],
                     },
-                  ]).each do |_os, os_facts|
+                  ]).each_value do |os_facts|
     let(:facts) { os_facts }
     let(:title) { 'gpu' }
     let(:params) { { node_name: 'slurmd01', file: '/dev/nvidia0' } }

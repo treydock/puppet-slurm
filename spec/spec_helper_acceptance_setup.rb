@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'beaker-puppet'
-
 RSpec.configure do |c|
   # Project root
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
@@ -32,20 +30,20 @@ RSpec.configure do |c|
   # Configure all nodes in nodeset
   c.before :suite do
     # Install module and dependencies
-    copy_module_to(hosts, source: File.join(proj_root, 'spec/fixtures/site_slurm'), module_name: 'site_slurm', ignore_list: [])
+    install_local_module_on(hosts, File.join(proj_root, 'spec/fixtures/site_slurm'))
 
     # Dependencies for acceptance
-    on hosts, puppet('module', 'install', 'puppetlabs-host_core', '--version=">=1.0.0 <3.0.0"')
+    install_puppet_module_via_pmt_on(hosts, 'puppetlabs-host_core', '>=1.0.0 <3.0.0')
     # Dependencies for NHC
-    on hosts, puppet('module', 'install', 'puppetlabs-vcsrepo', '--version=">=6.0.0 <8.0.0"')
-    on hosts, puppet('module', 'install', 'puppet-yum', '--version=">=6.0.0 <9.0.0"')
+    install_puppet_module_via_pmt_on(hosts, 'puppetlabs-vcsrepo', '>=6.0.0 <8.0.0')
+    install_puppet_module_via_pmt_on(hosts, 'puppet-yum', '>=6.0.0 <9.0.0')
     # Add soft dependencies
-    on hosts, puppet('module', 'install', 'treydock-nhc', '--version=8.0.0')
-    on hosts, puppet('module', 'install', 'saz-rsyslog')
+    install_puppet_module_via_pmt_on(hosts, 'treydock-nhc', '8.0.0')
+    install_puppet_module_via_pmt_on(hosts, 'saz-rsyslog')
 
     slurmd_ip = find_only_one(:slurmd).ip
-    on hosts, puppet('resource', 'host', 'slurmd', 'ensure=absent')
-    on hosts, puppet('resource', 'host', 'slurmd', "ip=#{slurmd_ip}", 'host_aliases=slurm')
+    on hosts, 'puppet resource host slurmd ensure=absent'
+    on hosts, "puppet resource host slurmd ip=#{slurmd_ip} host_aliases=slurm"
 
     puppet_dir = if fact('os.name') == 'Debian' && fact('os.release.major').to_i >= 12
                    '/etc/puppet'

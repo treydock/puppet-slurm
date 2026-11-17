@@ -1,6 +1,6 @@
 ---
 .github/workflows/ci.yaml:
-  acceptance_name: '${{ matrix.puppet }} ${{ matrix.set }} (slurm=${{ matrix.slurm_version }})'
+  acceptance_name: '${{ matrix.openvox }} ${{ matrix.set }} (slurm=${{ matrix.slurm_version }})'
   acceptance_matrix:
     set:
       - el8
@@ -8,8 +8,9 @@
       - debian-12
       - ubuntu-2204
       - ubuntu-2404
-    puppet:
-      - puppet8
+    openvox:
+      - openvox8
+      - openvox9
     slurm_version:
       - '25.05.6'
       - '25.11.2'
@@ -21,8 +22,6 @@
   #  - set: el9
   #    puppet: puppet7
   #    slurm_version: '24.05.4'
-.gitlab-ci.yml:
-  delete: true
 .rubocop.yml:
   profiles:
     strict:
@@ -31,13 +30,6 @@
           Enabled: false
         RSpec/RepeatedExampleGroupBody:
           Enabled: false
-Gemfile:
-  required:
-    ':system_tests':
-      - gem: beaker-puppet
-        version: '~> 4.0'
-appveyor.yml:
-  delete: true
 spec/acceptance/nodesets/el8.yml:
   unmanaged: true
   packages:
