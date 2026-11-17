@@ -206,7 +206,7 @@
 # @param purge_qos
 # @param slurmdbd_conn_validator_timeout
 class slurm (
-  String $version = '25.11.2',
+  String $version = '26.05.6',
   # Roles
   Boolean $slurmd     = false,
   Boolean $slurmctld  = false,
@@ -403,8 +403,7 @@ class slurm (
   Optional[String] $cgroup_conf_source               = undef,
   Stdlib::Absolutepath $cgroup_mountpoint                = '/sys/fs/cgroup',
   String $cgroup_plugin = 'autodetect',
-  # TODO: Default to 'system.slice' once off 25.05 support
-  Optional[String] $cgroup_slice = undef,
+  String $cgroup_slice = 'system.slice',
   Optional[Boolean] $cgroup_job_id_paths = undef,
   Integer $cgroup_allowed_ram_space         = 100,
   Integer $cgroup_allowed_swap_space        = 0,
